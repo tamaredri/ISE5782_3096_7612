@@ -4,8 +4,41 @@ public class Ray {
     private final Point p0;
     private final Vector dir;
 
+    //region getters
+    public Point getP0() {
+        return p0;
+    }
+
+    public Vector getDir() {
+        return dir;
+    }
+    //endregion
+
+    //region constructor
     public Ray(Point p0, Vector dir) {
         this.p0 = p0;
         this.dir = dir;
     }
+    //endregion
+
+    //region to string override
+    @Override
+    public String toString() {
+        return "Ray{" +
+                "p0=" + p0.toString() +
+                ", dir=" + dir.toString() +
+                '}';
+    }
+    //endregion
+
+    //region equals function override
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (!(o instanceof Ray)) return false;
+        Ray ray = (Ray) o;
+        return p0.equals(ray.p0) && dir.equals(ray.dir) ;
+    }
+    //endregion
 }
