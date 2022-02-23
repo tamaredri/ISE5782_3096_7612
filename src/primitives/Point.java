@@ -17,6 +17,11 @@ public class Point {
     }
 
     //check null
+    /**
+     * Adds to the point the dir vector
+     *
+     * @param v direction vector to move the point
+     */
     public Point add(Vector v){
         return new Point(xyz.add(v.xyz));
     }
