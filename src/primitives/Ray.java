@@ -1,6 +1,5 @@
 package primitives;
 
-
 /**
  * a class that represents an infinite Ray in space
  * using a Point for the location in space and a direction Vector

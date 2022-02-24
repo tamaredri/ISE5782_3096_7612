@@ -6,7 +6,7 @@ package primitives;
 public class Vector extends Point{
 
     //region constructor 3 doubles
-    public Vector(double x, double y, double z) {
+    public Vector(double x, double y, double z) throws IllegalArgumentException {
         super(x, y, z);
         if (xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("cannot construct the zero vector");
@@ -14,10 +14,16 @@ public class Vector extends Point{
     //endregion
 
     //region constructor Double3
-    public Vector(Double3 xyz) {
+    public Vector(Double3 xyz) throws IllegalArgumentException {
         super(xyz);
         if (xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("cannot construct the zero vector");
+    }
+    //endregion
+
+    //region getter for xyz
+    public Point getXYZ(){
+        return new Point(this.xyz);
     }
     //endregion
 
@@ -30,7 +36,7 @@ public class Vector extends Point{
      * @return new Vector in the combined direction
      */
     @Override
-    public Vector add(Vector other){
+    public Vector add(Vector other) throws IllegalArgumentException {
         return new Vector(xyz.add(other.xyz));
     }
     //endregion
@@ -43,7 +49,7 @@ public class Vector extends Point{
      * @return the scaled Vector
      */
     //check scale by zero
-    public Vector scale(double scalar){
+    public Vector scale(double scalar) throws IllegalArgumentException {
         return new Vector(xyz.scale(scalar));
     }
     //endregion
@@ -70,7 +76,7 @@ public class Vector extends Point{
      * @param other the other Point to calculate the cross-product
      * @return the result of the cross-product (a Vector)
      */
-    public Vector crossProduct(Vector other){
+    public Vector crossProduct(Vector other) throws IllegalArgumentException {
         return new Vector(xyz.d2 * other.xyz.d3 - xyz.d3 * other.xyz.d2,
                           xyz.d3 * other.xyz.d1 - xyz.d1 * other.xyz.d3,
                           xyz.d1 * other.xyz.d2 - xyz.d2 * other.xyz.d1);
