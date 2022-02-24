@@ -22,7 +22,7 @@ public class Ray {
     //region constructor
     public Ray(Point p0, Vector dir) {
         this.p0 = p0;
-        this.dir = dir;
+        this.dir = dir.normalize();
     }
     //endregion
 

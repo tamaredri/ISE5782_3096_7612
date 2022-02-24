@@ -10,8 +10,6 @@ public class Vector extends Point{
         super(x, y, z);
         if (xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("cannot construct the zero vector");
-
-        xyz = normalize().xyz;
     }
     //endregion
 
