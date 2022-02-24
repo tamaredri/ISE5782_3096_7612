@@ -1,7 +1,8 @@
 package primitives;
 
-import java.util.Objects;
-
+/**
+ * a class that represents a 3 parameter Point in space
+ */
 public class Point {
     Double3 xyz;
 
@@ -18,6 +19,14 @@ public class Point {
     //endregion
 
     //region subtract function
+    /**
+     * Creating a Vector using 2 Points in the (מרחב?)
+     *
+     * @param other the other Point of the vector.
+     *              according to linear calculations:
+     *              this = the head of the Vector.
+     *              other = the tail of the Vector
+     */
     //check null
     public Vector subtract(Point other){
         return new Vector(xyz.subtract(other.xyz));
@@ -37,6 +46,13 @@ public class Point {
     //endregion
 
     //region distance squared function
+    /**
+     * the distance squared between to Points in space
+     * according the math equation of how to calculate distance
+     *
+     * @param other the other Point to calculate distance to
+     * @return a double that represents the distance squared
+     */
     //check null
     public double distanceSquared(Point other){
         return  (xyz.d1 - other.xyz.d1) * (xyz.d1 - other.xyz.d1) +
@@ -46,6 +62,13 @@ public class Point {
     //endregion
 
     //region distance function
+    /**
+     * the distance between to Points in space
+     * according the math equation of how to calculate distance
+     *
+     * @param other the other Point to calculate distance to
+     * @return a double that represents the distance
+     */
     //check null
     public double distance(Point other){
         return Math.sqrt(this.distanceSquared(other));
@@ -53,6 +76,9 @@ public class Point {
     //endregion
 
     //region to string function override
+    /**
+     * format: "Point { xyz = (x, y, z) }"
+     */
     @Override
     public String toString() {
         return "Point{" +

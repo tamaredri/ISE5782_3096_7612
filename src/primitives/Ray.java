@@ -1,5 +1,10 @@
 package primitives;
 
+
+/**
+ * a class that represents an infinite Ray in space
+ * using a Point for the location in space and a direction Vector
+ */
 public class Ray {
     private final Point p0;
     private final Vector dir;
@@ -22,6 +27,9 @@ public class Ray {
     //endregion
 
     //region to string override
+    /**
+     * format: " Ray { p0 = Point : xyz = {x, y, z)}, dir = Vector : xyz = (x, y, z) } "
+     */
     @Override
     public String toString() {
         return "Ray{" +
