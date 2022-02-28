@@ -1,9 +1,12 @@
 package geometries;
-
 import primitives.*;
 
+/**
+ * a class that represents a tube in the space by the axis of it's center and it's radius
+ */
+
 public class Tube implements Geometry{
-    protected Ray axisRay;
+    protected Ray axisRay; //the center axis
     protected double radius;
 
     //region constructor
