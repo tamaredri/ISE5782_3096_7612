@@ -32,8 +32,8 @@ public class Ray {
     @Override
     public String toString() {
         return "Ray{" +
-                "p0=" + p0.toString() +
-                ", dir=" + dir.toString() +
+                "p0=" + p0 +
+                ", dir=" + dir +
                 '}';
     }
     //endregion

@@ -11,16 +11,6 @@ public class Triangle extends Polygon{
     }
     //endregion
 
-    //region getters
-    public Plane getPlane(){
-        return this.plane;
-    }
-
-    public List<Point> getVertices(){
-        return this.vertices;
-    }
-    //endregion
-
     //region to string Override
     @Override
     public String toString() {

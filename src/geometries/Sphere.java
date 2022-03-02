@@ -15,16 +15,6 @@ public class Sphere implements Geometry{
     }
     //endregion
 
-    //region getters
-    public Point getCenter() {
-        return center;
-    }
-
-    public double getRadius() {
-        return radius;
-    }
-    //endregion
-
     //region toString override
     @Override
     public String toString() {

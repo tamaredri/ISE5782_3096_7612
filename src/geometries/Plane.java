@@ -26,10 +26,6 @@ public class Plane {
     }
     //endregion
 
-    public Point getQ0() {
-        return q0;
-    }
-
     public Vector getNormal() {
         return normal;
     }

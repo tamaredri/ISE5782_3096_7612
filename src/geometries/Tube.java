@@ -16,21 +16,11 @@ public class Tube implements Geometry{
     }
     //endregion
 
-    //region getters
-    public Ray getAxisRay() {
-        return axisRay;
-    }
-
-    public double getRadius() {
-        return radius;
-    }
-    //endregion
-
     //region to string Override
     @Override
     public String toString() {
         return "Tube{" +
-                "axisRay=" + axisRay.toString() +
+                "axisRay=" + axisRay +
                 ", radius=" + radius +
                 '}';
     }

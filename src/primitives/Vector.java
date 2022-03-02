@@ -116,7 +116,7 @@ public class Vector extends Point{
      * @return the scaled Vector
      */
     public Vector normalize(){
-        return this.scale(1/length());
+        return new Vector(xyz.reduce(length()));
     }
     //endregion
 
@@ -127,7 +127,7 @@ public class Vector extends Point{
     @Override
     public String toString() {
         return "Vector{" +
-                "xyz=" + xyz.toString() +
+                "xyz=" + xyz +
                 '}';
     }
     //endregion

@@ -15,15 +15,11 @@ public class Cylinder extends Tube{
     }
     //endregion
 
-    public double getHeight() {
-        return height;
-    }
-
     //region toString
     @Override
     public String toString() {
         return "Cylinder{" +
-                "axisRay=" + axisRay.toString() +
+                "axisRay=" + axisRay +
                 ", radius=" + radius +
                 ", height=" + height +
                 '}';
