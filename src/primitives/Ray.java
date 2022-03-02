@@ -8,16 +8,6 @@ public class Ray {
     private final Point p0;
     private final Vector dir;
 
-    //region getters
-    public Point getP0() {
-        return p0;
-    }
-
-    public Vector getDir() {
-        return dir;
-    }
-    //endregion
-
     //region constructor
     public Ray(Point p0, Vector dir) {
         this.p0 = p0;

@@ -1,7 +1,6 @@
 package geometries;
 
 import primitives.*;
-import java.util.List;
 
 public class Triangle extends Polygon{
 
