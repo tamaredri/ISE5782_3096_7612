@@ -9,14 +9,17 @@ public class Tube implements Geometry{
     protected Ray axisRay; //the center axis
     protected double radius;
 
-    //region constructor
+    //region constructor ray and a radius
     public Tube(Ray axisRay, double radius) {
         this.axisRay = axisRay;
         this.radius = radius;
     }
     //endregion
 
-    //region to string Override
+    //region toString Override
+    /**
+     * format: "Tube { axisRay=  Ray { p0 = Point : xyz = (x, y, z), dir = Vector : xyz = (x, y, z) }, radius= radius}"
+     */
     @Override
     public String toString() {
         return "Tube{" +
@@ -26,7 +29,7 @@ public class Tube implements Geometry{
     }
     //endregion
 
-    //region get normal function
+    //region getNormal function
     @Override
     public Vector getNormal(Point point) {
         // distance between p0 of the tube to the projection of point on the tube's ray

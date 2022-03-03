@@ -46,9 +46,9 @@ public class Vector extends Point{
      * scaling a Vector
      *
      * @param scalar double number to scale the vector
+     * @throws IllegalArgumentException when trying to scale with zero
      * @return the scaled Vector
      */
-    //check scale by zero
     public Vector scale(double scalar) throws IllegalArgumentException {
         return new Vector(xyz.scale(scalar));
     }
@@ -74,6 +74,7 @@ public class Vector extends Point{
      * according the math equation of how to calculate cross-product
      *
      * @param other the other Point to calculate the cross-product
+     * @throws IllegalArgumentException when the vectors are parallel. trying to construct the zero vector
      * @return the result of the cross-product (a Vector)
      */
     public Vector crossProduct(Vector other) throws IllegalArgumentException {
@@ -120,7 +121,7 @@ public class Vector extends Point{
     }
     //endregion
 
-    //region to string override
+    //region toString override
     /**
      * format: " Vector { xyz = (x, y, z) } "
      */

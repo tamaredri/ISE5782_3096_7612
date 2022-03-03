@@ -16,6 +16,9 @@ public class Sphere implements Geometry{
     //endregion
 
     //region toString override
+    /**
+     * format: "Sphere{ center= Point { xyz = (x, y, z) }, radius= radius } "
+     */
     @Override
     public String toString() {
         return "Sphere{" +
@@ -25,8 +28,11 @@ public class Sphere implements Geometry{
     }
     //endregion
 
+    // region getNormal function
     @Override
     public Vector getNormal(Point point) {
         return point.subtract(center).normalize();
     }
+    //endregion
+
 }

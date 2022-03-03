@@ -15,6 +15,7 @@ public class Ray {
     }
     //endregion
 
+    // region getters
     public Point getP0() {
         return p0;
     }
@@ -22,7 +23,7 @@ public class Ray {
     public Vector getDir() {
         return dir;
     }
-
+    //endregion
 
     //region to string override
     /**

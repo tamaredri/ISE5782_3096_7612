@@ -11,6 +11,9 @@ public class Triangle extends Polygon{
     //endregion
 
     //region to string Override
+    /**
+     * format: "Triangle {vertices= {}, plane= }"
+     */
     @Override
     public String toString() {
         return "Triangle{" +

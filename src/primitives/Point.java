@@ -27,14 +27,12 @@ public class Point {
      *              this = the head of the Vector.
      *              other = the tail of the Vector
      */
-    //check null
     public Vector subtract(Point other){
         return new Vector(xyz.subtract(other.xyz));
     }
     //endregion
 
     //region add function
-    //check null
     /**
      * Adds to the point the dir vector
      *
@@ -53,7 +51,6 @@ public class Point {
      * @param other the other Point to calculate distance to
      * @return a double that represents the distance squared
      */
-    //check null
     public double distanceSquared(Point other){
         return  (xyz.d1 - other.xyz.d1) * (xyz.d1 - other.xyz.d1) +
                 (xyz.d2 - other.xyz.d2) * (xyz.d2 - other.xyz.d2) +
@@ -69,13 +66,12 @@ public class Point {
      * @param other the other Point to calculate distance to
      * @return a double that represents the distance
      */
-    //check null
     public double distance(Point other){
         return Math.sqrt(this.distanceSquared(other));
     }
     //endregion
 
-    //region to string function override
+    //region toString function override
     /**
      * format: "Point { xyz = (x, y, z) }"
      */
@@ -97,5 +93,4 @@ public class Point {
         return xyz.equals(point.xyz);
     }
     //endregion
-
 }

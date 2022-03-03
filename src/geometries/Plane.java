@@ -31,4 +31,17 @@ public class Plane {
         return normal;
     }
     //endregion
+
+    // region toString override
+    /**
+     * format: "Plane { q0= Point { xyz = (x, y, z) }, normal= Vector { xyz = (x, y, z) } }"
+     */
+    @Override
+    public String toString() {
+        return "Plane{" +
+                "q0=" + q0 +
+                ", normal=" + normal +
+                '}';
+    }
+    //endregion
 }
