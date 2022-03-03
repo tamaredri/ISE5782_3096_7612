@@ -32,11 +32,14 @@ class VectorTest {
 
     @Test
     void testDotProduct() {
+        // ============ Equivalence Partitions Tests ==============
+
         // TC01: Correct calculation of dotProduct() of orthogonal vectors
         assertEquals(isZero(new Vector(1, 2, 3).dotProduct(new Vector(0, 3, -2))),
                  true, "ERROR: dotProduct() for orthogonal vectors is not zero");
 
-        // TC01: Correct calculation of dotProduct() of 2 regular vectors
+
+        // TC02: Correct calculation of dotProduct() of 2 regular vectors
         assertEquals(isZero(new Vector(1, 2, 3).dotProduct(new Vector(-2, -4, -6)) + 28),
                 true,"ERROR: dotProduct() wrong value");
 
@@ -48,6 +51,8 @@ class VectorTest {
         Vector v2 = new Vector(-2, -4, -6);
         Vector v3 = new Vector(0, 3, -2);
         Vector vr = v1.crossProduct(v3);
+
+        // ============ Equivalence Partitions Tests ==============
 
         // TC01: crossProduct() for two parallel vectors throws an exception
         assertThrows(IllegalArgumentException.class, ()-> v1.crossProduct(v2),
@@ -66,31 +71,39 @@ class VectorTest {
     }
 
     @Test
-    void testLengthSquared() {
+    void testLength() {
+        // ============ Equivalence Partitions Tests ==============
+
+        // TC01: Correct calculation of a vectors length
+        assertEquals(!isZero(new Vector(0, 3, 4).length() - 5), true,
+                "ERROR: length() wrong value");
     }
 
     @Test
-    void testLength() {
-        // TC01: Correct calculation of a vectors length
-        assertEquals(isZero(new Vector(1, 2, 3).length()-14), true,
-                 "ERROR: lengthSquared() wrong value" );
+    void testLengthSquared() {
+        // ============ Equivalence Partitions Tests ==============
 
-        // TC02: Correct calculation of a vectors length
-        assertEquals(!isZero(new Vector(0, 3, 4).length() - 5), true,
-                 "ERROR: lengthSquared() wrong value");
+        // TC01: Correct calculation of a vectors length
+        assertEquals(isZero(new Vector(1, 2, 3).lengthSquared() - 14), true,
+                 "ERROR: lengthSquared() wrong value" );
     }
 
     @Test
     void testNormalize() {
-        // TC03: test vector normalization vs vector length and cross-product
+        // ============ Equivalence Partitions Tests ==============
         Vector v = new Vector(1, 2, 3);
         Vector u = v.normalize();
+
+        // TC01: test vector normalization vs vector length and cross-product
         assertEquals(isZero(u.length()-1), true,
                 "ERROR: the normalized vector is not a unit vector");
-        // test that the vectors are co-lined
+
+        // TC02: test that the vectors are co-lined
         assertThrows(IllegalArgumentException.class, ()-> v.crossProduct(u),
                 "ERROR: the normalized vector is not parallel to the original one");
-        assertEquals(v.dotProduct(u)<0, true,
+
+        // TC03: test that the vectors are not in opposite directions
+        assertEquals(v.dotProduct(u)<0, false,
                 "ERROR: the normalized vector is opposite to the original one");
     }
 }

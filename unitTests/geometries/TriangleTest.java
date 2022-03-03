@@ -33,12 +33,12 @@ class TriangleTest {
                 () -> new Triangle(new Point(0, 0, 1), new Point(0, 0, 0), new Point(0, 0, 5)),
                 "Constructed a triangle with vertex on a single line");
 
-        // TC11: Last point = first point
+        // TC03: Last point = first point
         assertThrows(IllegalArgumentException.class, //
                 () -> new Polygon(new Point(0, 0, 1), new Point(0, 1, 0), new Point(0, 0, 1)),
                 "Constructed a triangle with vertices on a side");
 
-        // TC12: Co-located points
+        // TC045: Co-located points
         assertThrows(IllegalArgumentException.class, //
                 () -> new Polygon(new Point(0, 0, 1), new Point(0, 1, 0), new Point(0, 1, 0)),
                 "Constructed a triangle with vertices on a side");
