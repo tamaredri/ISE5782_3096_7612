@@ -26,9 +26,9 @@ public class Plane {
     }
     //endregion
 
+    //region getNormal function
     public Vector getNormal() {
         return normal;
     }
-
-
+    //endregion
 }

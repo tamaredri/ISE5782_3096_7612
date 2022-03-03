@@ -15,6 +15,15 @@ public class Ray {
     }
     //endregion
 
+    public Point getP0() {
+        return p0;
+    }
+
+    public Vector getDir() {
+        return dir;
+    }
+
+
     //region to string override
     /**
      * format: " Ray { p0 = Point : xyz = {x, y, z)}, dir = Vector : xyz = (x, y, z) } "

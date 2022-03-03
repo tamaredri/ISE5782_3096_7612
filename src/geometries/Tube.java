@@ -2,7 +2,7 @@ package geometries;
 import primitives.*;
 
 /**
- * a class that represents a tube in the space by the axis of it's center and it's radius
+ * a class that represents a tube in the space by the axis of it's center. and it's radius
  */
 
 public class Tube implements Geometry{
@@ -29,7 +29,17 @@ public class Tube implements Geometry{
     //region get normal function
     @Override
     public Vector getNormal(Point point) {
-        return null;
+        // distance between p0 of the tube to the projection of point on the tube's ray
+        double t = axisRay.getDir().dotProduct(point.subtract(axisRay.getP0()));
+
+        // projection of point on the tube's ray
+        Point o = axisRay.getP0();
+        if (t != 0) {
+            o = o.add(axisRay.getDir().scale(t));
+        }
+
+        // the normalized vector from o to point
+        return point.subtract(o).normalize();
     }
     //endregion
 }
