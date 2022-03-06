@@ -1,22 +1,26 @@
 package primitives;
 
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.function.Executable;
-
-import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
 import static primitives.Util.*;
 
 /**
- * Testing Polygons
+ * Testing Vector
  *
  * @author Yael Shamai
  *
  */
 class VectorTest {
 
+    /**
+     * Test method for {@link Vector#Vector(double, double, double)}.
+     */
     @Test
     void testConstructor() {
+        // ============ Equivalence Partitions Tests ==============
+
+        //TC01: only one regular test to check
+        assertDoesNotThrow(() -> new Vector(1,2,3), "Does not construct a Vector");
 
         //=============== Boundary Values Tests ==================
 
@@ -25,6 +29,9 @@ class VectorTest {
         "Constructed (0,0,0) vector");
     }
 
+    /**
+     * Test method for {@link Vector#add(Vector)}.
+     */
     @Test
     void testAdd() {
         // ============ Equivalence Partitions Tests ==============
@@ -33,6 +40,9 @@ class VectorTest {
                 "Add function does not return the right vector");
     }
 
+    /**
+     * Test method for {@link Vector#scale(double)}
+     */
     @Test
     void testScale() {
         //=============== Boundary Values Tests ==================
@@ -46,21 +56,25 @@ class VectorTest {
                 "scale does not return the right vector");
     }
 
+    /**
+     * Test method for {@link Vector#dotProduct(Vector)}.
+     */
     @Test
     void testDotProduct() {
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Correct calculation of dotProduct() of orthogonal vectors
-        assertEquals(isZero(new Vector(1, 2, 3).dotProduct(new Vector(0, 3, -2))),
-                 true, "ERROR: dotProduct() for orthogonal vectors is not zero");
+        assertTrue(isZero(new Vector(1, 2, 3).dotProduct(new Vector(0, 3, -2))), "ERROR: dotProduct() for orthogonal vectors is not zero");
 
 
         // TC02: Correct calculation of dotProduct() of 2 regular vectors
-        assertEquals(isZero(new Vector(1, 2, 3).dotProduct(new Vector(-2, -4, -6)) + 28),
-                true,"ERROR: dotProduct() wrong value");
+        assertTrue(isZero(new Vector(1, 2, 3).dotProduct(new Vector(-2, -4, -6)) + 28), "ERROR: dotProduct() wrong value");
 
     }
 
+    /**
+     * Test method for {@link Vector#crossProduct(Vector)}.
+     */
     @Test
     void testCrossProduct() {
         Vector v1 = new Vector(1, 2, 3);
@@ -75,35 +89,40 @@ class VectorTest {
                 "ERROR: crossProduct() for parallel vectors does not throw an exception");
 
         // TC02: correct crossProduct() length
-        assertEquals(isZero(vr.length() - v1.length() * v3.length()), true,
-                "ERROR: crossProduct() wrong result length");
+        assertTrue(isZero(vr.length() - v1.length() * v3.length()), "ERROR: crossProduct() wrong result length");
 
         // TC03: correct crossProduct() orthogonal to its operands
-        assertEquals(isZero(vr.dotProduct(v1)), true,
-                "ERROR: crossProduct() result is not orthogonal to its operands");
-        assertEquals(isZero(vr.dotProduct(v3)), true,
-                "ERROR: crossProduct() result is not orthogonal to its operands");
+        assertTrue(isZero(vr.dotProduct(v1)), "ERROR: crossProduct() result is not orthogonal to its operands");
+
+        assertTrue(isZero(vr.dotProduct(v3)), "ERROR: crossProduct() result is not orthogonal to its operands");
 
     }
 
+    /**
+     * Test method for {@link Vector#length()}.
+     */
     @Test
     void testLength() {
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Correct calculation of a vectors length
-        assertEquals(!isZero(new Vector(0, 3, 4).length() - 5), true,
-                "ERROR: length() wrong value");
+        assertTrue(isZero(new Vector(0, 3, 4).length() - 5), "ERROR: length() wrong value");
     }
 
+    /**
+     * Test method for {@link Vector#lengthSquared()}.
+     */
     @Test
     void testLengthSquared() {
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Correct calculation of a vectors length
-        assertEquals(isZero(new Vector(1, 2, 3).lengthSquared() - 14), true,
-                 "ERROR: lengthSquared() wrong value" );
+        assertTrue(isZero(new Vector(1, 2, 3).lengthSquared() - 14), "ERROR: lengthSquared() wrong value");
     }
 
+    /**
+     * Test method for {@link Vector#normalize()}.
+     */
     @Test
     void testNormalize() {
         // ============ Equivalence Partitions Tests ==============
@@ -111,15 +130,13 @@ class VectorTest {
         Vector u = v.normalize();
 
         // TC01: test vector normalization vs vector length and cross-product
-        assertEquals(isZero(u.length()-1), true,
-                "ERROR: the normalized vector is not a unit vector");
+        assertTrue(isZero(u.length() - 1), "ERROR: the normalized vector is not a unit vector");
 
         // TC02: test that the vectors are co-lined
         assertThrows(IllegalArgumentException.class, ()-> v.crossProduct(u),
                 "ERROR: the normalized vector is not parallel to the original one");
 
         // TC03: test that the vectors are not in opposite directions
-        assertEquals(v.dotProduct(u)<0, false,
-                "ERROR: the normalized vector is opposite to the original one");
+        assertFalse(v.dotProduct(u) < 0, "ERROR: the normalized vector is opposite to the original one");
     }
 }

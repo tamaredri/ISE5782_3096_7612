@@ -34,7 +34,12 @@ class CylinderTest {
 
         // =============== Boundary Values Tests ==================
 
-        // TC01: normal for a point on the corner between the casing and the base of the cylinder
-        assertEquals(cy.getNormal(new Point(2, 0, 0)), new Vector(0, 0, -1), "Bad normal for a point on the the corner between the casing and the base of the cylinder");
+        // TC01: normal to a point on the corner between the casing and the base of the cylinder
+        assertEquals(cy.getNormal(new Point(2, 0, 0)), new Vector(0, 0, -1),
+                "Bad normal for a point on the the corner between the casing and the base of the cylinder");
+
+        // TC02: normal to the point that represents the ray
+        assertEquals(cy.getNormal(new Point(0, 0, 0)), new Vector(0, 0, -1),
+                "Bad normal for a point on the the corner between the casing and the base of the cylinder");
     }
 }

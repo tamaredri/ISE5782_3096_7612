@@ -49,7 +49,7 @@ class PointTest {
                 "wrong calculation of distanceSquared() in Point");
 
         // TC02: Co-located points
-        assertEquals(isZero(new Point(1, 2, 3).distanceSquared(new Point(1, 2, 3))), true,
+        assertTrue(isZero(new Point(1, 2, 3).distanceSquared(new Point(1, 2, 3))),
                 "wrong calculation of distanceSquared() for co-located points");
     }
 
@@ -65,7 +65,7 @@ class PointTest {
                 "wrong calculation of distance() in Point");
 
         // TC02: Co-located points
-        assertEquals(isZero(new Point(1, 2, 3).distance(new Point(1, 2, 3))), true,
+        assertTrue(isZero(new Point(1, 2, 3).distance(new Point(1, 2, 3))),
                 "wrong calculation of distanceSquared() for co-located points");
 
     }
