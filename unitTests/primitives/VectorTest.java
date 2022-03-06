@@ -17,17 +17,34 @@ class VectorTest {
 
     @Test
     void testConstructor() {
+
+        //=============== Boundary Values Tests ==================
+
         // TC01: Constructor of (0,0,0) vector throws an exception
         assertThrows(IllegalArgumentException.class, ()-> new Vector(0, 0, 0),
         "Constructed (0,0,0) vector");
     }
 
+
     @Test
     void testAdd() {
+        // ============ Equivalence Partitions Tests ==============
+        //TC01: Add two regular vector one to another
+        assertEquals(new Vector(1,2,3).add(new Vector(2,3,4)), new Vector(3,5,7),
+                "Add function does not return the right vector");
     }
 
     @Test
     void testScale() {
+        //=============== Boundary Values Tests ==================
+        //TC01: scale a vector by 0 throws an exception
+        assertThrows(IllegalArgumentException.class, ()->new Vector(1,3,6).scale(0),
+                "Scale a vector by zero does not throw an exception");
+
+        // ============ Equivalence Partitions Tests ==============
+        //TC02: scale a vector by a regular scalar
+        assertEquals(new Vector(1, 1, 1).scale(2), new Vector(2, 2, 2),
+                "scale does not return the right vector");
     }
 
     @Test
