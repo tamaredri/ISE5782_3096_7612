@@ -26,10 +26,12 @@ class TubeTest {
 
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single test here
-        assertEquals(tb.getNormal(new Point(2, 2, 10)).dotProduct(new Vector(0, 0, 1)), 0, "Bad normal to tube");
+        assertEquals(tb.getNormal(new Point(2, 2, 10)).dotProduct(new Vector(0, 0, 1)), 0,
+                "Bad normal to tube");
 
         // =============== Boundary Values Tests ==================
         // TC02: Normal is orthogonal to the head of the axis Ray
-        assertEquals(tb.getNormal(new Point(2, 2, 0)).dotProduct(new Vector(0, 0, 1)), 0, "Bad normal to tube");
+        assertEquals(tb.getNormal(new Point(2, 2, 0)).dotProduct(new Vector(0, 0, 1)), 0,
+                "Bad normal to tube when the normal is orthogonal to the head of the axisRay");
     }
 }
