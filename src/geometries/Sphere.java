@@ -2,7 +2,7 @@ package geometries;
 import primitives.*;
 
 /**
- * a class that represents a sphere in the space by it's center point and radius
+ * a class that represents a sphere in the space by its center point and radius
  */
 public class Sphere implements Geometry{
     private Point center;

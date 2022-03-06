@@ -4,9 +4,7 @@ import primitives.*;
 /**
  * a class that represents a plane in the space (by a point on the plane and the normal to the plane)
  */
-
-public class Plane {
-
+public class Plane implements Geometry{
     private Point q0;
     private Vector normal;
 
@@ -26,8 +24,13 @@ public class Plane {
     }
     //endregion
 
-    //region getNormal function
+    //region getNormal functions
     public Vector getNormal() {
+        return normal;
+    }
+
+    @Override
+    public Vector getNormal(Point point) {
         return normal;
     }
     //endregion

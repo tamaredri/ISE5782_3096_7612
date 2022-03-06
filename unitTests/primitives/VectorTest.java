@@ -17,6 +17,8 @@ class VectorTest {
 
     @Test
     void testConstructor() {
+        // ============ Equivalence Partitions Tests ==============
+
         // TC01: Constructor of (0,0,0) vector throws an exception
         assertThrows(IllegalArgumentException.class, ()-> new Vector(0, 0, 0),
         "Constructed (0,0,0) vector");
