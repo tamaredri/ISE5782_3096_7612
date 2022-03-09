@@ -1,6 +1,8 @@
 package geometries;
 import primitives.*;
 
+import java.util.List;
+
 /**
  * a class that represents a sphere in the space by its center point and radius
  */
@@ -35,4 +37,10 @@ public class Sphere implements Geometry{
     }
     //endregion
 
+    //region
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+        return null;
+    }
+    //endregion
 }

@@ -2,7 +2,7 @@ package geometries;
 
 import primitives.*;
 
-public interface Geometry {
+public interface Geometry extends Intersectable {
     /**
      * calculating the normal vector for a point on the geometry
      * using the linear calculation methods for a normal to a geometry

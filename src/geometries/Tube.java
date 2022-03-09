@@ -1,6 +1,8 @@
 package geometries;
 import primitives.*;
 
+import java.util.List;
+
 /**
  * a class that represents a tube in the space by the axis of it's center. and it's radius
  */
@@ -43,6 +45,13 @@ public class Tube implements Geometry{
 
         // the normalized vector from o to point
         return point.subtract(o).normalize();
+    }
+    //endregion
+
+    //region
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+        return null;
     }
     //endregion
 }

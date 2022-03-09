@@ -1,7 +1,7 @@
 package geometries;
-import primitives.*;
 
-import static primitives.Util.*;
+import primitives.*;
+import java.util.List;
 
 /**
  * a class that represents a cylinder geometry
@@ -50,4 +50,10 @@ public class Cylinder extends Tube{
     }
     //endregion
 
+    //region
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+        return null;
+    }
+    //endregion
 }

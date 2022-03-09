@@ -93,4 +93,8 @@ public class Point {
         return xyz.equals(point.xyz);
     }
     //endregion
+
+    public double getX() {
+        return xyz.d1;
+    }
 }

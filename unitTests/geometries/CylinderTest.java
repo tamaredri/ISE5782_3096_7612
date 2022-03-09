@@ -45,4 +45,8 @@ class CylinderTest {
         assertEquals(cy.getNormal(new Point(0, 0, 0)), new Vector(0, 0, -1),
                 "Bad normal for a point on the the corner between the casing and the base of the cylinder");
     }
+
+    @Test
+    void testFindIntsersections() {
+    }
 }

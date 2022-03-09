@@ -1,6 +1,7 @@
 package geometries;
 
 import primitives.*;
+import java.util.List;
 
 public class Triangle extends Polygon{
 
@@ -20,6 +21,13 @@ public class Triangle extends Polygon{
                 "vertices=" + vertices +
                 ", plane=" + plane +
                 '}';
+    }
+    //endregion
+
+    //region
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+        return null;
     }
     //endregion
 }

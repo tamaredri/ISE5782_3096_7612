@@ -34,4 +34,8 @@ class TubeTest {
         assertEquals(tb.getNormal(new Point(2, 2, 0)).dotProduct(new Vector(0, 0, 1)), 0,
                 "Bad normal to tube when the normal is orthogonal to the head of the axisRay");
     }
+
+    @Test
+    void testFindIntsersections() {
+    }
 }
