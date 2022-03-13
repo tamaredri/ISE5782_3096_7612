@@ -52,7 +52,7 @@ public class Cylinder extends Tube{
 
     //region
     @Override
-    public List<Point> findIntsersections(Ray ray) {
+    public List<Point> findIntersections(Ray ray) {
         return null;
     }
     //endregion
