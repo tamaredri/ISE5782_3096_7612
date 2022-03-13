@@ -56,7 +56,7 @@ class PlaneTest {
     }
 
     /**
-     * Test method for {@link Plane#findIntsersections(Ray)}.
+     * Test method for {@link Plane#findIntersections(Ray)}.
      */
     @Test
     void testFindIntsersections() {
@@ -67,7 +67,6 @@ class PlaneTest {
 
         // ============ Equivalence Partitions Tests ==============
 
-        // **** Group: Ray's line crosses the sphere (but not the center)
         // TC01: Ray intersects the plane
         r = new Ray(new Point(0, 0, 2), new Vector(3, 0, -2));
         p = new Point(1.5, 0, 1);
@@ -79,7 +78,7 @@ class PlaneTest {
         // TC02: Ray does not intersect the plane
         r = new Ray(new Point(0, 0, 2), new Vector(1, 1, 1));
         result = pl.findIntersections(r);
-        assertNotEquals(result, null, "Ray does not intersect the plane - found an intersection");
+        assertNull(result, "Ray does not intersect the plane - found an intersection");
 
         // =============== Boundary Values Tests ==================
 
@@ -87,12 +86,12 @@ class PlaneTest {
         // TC03: Ray included in the plane
         r = new Ray(new Point(1, 1, 1), new Vector(1, 1, 0));
         result = pl.findIntersections(r);
-        assertEquals(result, null, "Ray included in the plane - found and intersection");
+        assertNull(result, "Ray included in the plane - found and intersection");
 
         // TC04: Ray not included in the plane
         r = new Ray(new Point(1, 1, 2), new Vector(1, 1, 0));
         result = pl.findIntersections(r);
-        assertEquals(result, null, "Ray not included in the plane - found and intersection");
+        assertNull(result, "Ray not included in the plane - found and intersection");
 
 
         // **** Group: Ray is orthogonal to the plane
@@ -107,12 +106,12 @@ class PlaneTest {
         // TC06: Ray starts on the plane
         r = new Ray(new Point(1, 0, 1),new Vector(0, 0, 1));
         result = pl.findIntersections(r);
-        assertEquals(result, null, "Ray starts on the plane - found and intersection");
+        assertNull(result, "Ray starts on the plane - found and intersection");
 
         // TC07: Ray starts after the plane
         r = new Ray(new Point(1, 0, 2),new Vector(0, 0, 1));
         result = pl.findIntersections(r);
-        assertEquals(result, null, "Ray starts on the plane - found and intersection");
+        assertNull(result, "Ray starts after the plane - found and intersection");
 
 
         // **** Group: Ray is not orthogonal nor parallel
@@ -120,10 +119,11 @@ class PlaneTest {
         // TC08: Ray starts on the plane and not orthogonal nor parallel
         r = new Ray(new Point(1, 0, 1),new Vector(1, 0, -1));
         result = pl.findIntersections(r);
-        assertEquals(result, null, "Ray starts on the plane and not orthogonal nor parallel - found and intersection");
+        assertNull(result, "Ray starts on the plane and not orthogonal nor parallel - found and intersection");
 
         // TC09: Ray starts on the reference point of the plane and not orthogonal nor parallel
         r = new Ray(new Point(0, 0, 1),new Vector(1, 0, -3));
-        assertEquals(result, null, "Ray starts on the reference point of the plane and not orthogonal nor parallel - found and intersection");
+        result = pl.findIntersections(r);
+        assertNull(result, "Ray starts on the reference point of the plane and not orthogonal nor parallel - found and intersection");
     }
 }

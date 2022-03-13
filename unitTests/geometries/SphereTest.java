@@ -15,8 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  */
 class SphereTest {
-    private Point p1;
-
     /**
      * Test method for {@link geometries.Sphere#getNormal(Point)} .
      */
@@ -49,7 +47,7 @@ class SphereTest {
         assertEquals(List.of(p1, p2), result, "Ray crosses sphere");
 
         // TC03: Ray starts inside the sphere (1 point)
-        Point p = new Point(0.5, -0.5 , 0.7);
+        Point p = new Point(0.5, -0.5 , 0.7071067811865475);
         result = sphere.findIntersections(new Ray(new Point(0.5, -0.5, 0), new Vector(0,0,0.7)));
         assertEquals(result.size(),1, "Ray starts inside the sphere- wrong number of points");
         assertEquals(result.get(0), p, "Ray starts inside the sphere- wrong point");
@@ -75,7 +73,7 @@ class SphereTest {
         p2 = new Point(1,-1, 0);
         result = sphere.findIntersections(new Ray(new Point(1, 1.5, 0), new Vector(0,-1,0)));
         assertEquals( 2, result.size(), "Ray starts before the sphere- wrong number of points");
-        if (result.get(0).getX() > result.get(1).getX())
+        if (result.get(0).getY() < result.get(1).getY())
             result = List.of(result.get(1), result.get(0));
         assertEquals(List.of(p1, p2), result, "Ray starts before the sphere- wrong points");
 
