@@ -74,7 +74,7 @@ public class Plane implements Geometry{
             return null;
 
         List<Point> intersections = new LinkedList<>();
-        intersections.add(ray.getP0().add(ray.getDir().scale(t)));
+        intersections.add(ray.getPoint(t));
         return intersections;
     }
     //endregion

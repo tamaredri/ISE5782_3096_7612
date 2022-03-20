@@ -41,35 +41,41 @@ public class Sphere implements Geometry{
     }
     //endregion
 
-    //region
+    //region find intersections function
     @Override
     public List<Point> findIntersections(Ray ray) {
-        if( this.center.equals(ray.getP0()))
-        {
+        List<Point> intersections = new ArrayList<>();
+        Vector u;
 
+        try {
+            u = this.center.subtract(ray.getP0()); // vector from p0 to the center of the sphere
         }
-
-        Vector u = this.center.subtract(ray.getP0());
-        double tm = u.dotProduct(ray.getDir());
-        double d = Math.sqrt(u.lengthSquared() - tm * tm);
-        if(isZero(d - this.radius))
-            return null;
-
-        double th = Math.sqrt(this.radius * this.radius - d * d);
-        double t1 = tm + th;
-        double t2 = tm - th;
-
-        if( t1 > 0 || t2 > 0 )
-        {
-            List<Point> intersections = new ArrayList<>();
-            if(t1 > 0)
-                intersections.add(ray.getP0().add(ray.getDir().scale(t1)));
-            if(t2 > 0)
-                intersections.add(ray.getP0().add(ray.getDir().scale(t2)));
+        catch (IllegalArgumentException e){ // start of ray is on the center of the sphere.
+                                            // the vector u will be the zero vector, so there will be an exception
+            intersections.add(ray.getP0().add(ray.getDir().scale(radius)));
             return intersections;
         }
 
-        return null;
+        double tm = u.dotProduct(ray.getDir());       // projection on the ray
+        double d = Math.sqrt(u.lengthSquared() - tm * tm); //distance from ray to the center of the sphere
+        if (alignZero(d - this.radius) >= 0)        //distance is bigger or equals the radius,
+                                                               // then there are no intersections
+            return null;
+
+        double th = alignZero(Math.sqrt(this.radius * this.radius - d * d));
+                // t1, t2 the distances to extend dir to get to the intersections
+        double t1 = tm + th;
+        double t2 = tm - th;
+
+        if (alignZero(t1) <= 0 && alignZero(t2) <= 0)
+            return null; // no intersection point is excepted
+
+        if(t1 > 0)
+            intersections.add(ray.getPoint(t1));
+        if(t2 > 0)
+            intersections.add(ray.getPoint(t2));
+
+        return intersections;
     }
     //endregion
 }
