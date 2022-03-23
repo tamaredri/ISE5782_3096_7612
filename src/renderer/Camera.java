@@ -70,7 +70,9 @@ public class Camera {
     }
     //endregion
 
+    //region constructRay
     public Ray constructRay(int nX, int nY, int j, int i){
         return null;
     }
+    //endregion
 }
