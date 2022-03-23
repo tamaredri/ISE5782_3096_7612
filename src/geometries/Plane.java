@@ -1,7 +1,11 @@
 package geometries;
+
 import primitives.*;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import static primitives.Util.*;
 
 /**
  * a class that represents a plane in the space (by a point on the plane and the normal to the plane)
@@ -50,10 +54,28 @@ public class Plane implements Geometry{
     }
     //endregion
 
-    //region
+    //region findIntersections function
     @Override
-    public List<Point> findIntsersections(Ray ray) {
-        return null;
+    public List<Point> findIntersections(Ray ray) {
+        if(this.q0.equals(ray.getP0())) //ray starts at the reference point of the plane
+            return null;
+
+        Vector p0p1 = this.q0.subtract(ray.getP0());
+        double numerator = this.normal.dotProduct(p0p1);
+        if(isZero(numerator)) // if ray starts on the plane -> dot product returns 0
+            return null;
+
+        double denominator = this.normal.dotProduct(ray.getDir());
+        if(isZero(denominator)) // if ray parallel to the plane -> dot product returns 0
+            return null;
+
+        double t = numerator / denominator;
+        if(t < 0) // if starts after the plane -> move the point in the opposite direction of dir vector
+            return null;
+
+        List<Point> intersections = new LinkedList<>();
+        intersections.add(ray.getPoint(t));
+        return intersections;
     }
     //endregion
 }

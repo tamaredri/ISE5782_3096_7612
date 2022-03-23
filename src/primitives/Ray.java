@@ -23,6 +23,10 @@ public class Ray {
     public Vector getDir() {
         return dir;
     }
+
+    public Point getPoint(double t){
+        return p0.add(dir.scale(t));
+    }
     //endregion
 
     //region to string override

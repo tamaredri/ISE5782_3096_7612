@@ -6,7 +6,6 @@ import primitives.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static primitives.Util.isZero;
 
 /**
  * Testing Triangle
@@ -71,43 +70,33 @@ class TriangleTest {
         List<Point> result;
 
         // TC01: Ray intersects inside the triangle
-        r = new Ray(new Point(0.5, 0.5, -1), new Vector(0, 0, 1));
-        p = new Point(0.5, 0.5, 0);
-        result = tr.findIntsersections(r);
-        assertTrue(isZero(result.size() - 1), "Ray intersects inside the triangle - wrong number of intersections");
+        r = new Ray(new Point(0.25, 0.25, -1), new Vector(0, 0, 1));
+        p = new Point(0.25, 0.25, 0);
+        result = tr.findIntersections(r);
+        assertEquals(result.size(), 1, "Ray intersects inside the triangle - wrong number of intersections");
         assertEquals(p, result.get(0), "Ray intersects inside the triangle - wrong Point of intersection");
 
+
         // TC02: Ray outside the triangle against edge
-        r = new Ray(new Point(8, 8, -1), new Vector(0, 0, 1));
-        result = tr.findIntsersections(r);
-        assertEquals(p, result.get(0), "Ray intersects inside the triangle - wrong Point of intersection");
+        r = new Ray(new Point(-0.5, -0.5, -1), new Vector(0, 0, 1));
+        assertNull(tr.findIntersections(r), "Ray outside the triangle against edge - found an intersection");
 
         // TC03: Ray outside the triangle against vertex
         r = new Ray(new Point(10, 0.5, 0), new Vector(0, 0, 1));
-        result = tr.findIntsersections(r);
-        assertEquals(p, result.get(0), "Ray intersects inside the triangle - wrong Point of intersection");
+        assertNull(tr.findIntersections(r), "Ray outside the triangle against vertex - found an intersection");
 
         // =============== Boundary Values Tests ==================
 
-        // **** Group: Ray's line crosses the sphere (but not the center)
-        // TC11: Ray starts at sphere and goes inside (1 points)
-        // TC12: Ray starts at sphere and goes outside (0 points)
+        // TC04: Ray begins before the triangle and intersects on the edge
+        r = new Ray(new Point(-0.5,-1,0), new Vector(0, 0, 1));
+        assertNull( tr.findIntersections(r), "Ray begins before the triangle and intersects on the edge - didn't return null");
 
-        // **** Group: Ray's line goes through the center
-        // TC13: Ray starts before the sphere (2 points)
-        // TC14: Ray starts at sphere and goes inside (1 points)
-        // TC15: Ray starts inside (1 points)
-        // TC16: Ray starts at the center (1 points)
-        // TC17: Ray starts at sphere and goes outside (0 points)
-        // TC18: Ray starts after sphere (0 points)
+        // TC05: Ray begins before the triangle and intersects on the vertex
+        r = new Ray(new Point(-1,-1,0), new Vector(0, 0, 1));
+        assertNull( tr.findIntersections(r), "Ray begins before the triangle and intersects on the vertex - didn't return null");
 
-        // **** Group: Ray's line is tangent to the sphere (all tests 0 points)
-        // TC19: Ray starts before the tangent point
-        // TC20: Ray starts at the tangent point
-        // TC21: Ray starts after the tangent point
-
-        // **** Group: Special cases
-        // TC19: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
-
+        // TC06: Ray starts before the triangle and intersects on edge's continuation
+        r = new Ray(new Point(-2,-1,0), new Vector(0, 0, 1));
+        assertNull( tr.findIntersections(r), "Ray starts before the triangle and intersects on edge's continuation - didn't return null");
     }
 }
