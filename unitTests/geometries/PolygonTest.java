@@ -76,5 +76,15 @@ class PolygonTest {
 
     @Test
     void testFindIntsersections() {
+        Polygon polygon = new Polygon(new Point(0,-2,0), new Point(0,1,0),
+                                      new Point(1,1,1), new Point(3,-2,3));
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: ray intersects inside the polygon.
+        Ray ray = new Ray(new Point(0,0,2), new Vector(0.5, -0.8, -1.5));
+        Point p = new Point(0.5, -0.8, 0.5);
+        assertEquals(p, polygon.findIntersections(ray).get(0),"ray intersects inside the polygon- wrong intersection" );
+        // =============== Boundary Values Tests ==================
+
+
     }
 }
