@@ -27,12 +27,12 @@ public class RaysConstructionTest {
 
         // TC01: triangle is before the camera, parallel and smaller than the view plane (0 points)
         Triangle triangle = new Triangle(new Point(0, 1, -2), new Point(1, -1, -2), new Point(-1, -1, -2));
-        assertEquals(1, numberOfIntersection(camera, triangle, 3, 3),
+        assertEquals(1, getNumberOfIntersection(camera, triangle, 3, 3),
                 "triangle is before the camera, parallel and smaller tha the view plane (0 points) - wrong number of intersections");
 
         // TC02: triangle is before the camera, parallel and bigger than the view plane (2 points)
         triangle = new Triangle(new Point(0, 20, -2), new Point(1, -1, -2), new Point(-1, -1, -2));
-        assertEquals(2, numberOfIntersection(camera, triangle, 3, 3),
+        assertEquals(2, getNumberOfIntersection(camera, triangle, 3, 3),
                 "triangle is before the camera, parallel and bigger than the view plane (2 points) - wrong number of intersections");
 
     }
@@ -48,17 +48,17 @@ public class RaysConstructionTest {
 
         // TC01: plane is before the camera and parallel to the view plane(9 points)
         Plane plane = new Plane(new Point(0, 0, -2), new Vector(0, 0, 1));
-        assertEquals(9, numberOfIntersection(camera, plane, 3, 3),
+        assertEquals(9, getNumberOfIntersection(camera, plane, 3, 3),
                 "plane is before the camera and parallel to the view plane(9 points) - wrong number of intersections");
 
         // TC02: plane is before the camera(6 points)
         plane = new Plane(new Point(1.5, 1.5, 0), new Vector(-1,0,1));
-        assertEquals(6, numberOfIntersection(camera, plane, 3, 3),
+        assertEquals(6, getNumberOfIntersection(camera, plane, 3, 3),
                 "plane is before the camera(6 points) - wrong number of intersections");
 
         // TC02: plane is before the camera(9 points)
         plane = new Plane(new Point(1.5, 1.5, 0), new Vector(-1,0,3));
-        assertEquals(9, numberOfIntersection(camera, plane, 3, 3),
+        assertEquals(9, getNumberOfIntersection(camera, plane, 3, 3),
                 "plane is before the camera(9 points) - wrong number of intersections");
     }
 
@@ -73,27 +73,27 @@ public class RaysConstructionTest {
 
         // TC01: Sphere before the camera  and is smaller than the view plane (2 points)
         Sphere sphere = new Sphere(new Point(0, 0, -2.5), 1);
-        assertEquals(2, numberOfIntersection(camera, sphere, 3, 3),
+        assertEquals(2, getNumberOfIntersection(camera, sphere, 3, 3),
                 "Sphere before the camera and is smaller than the view plane (2 points) - wrong amount of intersections");
 
         // TC02: Sphere before the camera and bigger than the view plane (18 points)
         sphere = new Sphere(new Point(0, 0, -2.5), 2.5);
-        assertEquals(18, numberOfIntersection(camera, sphere, 3, 3),
+        assertEquals(18, getNumberOfIntersection(camera, sphere, 3, 3),
                 "Sphere before the camera and bigger than the view plane (18 points) - wrong amount of intersections");
 
         // TC03: Sphere before the camera and smaller than the view plane (10 points)
         sphere = new Sphere(new Point(0, 0, -2), 2);
-        assertEquals(10, numberOfIntersection(camera, sphere, 3, 3),
+        assertEquals(10, getNumberOfIntersection(camera, sphere, 3, 3),
                 "Sphere before the camera and smaller than the view plane (10 points) - wrong amount of intersections");
 
         // TC04: Sphere encapsulates the view plane (9 points)
         sphere = new Sphere(new Point(0, 0, -0.5), 4);
-        assertEquals(9, numberOfIntersection(camera, sphere, 3, 3),
+        assertEquals(9, getNumberOfIntersection(camera, sphere, 3, 3),
                 "Sphere encapsulates the view plane (9 points) - wrong amount of intersections");
 
         // TC05: Sphere after the camera and smaller than the view plane (0 points)
         sphere = new Sphere(new Point(0, 0, 2), 0.5);
-        assertEquals(0, numberOfIntersection(camera, sphere, 3, 3),
+        assertEquals(0, getNumberOfIntersection(camera, sphere, 3, 3),
                 "Sphere after the camera and smaller than the view plane (0 points) - wrong amount of intersections");
 
     }
@@ -107,7 +107,7 @@ public class RaysConstructionTest {
      * @param nY the height pixels of the view plane
      * @return the amount of intersections with a geometry from a camera through a view plane
      */
-    int numberOfIntersection(Camera camera, Intersectable intersectable, int nX, int nY){
+    int getNumberOfIntersection(Camera camera, Intersectable intersectable, int nX, int nY){
         int numOfIntersections = 0;
 
         for (int i = 0 ; i < nX ; i++)      // go over all the pixels in the view plane
