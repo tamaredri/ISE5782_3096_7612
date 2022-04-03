@@ -31,6 +31,31 @@ public class Ray {
     }
     //endregion
 
+    //region findClosestPoint
+    /** Try to think of a better solution
+     *  find the point that is the closet one to the head of the ray
+     *
+     * @param points
+     * @return the closest point to the head of the ray
+     */
+    public Point findClosestPoint(List<Point> points){
+        if (points.isEmpty()) // no close point is available
+            return null;
+
+        Point closestPoint = points.get(0);                         // save the first point
+        double distance = closestPoint.distanceSquared(this.p0);    // the distance between the first point and the start of the ray
+        for (Point point : points) {
+            double d = point.distanceSquared(this.p0);
+            if(distance > d)                                        // if there is a closer point then 'point', replace the values
+            {
+                closestPoint = point;
+                distance = d;
+            }
+        }
+        return closestPoint;
+    }
+    //endregion
+
     //region to string override
     /**
      * format: " Ray { p0 = Point : xyz = {x, y, z)}, dir = Vector : xyz = (x, y, z) } "
@@ -55,24 +80,5 @@ public class Ray {
     }
     //endregion
 
-    /** Try to think of a better solution
-     *
-     * @param points
-     * @return
-     */
-    public Point findClosestPoint(List<Point> points){
-        if (points.isEmpty())
-            return null;
-        Point closestPoint = points.get(0);
-        double distance = closestPoint.distanceSquared(this.p0);
-        for (Point point : points) {
-            double d = point.distanceSquared(this.p0);
-            if(distance > d)
-            {
-                closestPoint = point;
-                distance = d;
-            }
-        }
-        return closestPoint;
-    }
+
 }

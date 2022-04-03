@@ -117,36 +117,50 @@ public class Camera {
     //endregion
 
     //region renderImage
+    /**
+     * render the image and fill the pixels with the desired colors
+     * using the ray tracer to find the colors
+     * and the image writer to color the pixels
+     * @throws MissingResourceException if one of the fields are uninitialized
+     */
     public void renderImage() throws MissingResourceException{
-        if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) {
+        if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) { //default values
             throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
         }
         for (int i = 0; i < imageWriter.getNx(); i++){
             for (int j = 0; j<imageWriter.getNy(); j++){
-                imageWriter.writePixel(j, i,
-                                        rayTracer.traceRay(
-                                        constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));
+                imageWriter.writePixel(j, i, //                                             // for each pixel (j,i)
+                           rayTracer.traceRay( //                                           // find the color of the pixel using
+                           constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));  // construction of a ray through the pixel
+                                                                                            // and intersecting with the geometries
             }
         }
     }
     //endregion
 
     //region printGrid
-
-    // check that this works
+    /**
+     *  print a grid on the image without running over the original image
+     * @param interval the size of the grid squares
+     * @param color the color of the grid
+     * @throws MissingResourceException
+     */
     public void printGrid(int interval, Color color) throws MissingResourceException{
-        if (this.imageWriter == null)
+        if (this.imageWriter == null) // the image writer is uninitialized
             throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
         for (int i = 0; i< imageWriter.getNy(); i++)
             for(int j = 0; j< imageWriter.getNx(); j++)
-                if(i%interval == 0 || j%interval == 0)
+                if(i%interval == 0 || j%interval == 0)  // color the grid
                     imageWriter.writePixel(j,i,color);
     }
     //endregion
 
     //region writeToImage
+    /**
+     * create the image file using the image writer
+     */
     public void writeToImage() {
-        if (this.imageWriter == null)
+        if (this.imageWriter == null) // the image writer is uninitialized
             throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
         imageWriter.writeToImage();
     }
