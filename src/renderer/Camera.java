@@ -15,6 +15,8 @@ public class Camera {
     private double width;
     private double height;
     private double distance;
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracer;
 
     //region getters
     public Point getP0() {

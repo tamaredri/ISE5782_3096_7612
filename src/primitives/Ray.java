@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.List;
+
 /**
  * a class that represents an infinite Ray in space
  * using a Point for the location in space and a direction Vector
@@ -52,4 +54,25 @@ public class Ray {
         return p0.equals(ray.p0) && dir.equals(ray.dir) ;
     }
     //endregion
+
+    /** Try to think of a better solution
+     *
+     * @param points
+     * @return
+     */
+    public Point findClosestPoint(List<Point> points){
+        if (points.isEmpty())
+            return null;
+        Point closestPoint = points.get(0);
+        double distance = closestPoint.distanceSquared(this.p0);
+        for (Point point : points) {
+            double d = point.distanceSquared(this.p0);
+            if(distance > d)
+            {
+                closestPoint = point;
+                distance = d;
+            }
+        }
+        return closestPoint;
+    }
 }

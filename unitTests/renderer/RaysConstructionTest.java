@@ -1,3 +1,5 @@
+package renderer;
+
 import org.junit.jupiter.api.*;
 import primitives.*;
 import geometries.*;

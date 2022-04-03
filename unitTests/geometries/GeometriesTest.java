@@ -17,7 +17,6 @@ class GeometriesTest {
         Plane p = new Plane(new Point(1,1,0.5), new Vector(0, 0, 1));
         Triangle tr = new Triangle(new Point(0, 1, 0), new Point(0, -1, 0), new Point(3,0,0));
         Geometries geometries = new Geometries(sp, p, tr);
-        List<Point> expected = new LinkedList<>();
 
         // ============ Equivalence Partitions Tests ==============
 
