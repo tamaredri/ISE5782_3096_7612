@@ -21,11 +21,6 @@ public class Scene {
         return this;
     }
 
-    public Scene setAmbientLight(Color color, Double3 ka) {
-        this.ambientLight = new AmbientLight(color, ka);
-        return this;
-    }
-
     public Scene setGeometries(Geometries geometries) {
         this.geometries = geometries;
         return this;
@@ -33,6 +28,11 @@ public class Scene {
 
     public Scene addGeometry(Intersectable geometry){
         geometries.add(geometry);
+        return this;
+    }
+
+    public Scene setAmbientLight(AmbientLight ambientLight) {
+        this.ambientLight = ambientLight;
         return this;
     }
 }

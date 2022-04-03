@@ -2,6 +2,8 @@ package renderer;
 
 import primitives.*;
 
+import java.util.MissingResourceException;
+
 import static primitives.Util.*;
 
 /**
@@ -48,15 +50,10 @@ public class Camera {
     }
     //endregion
 
-    //region constructor
-    public Camera(Point p0, Vector vTo, Vector vUp) throws IllegalArgumentException{
-        if (!isZero(vTo.dotProduct(vUp))){
-            throw new IllegalArgumentException("constructor threw - vUp and vTo are not orthogonal");
-        }
-        this.p0 = p0;
-        this.vUp = vUp.normalize();
-        this.vTo = vTo.normalize();
-        this.vRight = vTo.crossProduct(vUp).normalize();
+    //region setImageWriter
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
     }
     //endregion
 
@@ -75,6 +72,24 @@ public class Camera {
     }
     //endregion
 
+    //region setRayTracer
+    public Camera setRayTracer(RayTracerBase rayTracer) {
+        this.rayTracer = rayTracer;
+        return this;
+    }
+    //endregion
+
+    //region constructor
+    public Camera(Point p0, Vector vTo, Vector vUp) throws IllegalArgumentException{
+        if (!isZero(vTo.dotProduct(vUp))){
+            throw new IllegalArgumentException("constructor threw - vUp and vTo are not orthogonal");
+        }
+        this.p0 = p0;
+        this.vUp = vUp.normalize();
+        this.vTo = vTo.normalize();
+        this.vRight = vTo.crossProduct(vUp).normalize();
+    }
+    //endregion
 
     //region constructRay
     /**
@@ -100,4 +115,41 @@ public class Camera {
         return new Ray(p0, PIJ.subtract(p0));
     }
     //endregion
+
+    //region renderImage
+    public void renderImage() throws MissingResourceException{
+        if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) {
+            throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
+        }
+        for (int i = 0; i < imageWriter.getNx(); i++){
+            for (int j = 0; j<imageWriter.getNy(); j++){
+                imageWriter.writePixel(j, i,
+                                        rayTracer.traceRay(
+                                        constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));
+            }
+        }
+    }
+    //endregion
+
+    //region printGrid
+
+    // check that this works
+    public void printGrid(int interval, Color color) throws MissingResourceException{
+        if (this.imageWriter == null)
+            throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
+        for (int i = 0; i< imageWriter.getNy(); i++)
+            for(int j = 0; j< imageWriter.getNx(); j++)
+                if(i%interval == 0 || j%interval == 0)
+                    imageWriter.writePixel(j,i,color);
+    }
+    //endregion
+
+    //region writeToImage
+    public void writeToImage() {
+        if (this.imageWriter == null)
+            throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
+        imageWriter.writeToImage();
+    }
+    //endregion
+
 }
