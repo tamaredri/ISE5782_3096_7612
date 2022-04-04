@@ -3,6 +3,8 @@ package geometries;
 import primitives.*;
 import java.util.List;
 
+import static primitives.Util.*;
+
 public class Triangle extends Polygon{
 
     //region constructor
@@ -43,9 +45,9 @@ public class Triangle extends Polygon{
             Vector n2 = v2.crossProduct(v3).normalize();
             Vector n3 = v3.crossProduct(v1).normalize();
 
-            double d1 = ray.getDir().dotProduct(n1);
-            double d2 = ray.getDir().dotProduct(n2);
-            double d3 = ray.getDir().dotProduct(n3);
+            double d1 = alignZero(ray.getDir().dotProduct(n1));
+            double d2 = alignZero(ray.getDir().dotProduct(n2));
+            double d3 = alignZero(ray.getDir().dotProduct(n3));
 
             // if the d's have the same sign -> the intersection is inside the triangle
             if( (d1 > 0 && d2 > 0 && d3 > 0) || ( d1 < 0 && d2 < 0 && d3 < 0))
