@@ -52,8 +52,31 @@ class CameraTest {
 		// BV06: 4X4 Side (0,1)
 		assertEquals(new Ray(ZERO_POINT, new Vector(1, -3, -10)),
 				camera.setVPSize(8, 8).constructRay(4, 4, 1, 0), badRay);
-
 }
 
+
+	@Test
+	void testMoveAroundVTo() {
+		// ============ Equivalence Partitions Tests ==============
+		// EP01: move the camera 90 degrees
+		Camera camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setVPDistance(10);
+		assertEquals(new Vector(0,-1,0), camera.moveAroundVTo(Math.toRadians(90)).getvRight(), "move camera around vTo test");
+	}
+
+	@Test
+	void testMoveAroundVUp() {
+		// ============ Equivalence Partitions Tests ==============
+		// EP01: move the camera 90 degrees
+		Camera camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setVPDistance(10);
+		assertEquals(new Vector(-1,0,0), camera.moveAroundVUp(Math.toRadians(90)).getvTo(), "move camera around vUp test");
+	}
+
+	@Test
+	void testMoveAroundVRight() {
+		// ============ Equivalence Partitions Tests ==============
+		// EP01: move the camera 90 degrees
+		Camera camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setVPDistance(10);
+		assertEquals(new Vector(0,0,-1), camera.moveAroundVRight(Math.toRadians(90)).getvUp(), "move camera around vRight test");
+	}
 }
 

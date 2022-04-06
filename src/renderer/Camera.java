@@ -1,10 +1,9 @@
 package renderer;
 
 import primitives.*;
-
 import java.util.MissingResourceException;
-
 import static primitives.Util.*;
+import org.ejml.data.SimpleMatrix;
 
 /**
  * a class that represents a camera.
@@ -166,4 +165,99 @@ public class Camera {
     }
     //endregion
 
+    //TODO move in a direction method that moves the reference point of the camera (p0) in a wanted direction
+
+
+    //region move camera for any 3 vectors - private function
+    /**
+     * rotating a space, represented by 3 vectors that span the space, in an angle requested
+     * using the rotation matrix method
+     *
+     * @param rotationVector the vector the space will rotate around
+     * @param vectorToMove the vector that will be rotated and is a part of the space's span
+     * @param orthogonalVector the third vector that spans the space
+     * @param angle the size of the rotation - angle in degrees
+     * @return vectorToMove rotated to the left with the requested angle
+     */
+    private Vector moveCameraAroundVector(Vector rotationVector, Vector vectorToMove, Vector orthogonalVector, double angle) {
+        // TODO need to check the 3 vectors span the 3D space-> are all orthogonal to each other
+
+        // convert the angle to radians
+        angle = Math.toRadians(angle);
+
+        SimpleMatrix matrixP = new SimpleMatrix(3,3);
+        // fill the P matrix -
+        // the conversion matrix between the standard base (E) to our base (F)
+        matrixP.set(0,0, rotationVector.getX());
+        matrixP.set(1,0, rotationVector.getY());
+        matrixP.set(2,0, rotationVector.getZ());
+        matrixP.set(0,1, vectorToMove.getX());
+        matrixP.set(1,1, vectorToMove.getY());
+        matrixP.set(2,1, vectorToMove.getZ());
+        matrixP.set(0,2, orthogonalVector.getX());
+        matrixP.set(1,2, orthogonalVector.getY());
+        matrixP.set(2,2, orthogonalVector.getZ());
+
+        SimpleMatrix matrixA = new SimpleMatrix(3,3);
+        // fill the A matrix -
+        // the copy matrix in our base (F)
+        matrixA.set(0,0, 1);
+        matrixA.set(1,0, 0);
+        matrixA.set(2,0, 0);
+        matrixA.set(0,1, 0);
+        matrixA.set(1,1, alignZero(Math.cos(angle)));
+        matrixA.set(2,1, alignZero(Math.sin(angle)));
+        matrixA.set(0,2, 0);
+        matrixA.set(1,2, -alignZero(Math.sin(angle)));
+        matrixA.set(2,2, alignZero(Math.cos(angle)));
+
+        // the invertible matrix -
+        // the conversion matrix on the opposite way from matrixP,
+        // from our base (F) to the standard base (E)
+        SimpleMatrix matrixInvertP = matrixP.invert();
+
+        // the full copy matrix from the standard base (E) to the standard base (E)
+        SimpleMatrix copyMatrix = matrixP.mult(matrixA).mult(matrixInvertP);
+
+        // convert the vector that is going to be copied from a vector to a matrix ot execute the matrix multiplication
+        SimpleMatrix matrixVectorToMove = new SimpleMatrix(3,1);
+        matrixVectorToMove.set(0,0,vectorToMove.getX());
+        matrixVectorToMove.set(1,0,vectorToMove.getY());
+        matrixVectorToMove.set(2,0,vectorToMove.getZ());
+
+        // the converted vector in a form of a matrix
+        matrixVectorToMove = copyMatrix.mult(matrixVectorToMove);
+
+        //TODO check if the values can construct the zero vector!!
+
+        // convert the matrix to a vector
+        return new Vector(matrixVectorToMove.get(0,0),
+                          matrixVectorToMove.get(1,0),
+                          matrixVectorToMove.get(2,0)).normalize();
+    }
+    //endregion
+
+    //region move around vTo
+    public Camera moveAroundVTo(double angle){
+        vRight = moveCameraAroundVector(vTo, vRight, vUp, angle);
+        vUp = vRight.crossProduct(vTo).normalize();
+        return this;
+    }
+    //endregion
+
+    //region move around vUp
+    public Camera moveAroundVUp(double angle){
+        vTo = moveCameraAroundVector(vUp, vTo, vRight, angle);
+        vRight = vTo.crossProduct(vUp).normalize();
+        return this;
+    }
+    //endregion
+
+    //region move around vRight
+    public Camera moveAroundVRight(double angle){
+        vUp = moveCameraAroundVector(vRight, vUp, vTo, angle);
+        vTo = vUp.crossProduct(vRight).normalize();
+        return this;
+    }
+    //endregion
 }
