@@ -167,7 +167,6 @@ public class Camera {
 
     //TODO move in a direction method that moves the reference point of the camera (p0) in a wanted direction
 
-
     //region move camera for any 3 vectors - private function
     /**
      * rotating a space, represented by 3 vectors that span the space, in an angle requested
@@ -236,6 +235,8 @@ public class Camera {
                           matrixVectorToMove.get(2,0)).normalize();
     }
     //endregion
+
+    //TODO add JavaDoc to the functions
 
     //region move around vTo
     public Camera moveAroundVTo(double angle){

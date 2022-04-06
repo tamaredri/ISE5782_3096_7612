@@ -77,23 +77,25 @@ public class RenderTests {
 		Camera camera = new Camera(new Point(Double3.ZERO), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
 				.setVPDistance(100) //
 				.setVPSize(500, 500) //
-				.setImageWriter(new ImageWriter("base render test", 1000, 1000))
 				.setRayTracer(new RayTracerBasic(scene));
 
+		// move around vUp
 		camera.setImageWriter(new ImageWriter("1 move 10 deg vUp render test", 1000, 1000));
-		camera.moveAroundVUp(Math.toRadians(10));
+		camera.moveAroundVUp(10);
 		camera.renderImage();
 		camera.printGrid(100, new Color(java.awt.Color.YELLOW));
 		camera.writeToImage();
 
+		// move around vTo
 		camera.setImageWriter(new ImageWriter("2 move 10 deg vTo render test", 1000, 1000));
-		camera.moveAroundVTo(Math.toRadians(10));
+		camera.moveAroundVTo(10);
 		camera.renderImage();
 		camera.printGrid(100, new Color(java.awt.Color.YELLOW));
 		camera.writeToImage();
 
+		// move around vRight
 		camera.setImageWriter(new ImageWriter("3 move 10 deg vRight render test", 1000, 1000));
-		camera.moveAroundVRight(Math.toRadians(10));
+		camera.moveAroundVRight(10);
 		camera.renderImage();
 		camera.printGrid(100, new Color(java.awt.Color.YELLOW));
 		camera.writeToImage();
