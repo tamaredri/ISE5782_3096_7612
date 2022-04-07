@@ -147,10 +147,15 @@ public class Camera {
     public void printGrid(int interval, Color color) throws MissingResourceException{
         if (this.imageWriter == null) // the image writer is uninitialized
             throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
-        for (int i = 0; i< imageWriter.getNy(); i++)
-            for(int j = 0; j< imageWriter.getNx(); j++)
-                if(i%interval == 0 || j%interval == 0)  // color the grid
-                    imageWriter.writePixel(j,i,color);
+
+        // loop over j
+        for (int i = 0;  i< imageWriter.getNy(); i++)
+            for (int j = 0;j< imageWriter.getNx() ; j += interval)
+                imageWriter.writePixel(j,i,new Color(255,0,0));  // color the grid
+        // loop for j
+        for (int i = 0;  i< imageWriter.getNy(); i+= interval)
+            for (int j = 0;j< imageWriter.getNx() ; j++)
+                imageWriter.writePixel(j,i,new Color(255,0,0));  // color the grid
     }
     //endregion
 
@@ -164,8 +169,6 @@ public class Camera {
         imageWriter.writeToImage();
     }
     //endregion
-
-    //TODO move in a direction method that moves the reference point of the camera (p0) in a wanted direction
 
     //region move camera for any 3 vectors - private function
     /**

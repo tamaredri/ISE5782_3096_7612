@@ -15,7 +15,6 @@ class ImageWriterTest {
                     imageWriter.writePixel(j,i,new Color(255,0,0));
                 else
                     imageWriter.writePixel(j,i,new Color(255,255,0));
-
     imageWriter.writeToImage();
     }
 }
