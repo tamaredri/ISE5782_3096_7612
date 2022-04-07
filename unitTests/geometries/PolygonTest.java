@@ -83,8 +83,28 @@ class PolygonTest {
         Ray ray = new Ray(new Point(0,0,2), new Vector(0.5, -0.8, -1.5));
         Point p = new Point(0.5, -0.8, 0.5);
         assertEquals(p, polygon.findIntersections(ray).get(0),"ray intersects inside the polygon- wrong intersection" );
+
+        //TC02: ray doesn't intersect the polygon, point is against the side of the polygon.
+        ray = new Ray (new Point(0,0,2), new Vector(2,-3,0));
+        assertNull(polygon.findIntersections(ray), "didn't return null- ray doesn't intersect the polygon, point is against the side of the polygon.");
+
+        //TC03: ray doesn't intersect the polygon, point is against the vertex of the polygon.
+        ray = new Ray(new Point(0,0,2), new Vector(-3,-4,-5));
+        assertNull(polygon.findIntersections(ray), "didn't return null- ray doesn't intersect the polygon, point is against the vertex of the polygon.");
+
         // =============== Boundary Values Tests ==================
+        //TC04: ray doesn't intersect the polygon, point on a vertex of the polygon.
+        ray = new Ray(new Point(0,0,2), new Vector(0,1,-2));
+        assertNull(polygon.findIntersections(ray), "didn't return null- ray doesn't intersect the polygon, point on a vertex of the polygon.");
 
+        //TC05: ray doesn't intersect the polygon, point on a side of the polygon.
+        ray = new Ray(new Point(0,0,2), new Vector(0.5, 1, -1.5));
+        assertNull(polygon.findIntersections(ray), "didn't return null- ray doesn't intersect the polygon, point on a side of the polygon.");
 
+        //TC06: ray doesn't intersect the polygon, point is on the continuation of a side of the polygon.
+        ray = new Ray(new Point(0,0,2), new Vector(0,2,-2));
+        assertNull(polygon.findIntersections(ray), "didn't return null- ray doesn't intersect the polygon, point is on the continuation of a side of the polygon.");
+
+        //may have to add more tests depending on the implementation algorithm.
     }
 }

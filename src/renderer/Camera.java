@@ -178,7 +178,7 @@ public class Camera {
      * @param angle the size of the rotation - angle in degrees
      * @return vectorToMove rotated to the left with the requested angle
      */
-    private Vector moveCameraAroundVector(Vector rotationVector, Vector vectorToMove, Vector orthogonalVector, double angle) {
+    private Vector rotateCameraAroundVector(Vector rotationVector, Vector vectorToMove, Vector orthogonalVector, double angle) {
         // TODO need to check the 3 vectors span the 3D space-> are all orthogonal to each other
 
         // convert the angle to radians
@@ -238,26 +238,35 @@ public class Camera {
 
     //TODO add JavaDoc to the functions
 
-    //region move around vTo
-    public Camera moveAroundVTo(double angle){
-        vRight = moveCameraAroundVector(vTo, vRight, vUp, angle);
+    //region rotate around vTo
+    public Camera rotateAroundVTo(double angle){
+        vRight = rotateCameraAroundVector(vTo, vRight, vUp, angle);
         vUp = vRight.crossProduct(vTo).normalize();
         return this;
     }
     //endregion
 
-    //region move around vUp
-    public Camera moveAroundVUp(double angle){
-        vTo = moveCameraAroundVector(vUp, vTo, vRight, angle);
+    //region rotate around vUp
+    public Camera rotateAroundVUp(double angle){
+        vTo = rotateCameraAroundVector(vUp, vTo, vRight, angle);
         vRight = vTo.crossProduct(vUp).normalize();
         return this;
     }
     //endregion
 
-    //region move around vRight
-    public Camera moveAroundVRight(double angle){
-        vUp = moveCameraAroundVector(vRight, vUp, vTo, angle);
+    //region rotate around vRight
+    public Camera rotateAroundVRight(double angle){
+        vUp = rotateCameraAroundVector(vRight, vUp, vTo, angle);
         vTo = vUp.crossProduct(vRight).normalize();
+        return this;
+    }
+    //endregion
+
+    //region move camera's reference point
+    public Camera moveReferencePoint(double moveVUp, double moveVTo,double moveVRight){
+        if(!isZero(moveVUp))  this.p0 = this.p0.add(vUp.scale(moveVUp));
+        if(!isZero(moveVRight))  this.p0 = this.p0.add(vRight.scale(moveVRight));
+        if(!isZero(moveVTo))  this.p0 = this.p0.add(vTo.scale(moveVTo));
         return this;
     }
     //endregion

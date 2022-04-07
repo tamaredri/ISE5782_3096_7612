@@ -81,21 +81,21 @@ public class RenderTests {
 
 		// move around vUp
 		camera.setImageWriter(new ImageWriter("1 move 10 deg vUp render test", 1000, 1000));
-		camera.moveAroundVUp(10);
+		camera.rotateAroundVUp(10);
 		camera.renderImage();
 		camera.printGrid(100, new Color(java.awt.Color.YELLOW));
 		camera.writeToImage();
 
 		// move around vTo
 		camera.setImageWriter(new ImageWriter("2 move 10 deg vTo render test", 1000, 1000));
-		camera.moveAroundVTo(10);
+		camera.rotateAroundVTo(10);
 		camera.renderImage();
 		camera.printGrid(100, new Color(java.awt.Color.YELLOW));
 		camera.writeToImage();
 
 		// move around vRight
 		camera.setImageWriter(new ImageWriter("3 move 10 deg vRight render test", 1000, 1000));
-		camera.moveAroundVRight(10);
+		camera.rotateAroundVRight(10);
 		camera.renderImage();
 		camera.printGrid(100, new Color(java.awt.Color.YELLOW));
 		camera.writeToImage();
