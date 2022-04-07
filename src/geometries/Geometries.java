@@ -4,7 +4,7 @@ import primitives.*;
 
 import java.util.*;
 
-public class Geometries implements Intersectable{
+public class Geometries extends Intersectable{
     List<Intersectable> geometries;
 
     //region default constructor

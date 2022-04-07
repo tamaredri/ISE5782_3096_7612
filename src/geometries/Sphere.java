@@ -10,7 +10,7 @@ import static primitives.Util.*;
 /**
  * a class that represents a sphere in the space by its center point and radius
  */
-public class Sphere implements Geometry{
+public class Sphere extends Geometry{
     private Point center;
     private double radius;
 
