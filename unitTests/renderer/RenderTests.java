@@ -99,5 +99,26 @@ public class RenderTests {
 		camera.renderImage();
 		camera.printGrid(100, new Color(java.awt.Color.YELLOW));
 		camera.writeToImage();
+
+		// move to the left
+		camera.setImageWriter(new ImageWriter("4 move 20 to the left render test", 1000, 1000));
+		camera.moveReferencePoint(0, 0, -20);
+		camera.renderImage();
+		camera.printGrid(100, new Color(java.awt.Color.YELLOW));
+		camera.writeToImage();
+
+		// move up
+		camera.setImageWriter(new ImageWriter("5 move 20 up render test", 1000, 1000));
+		camera.moveReferencePoint(20, 0, 0);
+		camera.renderImage();
+		camera.printGrid(100, new Color(java.awt.Color.YELLOW));
+		camera.writeToImage();
+
+		// move ahead
+		camera.setImageWriter(new ImageWriter("6 move 20 ahead render test", 1000, 1000));
+		camera.moveReferencePoint(0, 20, 0);
+		camera.renderImage();
+		camera.printGrid(100, new Color(java.awt.Color.YELLOW));
+		camera.writeToImage();
 	}
 }

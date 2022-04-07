@@ -88,7 +88,7 @@ public class Polygon implements Geometry {
 		return plane.getNormal();
 	}
 
-	//region findIntersections
+
 	@Override
 	public List<Point> findIntersections(Ray ray) {
 		List<Point> intersections = plane.findIntersections(ray); // intersect the plane of the polygon
