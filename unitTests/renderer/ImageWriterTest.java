@@ -1,6 +1,7 @@
 package renderer;
 
 import org.junit.jupiter.api.Test;
+import primitives.*;
 
 class ImageWriterTest {
     @Test

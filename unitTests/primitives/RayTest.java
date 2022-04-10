@@ -20,7 +20,7 @@ class RayTest {
         // =============== Boundary Values Tests ==================
 
         // TC01 list of points is empty
-        assertNull(ray.findClosestPoint(new LinkedList<>()), "list of points is empty- didn't return null");
+        assertNull(ray.findClosestPoint(null), "list of points is empty- didn't return null");
 
         // TC02 the closest point is the first point in the list
         List<Point> points = new LinkedList<>();

@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import static primitives.Util.*;
+import geometries.Intersectable.GeoPoint;
 
 /**
  * a class that represents a plane in the space (by a point on the plane and the normal to the plane)
@@ -56,7 +57,7 @@ public class Plane extends Geometry{
 
     //region findIntersections function
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         if(this.q0.equals(ray.getP0())) //ray starts at the reference point of the plane
             return null;
 
@@ -73,9 +74,10 @@ public class Plane extends Geometry{
         if(t < 0) // if starts after the plane -> move the point in the opposite direction of dir vector
             return null;
 
-        List<Point> intersections = new LinkedList<>();
-        intersections.add(ray.getPoint(t));
+        List<GeoPoint> intersections = new LinkedList<>();
+        intersections.add(new GeoPoint(this,ray.getPoint(t)));
         return intersections;
     }
     //endregion
+
 }

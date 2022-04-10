@@ -10,11 +10,11 @@ import java.util.Objects;
 public abstract class Intersectable {
 
     public static class GeoPoint{
-        public final Geometry geometries;
+        public final Geometry geometry;
         public final Point point;
 
         public GeoPoint(Geometry geometries, Point point) {
-            this.geometries = geometries;
+            this.geometry = geometries;
             this.point = point;
         }
 
@@ -23,13 +23,13 @@ public abstract class Intersectable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             GeoPoint geoPoint = (GeoPoint) o;
-            return this.point.equals(geoPoint.point) && this.geometries.equals(geoPoint.geometries);
+            return this.point.equals(geoPoint.point) && this.geometry.equals(geoPoint.geometry);
         }
 
         @Override
         public String toString() {
             return "GeoPoint{" +
-                    "geometries=" + geometries +
+                    "geometries=" + geometry +
                     ", point=" + point +
                     '}';
         }
@@ -42,15 +42,16 @@ public abstract class Intersectable {
      * @param ray to calculate the intersections to
      * @return list of intersection points
      */
-    public abstract List<Point> findIntersections(Ray ray);
-
-    public final List<Point> findGeoIntersections(Ray ray){
-        List<GeoPoint> intersections = findGeoIntersectionsHelper(ray);
-        return (intersections == null) ? null: intersections.stream().map(i->i.point).toList();
+    public List<Point> findIntersections(Ray ray) {
+        var geoList = findGeoIntersections(ray);
+        return geoList == null ? null
+                : geoList.stream().map(gp -> gp.point).toList();
     }
 
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-
+    public final List<GeoPoint> findGeoIntersections(Ray ray){
+        return findGeoIntersectionsHelper(ray);
     }
+
+    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 
 }

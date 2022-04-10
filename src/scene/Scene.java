@@ -3,7 +3,11 @@ package scene;
 import lighting.AmbientLight;
 import geometries.Geometries;
 import geometries.Intersectable;
+import lighting.LightSource;
 import primitives.*;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * representing a full 3D scene
@@ -14,11 +18,16 @@ public class Scene {
     public Color background;
     public AmbientLight ambientLight;
     public Geometries geometries;
+    public List<LightSource> lights;
+
 
     //region constructor
     public Scene(String name) {
         this.geometries = new Geometries();
         this.name = name;
+        this.background = Color.BLACK;
+        this.ambientLight = new AmbientLight();
+        this.lights = new LinkedList<>();
     }
     //endregion
 
@@ -49,5 +58,14 @@ public class Scene {
         return this;
     }
     //endregion
+
+    //region setLights
+    public Scene setLights(List<LightSource> lights) {
+        this.lights = lights;
+        return this;
+    }
+    //endregion
+
+
 
 }

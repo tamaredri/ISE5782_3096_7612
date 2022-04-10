@@ -27,14 +27,13 @@ public class Geometries extends Intersectable{
     }
     //endregion
 
-    //region findIntersections function
     @Override
-    public List<Point> findIntersections(Ray ray) {
-        List<Point> Intersection = new LinkedList<>();
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        List<GeoPoint> Intersection = new LinkedList<>();
 
         //go threw all the geometries and add their intersections
         for (Intersectable intersectable: geometries) {
-            List<Point> currentIntersection = intersectable.findIntersections(ray);
+            List<GeoPoint> currentIntersection = intersectable.findGeoIntersectionsHelper(ray);
             if(currentIntersection != null) //no intersection was found
                 Intersection.addAll(currentIntersection);
         }

@@ -122,7 +122,7 @@ public class Camera {
      * and the image writer to color the pixels
      * @throws MissingResourceException if one of the fields are uninitialized
      */
-    public void renderImage() throws MissingResourceException{
+    public Camera renderImage() throws MissingResourceException{
         if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) { //default values
             throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
         }
@@ -134,6 +134,7 @@ public class Camera {
                                                                                             // and intersecting with the geometries
             }
         }
+        return this;
     }
     //endregion
 
@@ -151,11 +152,11 @@ public class Camera {
         // loop over j
         for (int i = 0;  i< imageWriter.getNy(); i++)
             for (int j = 0;j< imageWriter.getNx() ; j += interval)
-                imageWriter.writePixel(j,i,new Color(255,0,0));  // color the grid
+                imageWriter.writePixel(j,i,color);  // color the grid
         // loop for j
         for (int i = 0;  i< imageWriter.getNy(); i+= interval)
             for (int j = 0;j< imageWriter.getNx() ; j++)
-                imageWriter.writePixel(j,i,new Color(255,0,0));  // color the grid
+                imageWriter.writePixel(j,i,color);  // color the grid
     }
     //endregion
 

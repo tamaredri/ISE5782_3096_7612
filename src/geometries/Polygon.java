@@ -1,5 +1,7 @@
 package geometries;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import primitives.*;
 import static primitives.Util.*;
@@ -90,19 +92,19 @@ public class Polygon extends Geometry {
 
 
 	@Override
-	public List<Point> findIntersections(Ray ray) {
-		List<Point> intersections = plane.findIntersections(ray); // intersect the plane of the polygon
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+		List<GeoPoint> intersections = plane.findGeoIntersectionsHelper(ray); // intersect the plane of the polygon
 		if (intersections == null)								  // if ray doesn't intersect the plane,
 			return null;										  // no intersections with the polygon
 
 		try {
 			Vector edge = this.vertices.get(0).subtract(this.vertices.get(size - 1));		// the vector from the last vertex to the first vertex
-			Vector toPoint = intersections.get(0).subtract(this.vertices.get(size - 1));	// the vector from the last vertex to the point of intersection
+			Vector toPoint = intersections.get(0).point.subtract(this.vertices.get(size - 1));	// the vector from the last vertex to the point of intersection
 			Vector crossVecToCompare = edge.crossProduct(toPoint).normalize();				// the cross product of the vectors. suppose to be the normal to the plane, or it's reverse
 
 			for (int i = 0; i < this.size - 1; i++) {
 				edge = this.vertices.get(i + 1).subtract(this.vertices.get(i));		// the vector from i vertex to i + 1 vertex
-				toPoint = intersections.get(0).subtract(this.vertices.get(i));		// the vector from i vertex to the point of intersection
+				toPoint = intersections.get(0).point.subtract(this.vertices.get(i));		// the vector from i vertex to the point of intersection
 				Vector crossVector = edge.crossProduct(toPoint).normalize();		// the cross product of the vectors.
 																					// if the point is inside the polygon, the vec supposed to be the same as 'crossVecToCompare'
 				if (!crossVecToCompare.equals(crossVector))		// the vectors ase not the same, the point is not inside the polygon
@@ -117,4 +119,5 @@ public class Polygon extends Geometry {
 			}
 		}
 	//endregion
+
 }
