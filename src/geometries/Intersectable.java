@@ -2,19 +2,28 @@ package geometries;
 
 import primitives.*;
 import java.util.List;
-import java.util.Objects;
 
 /**
- *
+ * represents an objects that can be intersected with a ray in space
  */
 public abstract class Intersectable {
 
+    //region GeoPoint
+    /**
+     * an internal class to represent a geometry and the intersection point on this geometry.
+     * in purpose of finding the color on the specific point of intersection.
+     */
     public static class GeoPoint{
         public final Geometry geometry;
         public final Point point;
 
-        public GeoPoint(Geometry geometries, Point point) {
-            this.geometry = geometries;
+        /**
+         * constructor for a GeoPoint
+         * @param geometry a geometry
+         * @param point a point on the geometry
+         */
+        public GeoPoint(Geometry geometry, Point point) {
+            this.geometry = geometry;
             this.point = point;
         }
 
@@ -34,7 +43,9 @@ public abstract class Intersectable {
                     '}';
         }
     }
+    //endregion
 
+    //region find intersections
     /**
      * calculating the intersections points between a ray and an entity that implements this interface
      * using the linear calculation methods for an intersection to an intersectable geometry
@@ -43,15 +54,26 @@ public abstract class Intersectable {
      * @return list of intersection points
      */
     public List<Point> findIntersections(Ray ray) {
-        var geoList = findGeoIntersections(ray);
-        return geoList == null ? null
+        List<GeoPoint> geoList = findGeoIntersections(ray);
+        return geoList == null ?
+                null
                 : geoList.stream().map(gp -> gp.point).toList();
     }
 
+    /**
+     * for now - find intersections between a ray and a geometry
+     * @param ray the ray to find intersections with
+     * @return a list with GeoPoints that represent the intersections between the ray and the geometry
+     */
     public final List<GeoPoint> findGeoIntersections(Ray ray){
         return findGeoIntersectionsHelper(ray);
     }
 
+    /**
+     * find intersections between a ray and a geometry
+     * @param ray the ray to find intersections with
+     * @return a list with GeoPoints that represent the intersections between the ray and the geometry
+     */
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
-
+    //endregion
 }

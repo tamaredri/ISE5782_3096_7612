@@ -1,12 +1,11 @@
 package geometries;
-import primitives.*;
 
+import primitives.*;
 import java.util.List;
 
 /**
  * a class that represents a tube in the space by the axis of it's center. and it's radius
  */
-
 public class Tube extends Geometry{
     protected Ray axisRay; //the center axis
     protected double radius;
@@ -48,7 +47,7 @@ public class Tube extends Geometry{
     }
     //endregion
 
-    //region
+    //region findGeoIntersectionsHelper
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         return null;

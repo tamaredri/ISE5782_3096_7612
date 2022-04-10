@@ -41,7 +41,7 @@ public class Sphere extends Geometry{
     }
     //endregion
 
-    //region
+    //region findGeoIntersectionsHelper
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         List<GeoPoint> intersections = new ArrayList<>();

@@ -35,9 +35,8 @@ public class Ray {
     //endregion
 
     //region findClosestPoint
-    /** Try to think of a better solution
+    /**
      *  find the point that is the closet one to the head of the ray
-     *
      * @param points
      * @return the closest point to the head of the ray
      */
@@ -47,14 +46,20 @@ public class Ray {
     }
     //endregion
 
+    //region findClosestGeoPoint
+    /**
+     * find the closest GeoPoint to the reference point of the ray
+     * @param points a list of GeoPoints
+     * @return the closest GeoPoint
+     */
     public GeoPoint findClosestGeoPoint(List<GeoPoint> points) {
-        if (points == null) // no close point is available
+        if (points == null)                                               // no close point is available
             return null;
-        GeoPoint closestPoint = points.get(0);                         // save the first point
+        GeoPoint closestPoint = points.get(0);                            // save the first point
         double distance = closestPoint.point.distanceSquared(this.p0);    // the distance between the first point and the start of the ray
         for (GeoPoint geoPoint : points) {
             double d = geoPoint.point.distanceSquared(this.p0);
-            if(distance > d)                                        // if there is a closer point then 'point', replace the values
+            if(distance > d)                                              // if there is a closer point then 'point', replace the values
             {
                 closestPoint = geoPoint;
                 distance = d;
@@ -62,9 +67,9 @@ public class Ray {
         }
         return closestPoint;
     }
+    //endregion
 
-
-        //region to string override
+    //region to string override
     /**
      * format: " Ray { p0 = Point : xyz = {x, y, z)}, dir = Vector : xyz = (x, y, z) } "
      */
@@ -87,6 +92,4 @@ public class Ray {
         return p0.equals(ray.p0) && dir.equals(ray.dir) ;
     }
     //endregion
-
-
 }

@@ -11,7 +11,7 @@ import javax.imageio.*;
 /**
  * Image writer class combines accumulation of pixel color matrix and finally
  * producing a non-optimized jpeg image from this matrix. The class although is
- * responsible of holding image related parameters of View Plane - pixel matrix
+ * responsible for holding image related parameters of View Plane - pixel matrix
  * size and resolution
  * 
  * @author Dan
@@ -27,6 +27,7 @@ public class ImageWriter {
 	
 	private Logger logger = Logger.getLogger("ImageWriter");
 
+	//region constructor
 	// ***************** Constructors ********************** //
 	/**
 	 * Image Writer constructor accepting image name and View Plane parameters,
@@ -41,7 +42,9 @@ public class ImageWriter {
 
 		image = new BufferedImage(nX, nY, BufferedImage.TYPE_INT_RGB);
 	}
+	//endregion
 
+	//region getters
 	// ***************** Getters/Setters ********************** //
 	/**
 	 * View Plane Y axis resolution
@@ -60,9 +63,11 @@ public class ImageWriter {
 	public int getNx() {
 		return nX;
 	}
+	//endregion
 
 	// ***************** Operations ******************** //
 
+	//region write to image
 	/**
 	 * Function writeToImage produces unoptimized png file of the image according to
 	 * pixel color matrix in the directory of the project
@@ -76,7 +81,9 @@ public class ImageWriter {
 			throw new IllegalStateException("I/O error - may be missing directory " + FOLDER_PATH, e);
 		}
 	}
+	//endregion
 
+	//region write pixel
 	/**
 	 * The function writePixel writes a color of a specific pixel into pixel color
 	 * matrix
@@ -88,5 +95,5 @@ public class ImageWriter {
 	public void writePixel(int xIndex, int yIndex, Color color) {
 		image.setRGB(xIndex, yIndex, color.getColor().getRGB());
 	}
-
+	//endregion
 }
