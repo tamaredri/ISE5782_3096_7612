@@ -20,7 +20,6 @@ public class Scene {
     //region constructor
     /**
      * construct a scene. giving default values to all the fields
-     * @param name name for the scene
      */
     public Scene(String name) {
         this.geometries = new Geometries();

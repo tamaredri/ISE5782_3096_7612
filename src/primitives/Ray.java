@@ -53,13 +53,15 @@ public class Ray {
      * @return the closest GeoPoint
      */
     public GeoPoint findClosestGeoPoint(List<GeoPoint> points) {
-        if (points == null)                                               // no close point is available
+        if (points == null)
             return null;
-        GeoPoint closestPoint = points.get(0);                            // save the first point
-        double distance = closestPoint.point.distanceSquared(this.p0);    // the distance between the first point and the start of the ray
+
+        GeoPoint closestPoint = points.get(0);
+        double distance = closestPoint.point.distanceSquared(this.p0);
+
         for (GeoPoint geoPoint : points) {
             double d = geoPoint.point.distanceSquared(this.p0);
-            if(distance > d)                                              // if there is a closer point then 'point', replace the values
+            if(distance > d)    // if there is a closer point then 'point', replace the values
             {
                 closestPoint = geoPoint;
                 distance = d;

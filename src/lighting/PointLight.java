@@ -6,24 +6,14 @@ import primitives.*;
  * a representation of a point light - an ordinary lamp
  */
 public class PointLight extends Light implements LightSource{
-
-    /**
-     * the position of the light
-     */
     private final Point position;
-    /**
-     * the attenuation factors
-     */
+
+    // the attenuation factors
     private double kC = 1;
     private double kL = 0;
     private double kQ = 0;
 
     //region constructor
-    /**
-     * constructs a point light
-     * @param intensity the color of the light
-     * @param position the position of the light
-     */
     public PointLight(Color intensity, Point position) {
         super(intensity);
         this.position = position;
@@ -40,8 +30,8 @@ public class PointLight extends Light implements LightSource{
     //region getIntensity
     @Override
     public Color getIntensity(Point point) {
-        double d = point.distance(this.position);                           // the distance of the point from the light source
-        return this.getIntensity().scale(1 / (kC + kL * d + kQ * d * d));   // the calculated attenuation of the light relative to the distance
+        double d = point.distance(this.position);                           // distance from the light source
+        return this.getIntensity().reduce (kC + kL * d + kQ * d * d);
     }
     //endregion
 

@@ -97,30 +97,30 @@ public class Polygon extends Geometry {
 	//region findGeoIntersectionsHelper
 	@Override
 	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-		List<GeoPoint> intersections = plane.findGeoIntersectionsHelper(ray); // intersect the plane of the polygon
-		if (intersections == null)				// if ray doesn't intersect the plane,
-			return null;						// no intersections with the polygon
+		List<GeoPoint> intersections = plane.findGeoIntersectionsHelper(ray);
+		if (intersections == null)
+			return null;
 
 		try {
-			Vector edge = this.vertices.get(0).subtract(this.vertices.get(size - 1));			// the vector from the last vertex to the first vertex
-			Vector toPoint = intersections.get(0).point.subtract(this.vertices.get(size - 1));	// the vector from the last vertex to the point of intersection
-			Vector crossVecToCompare = edge.crossProduct(toPoint).normalize();					// the cross product of the vectors. suppose to be the normal to the plane, or it's reverse
+			Vector edgeVector = this.vertices.get(0).subtract(this.vertices.get(size - 1));
+			Vector vecToPoint = intersections.get(0).point.subtract(this.vertices.get(size - 1));
+			Vector normalVector = edgeVector.crossProduct(vecToPoint).normalize();	// the first vector to compare to the others
 
 			for (int i = 0; i < this.size - 1; i++) {
-				edge = this.vertices.get(i + 1).subtract(this.vertices.get(i));				// the vector from i vertex to i + 1 vertex
-				toPoint = intersections.get(0).point.subtract(this.vertices.get(i));		// the vector from i vertex to the point of intersection
-				Vector crossVector = edge.crossProduct(toPoint).normalize();				// the cross product of the vectors.
-																							// if the point is inside the polygon, the vec supposed to be the same as 'crossVecToCompare'
-				if (!crossVecToCompare.equals(crossVector))		// the vectors ase not the same, the point is not inside the polygon
+				edgeVector = this.vertices.get(i + 1).subtract(this.vertices.get(i));
+				vecToPoint = intersections.get(0).point.subtract(this.vertices.get(i));
+				Vector crossVector = edgeVector.crossProduct(vecToPoint).normalize();
+
+				if (!normalVector.equals(crossVector))	// at least 1 vec is not the seme, then the point is outside the polygon
 					return null;
 			}
-			return intersections; // all the cross product vectors are equal
+			return intersections; // the point is inside the polygon
 		}
 		catch (IllegalArgumentException e){
 			// an exception was thrown because the zero vector was constructed because
 			// the point of intersection was on a vertex or on an edge
 			return null;
-			}
 		}
+	}
 	//endregion
 }

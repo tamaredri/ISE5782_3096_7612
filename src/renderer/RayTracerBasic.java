@@ -16,7 +16,6 @@ public class RayTracerBasic extends RayTracerBase{
 
     /**
      * constructor accepting the scene to trace the rays trough
-     * @param scene the scene to trace
      */
     public RayTracerBasic(Scene scene) {
         super(scene);
@@ -73,18 +72,17 @@ public class RayTracerBasic extends RayTracerBase{
         // the shine, diffuse and specular factors
         int nShininess = geoPoint.geometry.getMaterial().nShininess;
         double kd = geoPoint.geometry.getMaterial().kD, ks = geoPoint.geometry.getMaterial().kS;
-
         Color color = Color.BLACK;                                  // the base color
 
-        for (LightSource lightSource : scene.lights) {              // for all the light-sources
+        for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(geoPoint.point);            // vec from the lightSource to the geometry
             double nl = alignZero(n.dotProduct(l));
 
             if (nl * nv > 0) { // sign(nl) == sing(nv) ->
                                // the camera and the light source are on the same side of the surface
                 Color lightIntensity = lightSource.getIntensity(geoPoint.point);    // the base intensity from the light source
-
-                color = color.add(calcDiffusive(kd, l, n, lightIntensity),          // add the diffusion effect
+                color = color.add(
+                        calcDiffusive(kd, l, n, lightIntensity),                    // add the diffusion effect
                         calcSpecular(ks, l, n, v, nShininess, lightIntensity));     // add the specular effect
             }
         }

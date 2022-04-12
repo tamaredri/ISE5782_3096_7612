@@ -9,7 +9,7 @@ public interface LightSource {
 
     /**
      *  gets the light intensity on a specific point in space
-     * @param p the point
+     * @param p the wanted point
      * @return the light intensity on 'p'
      */
     Color getIntensity(Point p);

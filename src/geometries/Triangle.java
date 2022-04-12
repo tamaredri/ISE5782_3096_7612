@@ -29,14 +29,11 @@ public class Triangle extends Polygon{
     //region findGeoIntersectionsHelper
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-
-        // intersections on the plane
-        List<Point> pointListFromPlane = this.plane.findIntersections(ray);
-
-        if(pointListFromPlane == null) //the ray doesn't intersect the plane
+        List<Point> intersectionsOnPlane = this.plane.findIntersections(ray);
+        if(intersectionsOnPlane == null) //the ray doesn't intersect the plane
             return null;
 
-        // vectors from the start of the ray each vertex of the triangle
+        // vectors from the start of the ray to each vertex of the triangle
         Vector v1 = this.vertices.get(0).subtract(ray.getP0());
         Vector v2 = this.vertices.get(1).subtract(ray.getP0());
         Vector v3 = this.vertices.get(2).subtract(ray.getP0());
@@ -52,19 +49,19 @@ public class Triangle extends Polygon{
             double d2 = alignZero(ray.getDir().dotProduct(n2));
             double d3 = alignZero(ray.getDir().dotProduct(n3));
 
-            // if the d's have the same sign -> the intersection is inside the triangle
-            if( (d1 > 0 && d2 > 0 && d3 > 0) || ( d1 < 0 && d2 < 0 && d3 < 0)) {
-                List<GeoPoint> geoPointsTriangle = new LinkedList<>();
-                geoPointsTriangle.add(new GeoPoint(this, pointListFromPlane.get(0)));   // save the GeoPoint of intersection
-                return geoPointsTriangle;
-            }
+            // if the d's have different sign, there is no intersection
+            if( !(d1 > 0 && d2 > 0 && d3 > 0) && !( d1 < 0 && d2 < 0 && d3 < 0))
+                return null;
+
+            List<GeoPoint> geoPointsTriangle = new LinkedList<>();
+            geoPointsTriangle.add(new GeoPoint(this, intersectionsOnPlane.get(0)));
+            return geoPointsTriangle;
         }
         catch (Exception x)
         {
             // one of the cross products constructed the zero vector -> intersect the vertex or the edge of the triangle
+            return null;
         }
-        return null;
-
     }
     //endregion
 }

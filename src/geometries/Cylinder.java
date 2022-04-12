@@ -3,12 +3,9 @@ package geometries;
 import primitives.*;
 import java.util.List;
 
-/**
- * a class that represents a cylinder geometry
- */
 public class Cylinder extends Tube{
 
-    private double height;
+    private final double height;
 
     //region constructor
     public Cylinder(Ray axisRay, double radius, double height) {
@@ -31,22 +28,20 @@ public class Cylinder extends Tube{
     }
     //endregion
 
-    // region getNormal function
+    // region getNormal
     @Override
     public Vector getNormal(Point point) {
-        // the point is on the base circle of the cylinder. at the distance of maximum tha size of radius
-        if (point.distance(axisRay.getP0()) <= radius)
-            return axisRay.getDir().scale(-1); // the normal is on the opposite direction of dir
+        Point axisRayP0 = axisRay.getP0();
+        if (point.distance(axisRayP0) <= radius)    // on the base circle of the cylinder.
+            return axisRay.getDir().scale(-1);
 
-        // the point is on the other base circle of the cylinder. at the distance of maximum tha size of radius
-        Point basePoint1 = axisRay.getP0().add(axisRay.getDir().scale(height));
-        if (point.distance(basePoint1) <= radius)
-            return axisRay.getDir(); // the normal is on the direction of dir
+        Vector heightVector = axisRay.getDir().scale(height);
+        axisRayP0 = axisRayP0.add(heightVector);
 
-        // otherwise, go to super. the same as the end of the function...
+        if (point.distance(axisRayP0) <= radius)    // on the second base circle of the cylinder.
+            return axisRay.getDir();
 
-        // otherwise, the point is on the casing of the cylinder. cll super to calculate the normal
-        return super.getNormal(point);
+        return super.getNormal(point);              // on the casing of the cylinder.
     }
     //endregion
 

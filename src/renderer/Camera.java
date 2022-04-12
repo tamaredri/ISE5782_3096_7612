@@ -37,13 +37,8 @@ public class Camera {
      * distance between the camera and the view plane
      */
     private double distance;
-    /**
-     * the object that writes the image
-     */
+
     private ImageWriter imageWriter;
-    /**
-     * the object that generates rays from the camera to the view plane
-     */
     private RayTracerBase rayTracer;
 
     //region constructor
@@ -65,7 +60,7 @@ public class Camera {
         this.p0 = p0;
         this.vUp = vUp.normalize();
         this.vTo = vTo.normalize();
-        this.vRight = vTo.crossProduct(vUp).normalize(); // TODO remove normalize??
+        this.vRight = vTo.crossProduct(vUp);
     }
     //endregion
 
@@ -102,7 +97,6 @@ public class Camera {
     //region setImageWriter
     /**
      * set the image writer
-     * @param imageWriter the imageWriter object to set
      * @return the camera itself. builder pattern
      */
     public Camera setImageWriter(ImageWriter imageWriter) {
@@ -116,7 +110,6 @@ public class Camera {
      * set the perimeters of the view plane
      * @param width the width of the VP
      * @param height the height of the VP
-     * @return the camera itself. builder pattern
      * @return the camera itself. builder pattern
      */
     public Camera setVPSize(double width, double height) {
@@ -141,7 +134,6 @@ public class Camera {
     //region setRayTracer
     /**
      * set the rey tracer
-     * @param rayTracer the rayTracer object  to set
      * @return the camera itself. builder pattern
      */
     public Camera setRayTracer(RayTracerBase rayTracer) {
@@ -189,14 +181,14 @@ public class Camera {
      * </ul>
      */
     public Camera renderImage() throws MissingResourceException{
-        if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) { //default values
+        if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) {
             throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
         }
 
         for (int i = 0; i < imageWriter.getNx(); i++){
             for (int j = 0; j<imageWriter.getNy(); j++){
-                imageWriter.writePixel(j, i, //                                             // for each pixel (j,i)
-                           rayTracer.traceRay( //                                           // find the color of the pixel using
+                imageWriter.writePixel(j, i,                                                // for each pixel (j,i)
+                           rayTracer.traceRay(                                              // find the color of the pixel using
                            constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));  // construction of a ray through the pixel
                                                                                             // and intersecting with the geometries
             }
@@ -213,7 +205,7 @@ public class Camera {
      * @throws MissingResourceException if the imageWriter is uninitialized - unable to print a grid
      */
     public void printGrid(int interval, Color color) throws MissingResourceException{
-        if (this.imageWriter == null) // the image writer is uninitialized
+        if (this.imageWriter == null)
             throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
 
         // loop over j
@@ -234,7 +226,7 @@ public class Camera {
      * @throws MissingResourceException if the imageWriter in uninitialized - unable to generate the image
      */
     public void writeToImage() {
-        if (this.imageWriter == null) // the image writer is uninitialized
+        if (this.imageWriter == null)
             throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
         imageWriter.writeToImage();
     }
@@ -299,8 +291,6 @@ public class Camera {
 
         // the converted vector in a form of a matrix
         matrixVectorToMove = copyMatrix.mult(matrixVectorToMove);
-
-        // @MARK - no need to check if the zero vector was constructed
 
         // convert the matrix to a vector
         return new Vector(matrixVectorToMove.get(0,0),

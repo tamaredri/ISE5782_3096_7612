@@ -4,17 +4,8 @@ package primitives;
  * representation of a material that a geometry can be made of
  */
 public class Material {
-    /**
-     * the diffusion factor
-     */
     public double kD = 0;
-    /**
-     * the speculation factor
-     */
     public double kS = 0;
-    /**
-     * the shininess factor
-     */
     public int nShininess = 0;
 
     //region setters

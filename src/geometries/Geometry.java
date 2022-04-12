@@ -3,18 +3,12 @@ package geometries;
 import primitives.*;
 
 public abstract class Geometry extends Intersectable {
-    /**
-     * the color of the geometry
-     */
+
     protected Color emission = Color.BLACK;
-    /**
-     * the material the geometry is made of
-     */
     private Material material = new Material();
 
     //region getters
     /**
-     *  getter for the material
      * @return the material of the geometry
      */
     public Material getMaterial() {
@@ -22,7 +16,6 @@ public abstract class Geometry extends Intersectable {
     }
 
     /**
-     * getter for the emission
      * @return the emission color of the geometry
      */
     public Color getEmission() {

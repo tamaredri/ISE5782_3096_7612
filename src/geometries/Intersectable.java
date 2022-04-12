@@ -17,11 +17,6 @@ public abstract class Intersectable {
         public final Geometry geometry;
         public final Point point;
 
-        /**
-         * constructor for a GeoPoint
-         * @param geometry a geometry
-         * @param point a point on the geometry
-         */
         public GeoPoint(Geometry geometry, Point point) {
             this.geometry = geometry;
             this.point = point;
@@ -45,7 +40,6 @@ public abstract class Intersectable {
     }
     //endregion
 
-    //region find intersections
     /**
      * calculating the intersections points between a ray and an entity that implements this interface
      * using the linear calculation methods for an intersection to an intersectable geometry
@@ -62,8 +56,8 @@ public abstract class Intersectable {
 
     /**
      * for now - find intersections between a ray and a geometry
-     * @param ray the ray to find intersections with
-     * @return a list with GeoPoints that represent the intersections between the ray and the geometry
+     * @param ray the ray to intersect with
+     * @return a list of GeoPoints that represent the intersections of the geometry with the ray
      */
     public final List<GeoPoint> findGeoIntersections(Ray ray){
         return findGeoIntersectionsHelper(ray);
@@ -71,9 +65,8 @@ public abstract class Intersectable {
 
     /**
      * find intersections between a ray and a geometry
-     * @param ray the ray to find intersections with
+     * @param ray the ray to intersect with
      * @return a list with GeoPoints that represent the intersections between the ray and the geometry
      */
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
-    //endregion
 }

@@ -55,23 +55,23 @@ public class Plane extends Geometry{
     }
     //endregion
 
-    //region findIntersections function
+    //region findIntersections
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         if(this.q0.equals(ray.getP0())) //ray starts at the reference point of the plane
             return null;
 
-        Vector p0p1 = this.q0.subtract(ray.getP0());
-        double numerator = this.normal.dotProduct(p0p1);
-        if(isZero(numerator)) // if ray starts on the plane -> dot product returns 0
+        Vector vecFromRayToNormal = this.q0.subtract(ray.getP0());
+        double numerator = this.normal.dotProduct(vecFromRayToNormal);
+        if(isZero(numerator)) // ray starts on the plane
             return null;
 
         double denominator = this.normal.dotProduct(ray.getDir());
-        if(isZero(denominator)) // if ray parallel to the plane -> dot product returns 0
+        if(isZero(denominator)) // ray is parallel to the plane
             return null;
 
         double t = numerator / denominator;
-        if(t < 0) // if starts after the plane -> move the point in the opposite direction of dir vector
+        if(t < 0) // ray starts after the plane
             return null;
 
         List<GeoPoint> intersections = new LinkedList<>();
