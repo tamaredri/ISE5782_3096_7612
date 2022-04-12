@@ -1,13 +1,9 @@
 package scene;
 
-import lighting.AmbientLight;
-import geometries.Geometries;
-import geometries.Intersectable;
-import lighting.LightSource;
+import geometries.*;
+import lighting.*;
 import primitives.*;
-
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * representing a full 3D scene
@@ -22,6 +18,10 @@ public class Scene {
 
 
     //region constructor
+    /**
+     * construct a scene. giving default values to all the fields
+     * @param name name for the scene
+     */
     public Scene(String name) {
         this.geometries = new Geometries();
         this.name = name;
@@ -65,7 +65,4 @@ public class Scene {
         return this;
     }
     //endregion
-
-
-
 }

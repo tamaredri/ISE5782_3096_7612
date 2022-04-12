@@ -1,11 +1,8 @@
 package geometries;
 
 import primitives.*;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import static primitives.Util.*;
 
 public class Triangle extends Polygon{
@@ -29,7 +26,7 @@ public class Triangle extends Polygon{
     }
     //endregion
 
-    //region
+    //region findGeoIntersectionsHelper
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 
@@ -39,25 +36,26 @@ public class Triangle extends Polygon{
         if(pointListFromPlane == null) //the ray doesn't intersect the plane
             return null;
 
+        // vectors from the start of the ray each vertex of the triangle
         Vector v1 = this.vertices.get(0).subtract(ray.getP0());
         Vector v2 = this.vertices.get(1).subtract(ray.getP0());
         Vector v3 = this.vertices.get(2).subtract(ray.getP0());
 
         try {
+            // cross product of following vectors -> the normal vector for each couple of vectors
             Vector n1 = v1.crossProduct(v2).normalize();
             Vector n2 = v2.crossProduct(v3).normalize();
             Vector n3 = v3.crossProduct(v1).normalize();
 
+            // dot product between the normals and the ray
             double d1 = alignZero(ray.getDir().dotProduct(n1));
             double d2 = alignZero(ray.getDir().dotProduct(n2));
             double d3 = alignZero(ray.getDir().dotProduct(n3));
 
             // if the d's have the same sign -> the intersection is inside the triangle
             if( (d1 > 0 && d2 > 0 && d3 > 0) || ( d1 < 0 && d2 < 0 && d3 < 0)) {
-                List<GeoPoint> geoPointsTriangle = new ArrayList<GeoPoint>();
-                for (Point point : pointListFromPlane) {
-                    geoPointsTriangle.add(new GeoPoint(this, point));
-                }
+                List<GeoPoint> geoPointsTriangle = new LinkedList<>();
+                geoPointsTriangle.add(new GeoPoint(this, pointListFromPlane.get(0)));   // save the GeoPoint of intersection
                 return geoPointsTriangle;
             }
         }

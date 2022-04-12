@@ -75,9 +75,8 @@ public class Plane extends Geometry{
             return null;
 
         List<GeoPoint> intersections = new LinkedList<>();
-        intersections.add(new GeoPoint(this,ray.getPoint(t)));
+        intersections.add(new GeoPoint(this, ray.getPoint(t)));
         return intersections;
     }
     //endregion
-
 }

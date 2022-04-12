@@ -9,15 +9,65 @@ import org.ejml.data.SimpleMatrix;
  * a class that represents a camera.
  */
 public class Camera {
+    /**
+     * the reference point of the camera
+     */
     private Point p0;
+    /**
+     * the vector that points upwards relative to the camera
+     */
     private Vector vUp;
+    /**
+     * the vector that points onwards relative to the camera
+     */
     private Vector vTo;
+    /**
+     * the vector that points to the right side relative to the camera
+     */
     private Vector vRight;
+    /**
+     * width of the view plane
+     */
     private double width;
+    /**
+     * height of the view plane
+     */
     private double height;
+    /**
+     * distance between the camera and the view plane
+     */
     private double distance;
+    /**
+     * the object that writes the image
+     */
     private ImageWriter imageWriter;
+    /**
+     * the object that generates rays from the camera to the view plane
+     */
     private RayTracerBase rayTracer;
+
+    //region constructor
+    /**
+     * construct a camera
+     * @param p0 the reference point of the camera
+     * @param vTo the onward direction of the camera
+     * @param vUp the upward direction of the camera
+     * @throws IllegalArgumentException throws an exception if: <ul>
+     *     <li>
+     *         the reference vectors (vUp, vTo) are not orthogonal
+     *     </li>
+     * </ul>
+     */
+    public Camera(Point p0, Vector vTo, Vector vUp) throws IllegalArgumentException{
+        if (!isZero(vTo.dotProduct(vUp))){
+            throw new IllegalArgumentException("constructor threw - vUp and vTo are not orthogonal");
+        }
+        this.p0 = p0;
+        this.vUp = vUp.normalize();
+        this.vTo = vTo.normalize();
+        this.vRight = vTo.crossProduct(vUp).normalize(); // TODO remove normalize??
+    }
+    //endregion
 
     //region getters
     public Point getP0() {
@@ -50,6 +100,11 @@ public class Camera {
     //endregion
 
     //region setImageWriter
+    /**
+     * set the image writer
+     * @param imageWriter the imageWriter object to set
+     * @return the camera itself. builder pattern
+     */
     public Camera setImageWriter(ImageWriter imageWriter) {
         this.imageWriter = imageWriter;
         return this;
@@ -57,6 +112,13 @@ public class Camera {
     //endregion
 
     //region setViewPlane
+    /**
+     * set the perimeters of the view plane
+     * @param width the width of the VP
+     * @param height the height of the VP
+     * @return the camera itself. builder pattern
+     * @return the camera itself. builder pattern
+     */
     public Camera setVPSize(double width, double height) {
         this.width = width;
         this.height = height;
@@ -65,6 +127,11 @@ public class Camera {
     //endregion
 
     //region setVPDistance
+    /**
+     * set the distance of the camera from the view plane
+     * @param distance the distance from the VP
+     * @return the camera itself. builder pattern
+     */
     public Camera setVPDistance(double distance) {
         this.distance = distance;
         return this;
@@ -72,21 +139,14 @@ public class Camera {
     //endregion
 
     //region setRayTracer
+    /**
+     * set the rey tracer
+     * @param rayTracer the rayTracer object  to set
+     * @return the camera itself. builder pattern
+     */
     public Camera setRayTracer(RayTracerBase rayTracer) {
         this.rayTracer = rayTracer;
         return this;
-    }
-    //endregion
-
-    //region constructor
-    public Camera(Point p0, Vector vTo, Vector vUp) throws IllegalArgumentException{
-        if (!isZero(vTo.dotProduct(vUp))){
-            throw new IllegalArgumentException("constructor threw - vUp and vTo are not orthogonal");
-        }
-        this.p0 = p0;
-        this.vUp = vUp.normalize();
-        this.vTo = vTo.normalize();
-        this.vRight = vTo.crossProduct(vUp).normalize();
     }
     //endregion
 
@@ -108,10 +168,10 @@ public class Camera {
         double xJ = alignZero((j - (nX - 1) / 2d) * Rx);        // move pc Xj pixels
 
         Point PIJ = pc;
-        if(!isZero(xJ))  PIJ = PIJ.add(vRight.scale(xJ));
-        if(!isZero(yJ))  PIJ = PIJ.add(vUp.scale(yJ));
+        if(!isZero(xJ))  PIJ = PIJ.add(vRight.scale(xJ));       // move the point in vRight direction
+        if(!isZero(yJ))  PIJ = PIJ.add(vUp.scale(yJ));          // move the point in vUp direction
 
-        return new Ray(p0, PIJ.subtract(p0));
+        return new Ray(p0, PIJ.subtract(p0));       // the ray through the wanted pixel
     }
     //endregion
 
@@ -120,12 +180,19 @@ public class Camera {
      * render the image and fill the pixels with the desired colors
      * using the ray tracer to find the colors
      * and the image writer to color the pixels
-     * @throws MissingResourceException if one of the fields are uninitialized
+     * @throws MissingResourceException if one of the following fields are uninitialized (unable to render the image):<ul>
+     *     <li> imageWriter </li>
+     *     <li> reyTracer </li>
+     *     <li> width </li>
+     *     <li> height </li>
+     *     <li> distance </li>
+     * </ul>
      */
     public Camera renderImage() throws MissingResourceException{
         if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) { //default values
             throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
         }
+
         for (int i = 0; i < imageWriter.getNx(); i++){
             for (int j = 0; j<imageWriter.getNy(); j++){
                 imageWriter.writePixel(j, i, //                                             // for each pixel (j,i)
@@ -143,7 +210,7 @@ public class Camera {
      *  print a grid on the image without running over the original image
      * @param interval the size of the grid squares
      * @param color the color of the grid
-     * @throws MissingResourceException
+     * @throws MissingResourceException if the imageWriter is uninitialized - unable to print a grid
      */
     public void printGrid(int interval, Color color) throws MissingResourceException{
         if (this.imageWriter == null) // the image writer is uninitialized
@@ -153,6 +220,7 @@ public class Camera {
         for (int i = 0;  i< imageWriter.getNy(); i++)
             for (int j = 0;j< imageWriter.getNx() ; j += interval)
                 imageWriter.writePixel(j,i,color);  // color the grid
+
         // loop for j
         for (int i = 0;  i< imageWriter.getNy(); i+= interval)
             for (int j = 0;j< imageWriter.getNx() ; j++)
@@ -162,7 +230,8 @@ public class Camera {
 
     //region writeToImage
     /**
-     * create the image file using the image writer
+     * create the image file using the imageWriter object
+     * @throws MissingResourceException if the imageWriter in uninitialized - unable to generate the image
      */
     public void writeToImage() {
         if (this.imageWriter == null) // the image writer is uninitialized
@@ -175,7 +244,9 @@ public class Camera {
     /**
      * rotating a space, represented by 3 vectors that span the space, in an angle requested
      * using the rotation matrix method
-     *
+     * <ul>
+     *     <li>trust that the vectors span a space, this is a private function</li>
+     * </ul>
      * @param rotationVector the vector the space will rotate around
      * @param vectorToMove the vector that will be rotated and is a part of the space's span
      * @param orthogonalVector the third vector that spans the space
@@ -183,8 +254,6 @@ public class Camera {
      * @return vectorToMove rotated to the left with the requested angle
      */
     private Vector rotateCameraAroundVector(Vector rotationVector, Vector vectorToMove, Vector orthogonalVector, double angle) {
-        // TODO need to check the 3 vectors span the 3D space-> are all orthogonal to each other
-
         // convert the angle to radians
         angle = Math.toRadians(angle);
 
@@ -231,7 +300,7 @@ public class Camera {
         // the converted vector in a form of a matrix
         matrixVectorToMove = copyMatrix.mult(matrixVectorToMove);
 
-        //TODO check if the values can construct the zero vector!!
+        // @MARK - no need to check if the zero vector was constructed
 
         // convert the matrix to a vector
         return new Vector(matrixVectorToMove.get(0,0),
@@ -240,9 +309,16 @@ public class Camera {
     }
     //endregion
 
-    //TODO add JavaDoc to the functions
-
     //region rotate around vTo
+    /**
+     * rotate the camera around the vTo vector -
+     * <ul>
+     *     <li>positive angle: spin the camera on the reverse of the clockwise direction = spin the scene to clockwise</li>
+     *     <li>negative angle: spin the camera clockwise = spin the scene on the reverse of the clockwise direction</li>
+     * </ul>
+     * @param angle the angle of the rotation
+     * @return the camera itself. builder pattern
+     */
     public Camera rotateAroundVTo(double angle){
         vRight = rotateCameraAroundVector(vTo, vRight, vUp, angle);
         vUp = vRight.crossProduct(vTo).normalize();
@@ -251,6 +327,15 @@ public class Camera {
     //endregion
 
     //region rotate around vUp
+    /**
+     * rotate the camera around the vUp vector -
+     * <ul>
+     *     <li>positive angle: rotate the camera to the left = move the scene to the right</li>
+     *     <li>negative angle: rotate the camera to the right = move the scene to the left</li>
+     * </ul>
+     * @param angle the angle of the rotation
+     * @return the camera itself. builder pattern
+     */
     public Camera rotateAroundVUp(double angle){
         vTo = rotateCameraAroundVector(vUp, vTo, vRight, angle);
         vRight = vTo.crossProduct(vUp).normalize();
@@ -259,6 +344,15 @@ public class Camera {
     //endregion
 
     //region rotate around vRight
+    /**
+     * rotate the camera around the vRight vector -
+     * <ul>
+     *     <li>positive angle: rotate the camera upward = move the scene downward</li>
+     *     <li>negative angle: rotate the camera downward = move the scene upward</li>
+     * </ul>
+     * @param angle the angle of the rotation
+     * @return the camera itself. builder pattern
+     */
     public Camera rotateAroundVRight(double angle){
         vUp = rotateCameraAroundVector(vRight, vUp, vTo, angle);
         vTo = vUp.crossProduct(vRight).normalize();
@@ -267,10 +361,17 @@ public class Camera {
     //endregion
 
     //region move camera's reference point
+    /**
+     * move the reference point of the camera using the amount of units to move in the direction of each reference vector
+     * @param moveVUp on the direction of vUp
+     * @param moveVTo on the direction of vTo
+     * @param moveVRight on the direction of vRight
+     * @return the camera itself. builder pattern
+     */
     public Camera moveReferencePoint(double moveVUp, double moveVTo,double moveVRight){
-        if(!isZero(moveVUp))  this.p0 = this.p0.add(vUp.scale(moveVUp));
+        if(!isZero(moveVUp))     this.p0 = this.p0.add(vUp.scale(moveVUp));
         if(!isZero(moveVRight))  this.p0 = this.p0.add(vRight.scale(moveVRight));
-        if(!isZero(moveVTo))  this.p0 = this.p0.add(vTo.scale(moveVTo));
+        if(!isZero(moveVTo))     this.p0 = this.p0.add(vTo.scale(moveVTo));
         return this;
     }
     //endregion
