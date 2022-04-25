@@ -17,6 +17,8 @@ public class AmbientLight extends Light{
     }
     //endregion
 
+
+
     //region default constructor
     public AmbientLight() {
         super(new Color(0,0,0));
