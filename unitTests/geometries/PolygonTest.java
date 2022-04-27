@@ -106,5 +106,10 @@ class PolygonTest {
         assertNull(polygon.findIntersections(ray), "didn't return null- ray doesn't intersect the polygon, point is on the continuation of a side of the polygon.");
 
         //may have to add more tests depending on the implementation algorithm.
+        //TC06: ray doesn't intersect the polygon, point is on the continuation of a side of the polygon.
+        polygon = new Polygon(new Point(0,-2,0), new Point(0,1,0), new Point(3,-2,3));
+        ray = new Ray(new Point(0,0,2), new Vector(0.5,-0.8,-1.5));
+        p = new Point(0.5, -0.8, 0.5);
+        assertEquals(p, polygon.findIntersections(ray).get(0),"ray intersects inside the polygon- wrong intersection" );
     }
 }

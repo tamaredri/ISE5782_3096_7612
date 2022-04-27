@@ -37,6 +37,7 @@ public class LightsTests {
 	private Vector trDL = new Vector(-2, -2, -2); // Triangles test Direction of Light
 	private Material material = new Material().setKd(0.5).setKs(0.5).setShininess(300);
 	private Geometry triangle1 = new Triangle(p[0], p[1], p[2]).setMaterial(material);
+	private Geometry polygon1 = new Polygon(p[0], p[1], p[2]).setMaterial(material);
 	private Geometry triangle2 = new Triangle(p[0], p[1], p[3]).setMaterial(material);
 	private Geometry sphere = new Sphere(new Point(0, 0, -50), 50d) //
 			.setEmission(new Color(BLUE).reduce(2)) //
@@ -153,6 +154,21 @@ public class LightsTests {
 	}
 
 	/**
+	 * Produce a picture of a polygon lighted by a spotlight
+	 */
+	@Test
+	public void polygonSpot() {
+		scene2.geometries.add(polygon1);
+		scene2.lights.add(new SpotLight(trCL, trPL, trDL).setKl(0.001).setKq(0.0001));
+
+		ImageWriter imageWriter = new ImageWriter("lightPolygonSpot", 500, 500);
+		camera1.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene2)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
+
+	/**
 	 * Produce a picture of two triangles lighted by a directional light
 	 */
 	@Test
@@ -244,7 +260,7 @@ public class LightsTests {
 	}
 
 	/**
-	 * Produce a picture of a two triangles lighted by a spot light
+	 * Produce a picture of two triangles lighted by a spotlight
 	 */
 	@Test
 	public void trianglesSpot() {
