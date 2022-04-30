@@ -98,24 +98,26 @@ public class Polygon extends Geometry {
 	//region findGeoIntersectionsHelper
 	@Override
 	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-		List<GeoPoint> intersections = plane.findGeoIntersectionsHelper(ray);
+		List<GeoPoint> intersections = plane.findGeoIntersections(ray);
 		if (intersections == null)
 			return null;
-
+		Point intersectionPoint = intersections.get(0).point;
 		try {
-			Vector edgeVector = this.vertices.get(0).subtract(this.vertices.get(this.size - 1));
-			Vector vecToPoint = intersections.get(0).point.subtract(this.vertices.get(size - 1));
+			Vector edgeVector = this.vertices.get(0).subtract(this.vertices.get(this.size - 1)).normalize();
+			Vector vecToPoint = intersections.get(0).point.subtract(this.vertices.get(size - 1)).normalize();
 			Vector normalVector = edgeVector.crossProduct(vecToPoint).normalize();	// the first vector to compare to the others
 
 			for (int i = 0; i < this.size - 1; i++) {
-				edgeVector = this.vertices.get(i + 1).subtract(this.vertices.get(i));
-				vecToPoint = intersections.get(0).point.subtract(this.vertices.get(i));
+				edgeVector = this.vertices.get(i + 1).subtract(this.vertices.get(i)).normalize();
+				vecToPoint = intersections.get(0).point.subtract(this.vertices.get(i)).normalize();
 				Vector crossVector = edgeVector.crossProduct(vecToPoint).normalize();
 
 				if (!normalVector.equals(crossVector))	// at least 1 vec is not the seme, then the point is outside the polygon
 					return null;
 			}
-			return intersections; // the point is inside the polygon
+			intersections.clear(); // the point is inside the polygon
+			intersections.add(new GeoPoint(this, intersectionPoint));
+			return intersections;
 		}
 		catch (IllegalArgumentException e){
 			// an exception was thrown because the zero vector was constructed because

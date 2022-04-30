@@ -153,8 +153,8 @@ public class Camera {
      */
     public Ray constructRay(int nX, int nY, int j, int i){
         Point pc = p0.add(vTo.scale(distance));     // center of the view plane
-        double Ry = height/nY;                      // Ratio - pixel height
-        double Rx = width/nX;                       // Ratio - pixel width
+        double Ry = alignZero(height/nY);                      // Ratio - pixel height
+        double Rx = alignZero(width/nX);                       // Ratio - pixel width
 
         double yJ = alignZero(-(i - (nY - 1) / 2d) * Ry);       // move pc Yi pixels
         double xJ = alignZero((j - (nX - 1) / 2d) * Rx);        // move pc Xj pixels

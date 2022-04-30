@@ -38,6 +38,7 @@ public class LightsTests {
 	private Material material = new Material().setKd(0.5).setKs(0.5).setShininess(300);
 	private Geometry triangle1 = new Triangle(p[0], p[1], p[2]).setMaterial(material);
 	private Geometry polygon1 = new Polygon(p[0], p[1], p[2]).setMaterial(material);
+	private Geometry polygon2 = new Polygon(p[0], p[1], p[3]).setMaterial(material);
 	private Geometry triangle2 = new Triangle(p[0], p[1], p[3]).setMaterial(material);
 	private Geometry sphere = new Sphere(new Point(0, 0, -50), 50d) //
 			.setEmission(new Color(BLUE).reduce(2)) //
@@ -157,17 +158,100 @@ public class LightsTests {
 	 * Produce a picture of a polygon lighted by a spotlight
 	 */
 	@Test
-	public void polygonSpot() {
-		scene2.geometries.add(polygon1);
+	public void polygonsSpot() {
+		scene2.geometries.add(polygon1, polygon2);
 		scene2.lights.add(new SpotLight(trCL, trPL, trDL).setKl(0.001).setKq(0.0001));
 
 		ImageWriter imageWriter = new ImageWriter("lightPolygonSpot", 500, 500);
-		camera1.setImageWriter(imageWriter) //
+		//camera2.rotateAroundVRight(5).moveReferencePoint(0,617.35,0);
+		camera2.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene2)) //
 				.renderImage() //
 				.writeToImage(); //
 	}
 
+	@Test
+	public void polygonsDirectional() {
+		scene2.geometries.add(polygon1, polygon2);
+		scene2.lights.add(new DirectionalLight(trCL, trDL));
+
+		ImageWriter imageWriter = new ImageWriter("lightPolygonsDirectional", 500, 500);
+		camera2.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene2)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
+
+	@Test
+	public void polygonsPoint() {
+		scene2.geometries.add(polygon1, polygon2);
+		scene2.lights.add(new PointLight(trCL, trPL).setKl(0.001).setKq(0.0002));
+
+		ImageWriter imageWriter = new ImageWriter("lightPolygonsPoint", 500, 500);
+		camera2.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene2)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
+
+	@Test
+	public void polygonsThreeLight() {
+		scene2.geometries.add(polygon1, polygon2);
+		scene2.lights.add(new DirectionalLight(new Color(18,170,32),
+				trDL));
+
+		scene2.lights.add(new PointLight(new Color(255,110,110),
+				new Point(40, 5, -100)));
+
+		scene2.lights.add(new SpotLight(new Color(YELLOW) ,
+				trPL,
+				new Vector(1, 1, -0.5)));
+
+		ImageWriter imageWriter = new ImageWriter("polygonsThreeLight1", 500, 500);
+		camera2.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene2)) //
+				.renderImage() //
+				.writeToImage(); //
+
+
+		// *********************************************************************************
+
+		scene2.lights.clear();
+		scene2.lights.add(new DirectionalLight(new Color(RED),
+				new Vector(-1,5,2)));
+
+		scene2.lights.add(new PointLight(new Color(GREEN).reduce(2),
+				new Point(0,-10,-100)));
+
+		scene2.lights.add(new SpotLight(new Color(YELLOW) ,
+				new Point(30, 60, -100),
+				new Vector(2, -1, -1)));
+
+		imageWriter = new ImageWriter("trianglesThreeLight2", 500, 500);
+		camera2.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene2)) //
+				.renderImage() //
+				.writeToImage(); //
+
+		// *********************************************************************************
+
+		scene2.lights.clear();
+		scene2.lights.add(new DirectionalLight(new Color(RED),
+				new Vector(-2,2,2)));
+
+		scene2.lights.add(new PointLight(new Color(27,233,249),
+				new Point(0,0,0)));
+
+		scene2.lights.add(new SpotLight(new Color(YELLOW) ,
+				new Point(60, 50, 200),
+				new Vector(1, -2, 0.5)));
+
+		imageWriter = new ImageWriter("trianglesThreeLight3", 500, 500);
+		camera2.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene2)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
 	/**
 	 * Produce a picture of two triangles lighted by a directional light
 	 */
