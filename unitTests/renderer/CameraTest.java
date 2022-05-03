@@ -56,28 +56,17 @@ class CameraTest {
 	@Test
 	void testMoveCamera() {
 		// ============ Equivalence Partitions Tests ==============
-		// EP01: move the camera 90 degrees
+		// EP01: move the camera around vUp
 		Camera camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setVPDistance(10);
 		assertEquals(new Vector(0, 0, -1), camera.rotateAroundVRight(90).getvUp(), "move camera around vRight test");
 
-        // EP02: move the camera 90 degrees
+        // EP02: move the camera around vTo
         camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setVPDistance(10);
         assertEquals(new Vector(-1, 0, 0), camera.rotateAroundVUp(90).getvTo(), "move camera around vUp test");
 
-        // EP03: move the camera 90 degrees
+        // EP03: move the camera around vRight
+        camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setVPDistance(10);
         assertEquals(new Vector(0, -1, 0), camera.rotateAroundVTo(90).getvRight(), "move camera around vTo test");
-
-        // EP04: angle is more than 360 degrees
-        camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setVPDistance(10);
-        assertEquals(new Vector(-1, 0, 0), camera.rotateAroundVUp(450).getvTo(), "angle is more than 360 degrees- didn't move camera correctly");
-
-        // EP05: angle is negative
-        camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setVPDistance(10);
-        assertEquals(new Vector(-1, 0, 0), camera.rotateAroundVUp(-270).getvTo(), "angle is negative- didn't move camera correctly");
-
-        // EP06: angle is ZERO
-        camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setVPDistance(10);
-        assertEquals(new Vector(0, 0, -1), camera.rotateAroundVUp(0).getvTo(), "angle is ZERO- the camera moved");
     }
 
     @Test

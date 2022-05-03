@@ -1,6 +1,8 @@
 package primitives;
 
 import org.junit.jupiter.api.*;
+import renderer.Camera;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static primitives.Util.*;
 
@@ -138,5 +140,27 @@ class VectorTest {
 
         // TC03: test that the vectors are not in opposite directions
         assertFalse(v.dotProduct(u) < 0, "ERROR: the normalized vector is opposite to the original one");
+    }
+
+    @Test
+    void testMoveClockwiseAround() {
+        Vector v1 = new Vector (0,0,-1);
+        Vector v2 = new Vector (0,-1,0);
+        //============== Equivalence Partitions Tests ==============
+
+        // EP02: angle is 90 degrees
+        assertEquals(new Vector(-1, 0, 0), v1.moveClockwiseAround(v2,90), "move v1 90 degrees around v2 test failed");
+
+        // EP04: angle is more than 360 degrees
+        assertEquals(new Vector(-1, 0, 0), v1.moveClockwiseAround(v2,450), "move v1 450 degrees around v2 test failed");
+
+        // EP05: angle is negative
+        assertEquals(new Vector(-1, 0, 0),  v1.moveClockwiseAround(v2,-270), "angle is negative- didn't move vector correctly");
+
+        // EP06: angle is ZERO
+        assertEquals(new Vector(0, 0, -1),  v1.moveClockwiseAround(v2,0), "angle is ZERO- the vector moved");
+
+        // EP06: angle is 45 degrees
+        assertEquals(new Vector(-1,0,-1).normalize(),  v1.moveClockwiseAround(v2,45), "angle is 45 test failed");
     }
 }
