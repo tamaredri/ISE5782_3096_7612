@@ -104,15 +104,15 @@ public class Polygon extends Geometry {
 		Point intersectionPoint = intersections.get(0).point;
 		try {
 			Vector edgeVector = this.vertices.get(0).subtract(this.vertices.get(this.size - 1)).normalize();
-			Vector vecToPoint = intersections.get(0).point.subtract(this.vertices.get(size - 1)).normalize();
+			Vector vecToPoint = intersectionPoint.subtract(this.vertices.get(size - 1)).normalize();
 			Vector normalVector = edgeVector.crossProduct(vecToPoint).normalize();	// the first vector to compare to the others
 
 			for (int i = 0; i < this.size - 1; i++) {
 				edgeVector = this.vertices.get(i + 1).subtract(this.vertices.get(i)).normalize();
-				vecToPoint = intersections.get(0).point.subtract(this.vertices.get(i)).normalize();
+				vecToPoint = intersectionPoint.subtract(this.vertices.get(i)).normalize();
 				Vector crossVector = edgeVector.crossProduct(vecToPoint).normalize();
 
-				if (!normalVector.equals(crossVector))	// at least 1 vec is not the seme, then the point is outside the polygon
+				if (!normalVector.equals(crossVector))	// at least 1 vec is not the same, then the point is outside the polygon
 					return null;
 			}
 			intersections.clear(); // the point is inside the polygon

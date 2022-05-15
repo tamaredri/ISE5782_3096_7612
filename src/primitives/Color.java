@@ -56,7 +56,7 @@ public class Color {
 
 	/**
 	 * Constructor on base of java.awt.Color object
-	 * 
+	 *
 	 * @param other java.awt.Color's source object
 	 */
 	public Color(java.awt.Color other) {
@@ -105,7 +105,7 @@ public class Color {
 			throw new IllegalArgumentException("Can't scale a color by a negative number");
 		return new Color(rgb.product(k));
 	}
-	
+
 	/**
 	 * Scale the color by a scalar
 	 *
@@ -120,7 +120,7 @@ public class Color {
 
 	/**
 	 * Scale the color by (1 / reduction factor)
-	 * 
+	 *
 	 * @param k reduction factor
 	 * @return new Color object which is the result of the operation
 	 */
@@ -132,7 +132,7 @@ public class Color {
 
 	/**
 	 * Scale the color by (1 / reduction factor)
-	 * 
+	 *
 	 * @param k reduction factor
 	 * @return new Color object which is the result of the operation
 	 */
@@ -140,6 +140,11 @@ public class Color {
 		if (k.d1 < 1.0 || k.d2 < 1.0 || k.d3 < 1.0)
 			throw new IllegalArgumentException("Can't scale a color by a by a number lower than 1");
 		return new Color(rgb.d1 / k.d1, rgb.d2 / k.d2, rgb.d3 / k.d3);
+	}
+
+	@Override
+	public String toString() {
+		return "rgb:" + rgb;
 	}
 
 }

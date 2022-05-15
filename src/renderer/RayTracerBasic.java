@@ -13,7 +13,10 @@ import static primitives.Util.alignZero;
  *  implementation of the abstract class RayTracerBase
  */
 public class RayTracerBasic extends RayTracerBase{
-
+    /**
+     * for the floating point bug
+     */
+    private static final double DELTA = 0.1;
     /**
      * constructor accepting the scene to trace the rays trough
      */

@@ -231,9 +231,6 @@ public class Camera {
     }
     //endregion
 
-    //region move camera for any 3 vectors - private function
-    //endregion
-
     //region rotate around vTo
     /**
      * rotate the camera around the vTo vector -
