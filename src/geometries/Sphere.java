@@ -54,12 +54,12 @@ public class Sphere extends Geometry{
         Vector u = this.center.subtract(ray.getP0());       // vector from ray to the sphere's center
 
         double tm = u.dotProduct(ray.getDir());             // projection of u on ray
-        double d = Math.sqrt(u.lengthSquared() - tm * tm);  // Pythagoras - distance from sphere's center to the ray
+        double dSquared =u.lengthSquared() - tm * tm;  // Pythagoras - distance from sphere's center to the ray
 
-        if (alignZero(d - this.radius) >= 0)         // ray crosses outside the sphere
+        if (alignZero(dSquared*dSquared - this.radius) >= 0)         // ray crosses outside the sphere
             return null;
 
-        double th = alignZero(Math.sqrt(this.radius * this.radius - d * d));
+        double th = alignZero(Math.sqrt(this.radius * this.radius - dSquared));
         // t1, t2 are the units to extend dir vec inorder to get the intersections
         double t1 = tm + th;
         double t2 = tm - th;

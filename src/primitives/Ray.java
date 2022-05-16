@@ -4,6 +4,7 @@ import geometries.Intersectable;
 
 import java.util.List;
 import geometries.Intersectable.GeoPoint;
+import static primitives.Util.*;
 
 /**
  * a class that represents an infinite Ray in space
@@ -30,6 +31,7 @@ public class Ray {
     }
 
     public Point getPoint(double t){
+        if(isZero(t)) return p0;
         return p0.add(dir.scale(t));
     }
     //endregion

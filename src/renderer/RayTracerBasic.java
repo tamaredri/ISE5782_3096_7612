@@ -36,6 +36,15 @@ public class RayTracerBasic extends RayTracerBase{
     }
     //endregion
 
+    //region unshaded
+    private boolean unshaded(Vector l, GeoPoint geopoint) {
+        Vector lightDirection = l.scale(-1); // from point to light source
+        Ray lightRay = new Ray(geopoint.point, lightDirection);
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+        return intersections == null;
+    }
+    //endregion
+
     //region calcColor
     /**
      * calculating the color of a specific point, taking into account the local effects on the point.
@@ -72,21 +81,21 @@ public class RayTracerBasic extends RayTracerBase{
         if (nv == 0)                                                 // dot product resulted zero - the vectors are orthogonal
             return Color.BLACK;                                      // the camera doesn't see the light
 
-        // the shine, diffuse and specular factors
-        int nShininess = geoPoint.geometry.getMaterial().nShininess;
-        double kd = geoPoint.geometry.getMaterial().kD, ks = geoPoint.geometry.getMaterial().kS;
+        Material mat = geoPoint.geometry.getMaterial();
         Color color = Color.BLACK;                                  // the base color
 
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(geoPoint.point);            // vec from the lightSource to the geometry
             double nl = alignZero(n.dotProduct(l));
 
-            if (nl * nv > 0) { // sign(nl) == sing(nv) ->
+            if (nl * nv > 0  // sign(nl) == sing(nv) ->
                                // the camera and the light source are on the same side of the surface
+                && unshaded(l, geoPoint))
+                {
                 Color lightIntensity = lightSource.getIntensity(geoPoint.point);    // the base intensity from the light source
                 color = color.add(
-                        calcDiffusive(kd, l, n, lightIntensity),                    // add the diffusion effect
-                        calcSpecular(ks, l, n, v, nShininess, lightIntensity));     // add the specular effect
+                        calcDiffusive(mat, l, n, lightIntensity),                    // add the diffusion effect
+                        calcSpecular(mat, l, n, v, lightIntensity));     // add the specular effect
             }
         }
         return color;
@@ -96,36 +105,38 @@ public class RayTracerBasic extends RayTracerBase{
     //region calcSpecular
     /**
      * the specular effect on the object according to the phong reflection model
-     * @param ks specular factor
+     * @param mat the geometry's material
      * @param l vec from the light source to a point on the geometry
      * @param n normal vec to the point on the geometry
      * @param v vec from the camera to the geometry = the camera's eye
-     * @param nShininess shininess factor
      * @param lightIntensity intensity of the light
      * @return calculated intensity with the specular effect
      */
-    private Color calcSpecular(double ks, Vector l, Vector n, Vector v, int nShininess, Color lightIntensity) {
+    private Color calcSpecular(Material mat, Vector l, Vector n, Vector v, Color lightIntensity) {
         Vector r = l.subtract(n.scale(2 * l.dotProduct(n))).normalize();    // the specular ray
 
         // the phong model formula for the specular effect: ks ∙ ( 𝒎𝒂𝒙 (𝟎, −𝒗 ∙ 𝒓) ^ 𝒏𝒔𝒉 ) ∙ 𝑰
         return lightIntensity
-                .scale(ks * alignZero( Math.pow( Math.max(0, v.scale(-1).dotProduct(r)),
-                                                nShininess)));
+                .scale(mat.kS.scale( alignZero( Math.pow( Math.max(0, v.scale(-1).dotProduct(r)),
+                        mat.nShininess))));
     }
     //endregion
+
+
 
     //region calcDiffusive
     /**
      * the diffusion effect on the object according to the phong reflection model
-     * @param kd diffusive factor
+     * @param mat the geometry's material
      * @param l vec from the light source to a point on the geometry
      * @param n vec from the light source to a point on the geometry
      * @param lightIntensity intensity of the light
      * @return calculated intensity with the diffusive effect
      */
-    private Color calcDiffusive(double kd, Vector l, Vector n, Color lightIntensity) {
+    private Color calcDiffusive(Material mat, Vector l, Vector n, Color lightIntensity) {
         // the phong model formula for the diffusive effect: 𝒌𝑫 ∙| 𝒍 ∙ 𝒏 |∙ 𝑰
-        return lightIntensity.scale( alignZero( kd * Math.abs(n.dotProduct(l))));
+        return lightIntensity.scale(mat.kD.scale(Math.abs(n.dotProduct(l))));
     }
     //endregion
+
 }
