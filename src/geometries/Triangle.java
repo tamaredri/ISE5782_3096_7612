@@ -28,8 +28,8 @@ public class Triangle extends Polygon{
 
     //region findGeoIntersectionsHelper
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        List<Point> intersectionsOnPlane = this.plane.findIntersections(ray);
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        List<GeoPoint> intersectionsOnPlane = this.plane.findGeoIntersections(ray, maxDistance);
         if(intersectionsOnPlane == null) //the ray doesn't intersect the plane
             return null;
 
@@ -54,7 +54,7 @@ public class Triangle extends Polygon{
                 return null;
 
             List<GeoPoint> geoPointsTriangle = new LinkedList<>();
-            geoPointsTriangle.add(new GeoPoint(this, intersectionsOnPlane.get(0)));
+            geoPointsTriangle.add(new GeoPoint(this, intersectionsOnPlane.get(0).point));
             return geoPointsTriangle;
         }
         catch (Exception x)

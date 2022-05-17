@@ -12,7 +12,7 @@ public class AmbientLight extends Light{
      * @param Ia the base intensity of the light
      * @param Ka the attenuation factor of the intensity for each rgb color
      */
-    public AmbientLight(Color Ia, Double3 Ka) {
+    public AmbientLight(Color Ia, double Ka) {
         super(Ia.scale(Ka));
     }
     //endregion

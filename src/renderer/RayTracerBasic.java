@@ -37,9 +37,9 @@ public class RayTracerBasic extends RayTracerBase{
     //endregion
 
     //region unshaded
-    private boolean unshaded(GeoPoint geopoint, LightSource lightSource) {
+    private boolean unshaded(GeoPoint geopoint, Vector n, LightSource lightSource) {
         Vector lightDirection = lightSource.getL(geopoint.point).scale(-1); // from point to light source
-        Ray lightRay = new Ray(geopoint.point, lightDirection);
+        Ray lightRay = new Ray(geopoint.point.add(n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA)), lightDirection);
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
         return intersections == null;
     }
@@ -90,7 +90,7 @@ public class RayTracerBasic extends RayTracerBase{
 
             if (nl * nv > 0  // sign(nl) == sing(nv) ->
                                // the camera and the light source are on the same side of the surface
-                && unshaded(geoPoint, lightSource))
+                && unshaded(geoPoint, n, lightSource))
                 {
                 Color lightIntensity = lightSource.getIntensity(geoPoint.point);    // the base intensity from the light source
                 color = color.add(
