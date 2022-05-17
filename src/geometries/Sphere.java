@@ -47,7 +47,7 @@ public class Sphere extends Geometry{
         List<GeoPoint> intersections = new ArrayList<>();
 
         if(this.center.equals(ray.getP0())){
-            intersections.add(new GeoPoint(this, ray.getP0().add(ray.getDir().scale(radius))));
+            intersections.add(new GeoPoint(this, ray.getPoint(radius)));
             return intersections;
         }
 
@@ -56,7 +56,7 @@ public class Sphere extends Geometry{
         double tm = u.dotProduct(ray.getDir());             // projection of u on ray
         double dSquared =u.lengthSquared() - tm * tm;  // Pythagoras - distance from sphere's center to the ray
 
-        if (alignZero(dSquared*dSquared - this.radius) >= 0)         // ray crosses outside the sphere
+        if (alignZero(dSquared - this.radius * this.radius) >= 0)         // ray crosses outside the sphere
             return null;
 
         double th = alignZero(Math.sqrt(this.radius * this.radius - dSquared));
