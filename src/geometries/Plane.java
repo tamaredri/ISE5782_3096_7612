@@ -57,7 +57,7 @@ public class Plane extends Geometry{
 
     //region findIntersections
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         if(this.q0.equals(ray.getP0())) //ray starts at the reference point of the plane
             return null;
 
@@ -71,7 +71,7 @@ public class Plane extends Geometry{
             return null;
 
         double t = numerator / denominator;
-        if(t < 0) // ray starts after the plane
+        if(t < 0 || alignZero(t - maxDistance) > 0) // ray starts after the plane
             return null;
 
         List<GeoPoint> intersections = new LinkedList<>();

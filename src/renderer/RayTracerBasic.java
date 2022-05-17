@@ -37,8 +37,8 @@ public class RayTracerBasic extends RayTracerBase{
     //endregion
 
     //region unshaded
-    private boolean unshaded(Vector l, GeoPoint geopoint) {
-        Vector lightDirection = l.scale(-1); // from point to light source
+    private boolean unshaded(GeoPoint geopoint, LightSource lightSource) {
+        Vector lightDirection = lightSource.getL(geopoint.point).scale(-1); // from point to light source
         Ray lightRay = new Ray(geopoint.point, lightDirection);
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
         return intersections == null;
@@ -90,7 +90,7 @@ public class RayTracerBasic extends RayTracerBase{
 
             if (nl * nv > 0  // sign(nl) == sing(nv) ->
                                // the camera and the light source are on the same side of the surface
-                && unshaded(l, geoPoint))
+                && unshaded(geoPoint, lightSource))
                 {
                 Color lightIntensity = lightSource.getIntensity(geoPoint.point);    // the base intensity from the light source
                 color = color.add(
@@ -122,8 +122,6 @@ public class RayTracerBasic extends RayTracerBase{
     }
     //endregion
 
-
-
     //region calcDiffusive
     /**
      * the diffusion effect on the object according to the phong reflection model
@@ -138,5 +136,4 @@ public class RayTracerBasic extends RayTracerBase{
         return lightIntensity.scale(mat.kD.scale(Math.abs(n.dotProduct(l))));
     }
     //endregion
-
 }

@@ -184,8 +184,8 @@ public class Camera {
             throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
         }
 
-        for (int i = 0; i < imageWriter.getNx(); i++){
-            for (int j = 0; j<imageWriter.getNy(); j++){
+        for (int i = 4; i < imageWriter.getNx(); i++){
+            for (int j = 4; j<imageWriter.getNy(); j++){
                 imageWriter.writePixel(j, i,                                                // for each pixel (j,i)
                            rayTracer.traceRay(                                              // find the color of the pixel using
                            constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));  // construction of a ray through the pixel

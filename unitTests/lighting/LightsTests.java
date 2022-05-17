@@ -132,7 +132,7 @@ public class LightsTests {
 		scene1.lights.add(new PointLight(spCL, spPL).setKl(new Double3(0.001)).setKq(new Double3(0.0002)));
 
 
-		ImageWriter imageWriter = new ImageWriter("lightSpherePoint", 500, 500);
+		ImageWriter imageWriter = new ImageWriter("lightSpherePoint", 16, 9);
 		camera1.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene1)) //
 				.renderImage() //
