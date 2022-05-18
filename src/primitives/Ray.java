@@ -11,6 +11,8 @@ import static primitives.Util.*;
  * using a Point for the location in space and a direction Vector
  */
 public class Ray {
+    private static final double DELTA = 0.1;
+
     private final Point p0;
     private final Vector dir;
 
@@ -20,6 +22,12 @@ public class Ray {
         this.dir = dir.normalize();
     }
     //endregion
+
+    public Ray(Point head, Vector direction, Vector normal){
+        this.p0 = head.add(normal.scale(normal.dotProduct(direction) > 0 ? DELTA : -DELTA));
+        this.dir = direction.normalize();
+    }
+
 
     // region getters
     public Point getP0() {

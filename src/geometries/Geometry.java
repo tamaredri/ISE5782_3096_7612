@@ -53,4 +53,9 @@ public abstract class Geometry extends Intersectable {
      * @return new normal to the point
      */
     public abstract Vector getNormal(Point point);
+
+
+    public boolean isTransparent(){
+        return material.isTransparent();
+    }
 }

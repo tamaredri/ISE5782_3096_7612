@@ -7,6 +7,14 @@ public class Material {
     public Double3 kD = new Double3(0);
     public Double3 kS = new Double3(0);
     public int nShininess = 0;
+    /**
+     * transparency factor
+     */
+    public Double3 kT = new Double3(0);
+    /**
+     * reflection factor
+     */
+    public Double3 kR = new Double3(0);
 
     //region setters
     /**
@@ -38,5 +46,19 @@ public class Material {
         this.nShininess = nShininess;
         return this;
     }
+
+    public Material setkT(double kT) {
+        this.kT = new Double3(kT);
+        return this;
+    }
+
+    public Material setkR(double kR) {
+        this.kR = new Double3(kR);
+        return this;
+    }
     //endregion
+
+    public boolean isTransparent(){
+        return !kT.equals(Double3.ZERO);
+    }
 }
