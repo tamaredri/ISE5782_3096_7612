@@ -16,18 +16,17 @@ public class Ray {
     private final Point p0;
     private final Vector dir;
 
-    //region constructor
+    //region constructors
     public Ray(Point p0, Vector dir) {
         this.p0 = p0;
         this.dir = dir.normalize();
     }
-    //endregion
 
     public Ray(Point head, Vector direction, Vector normal){
         this.p0 = head.add(normal.scale(normal.dotProduct(direction) > 0 ? DELTA : -DELTA));
         this.dir = direction.normalize();
     }
-
+    //endregion
 
     // region getters
     public Point getP0() {
