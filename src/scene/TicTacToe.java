@@ -1,19 +1,17 @@
 package scene;
 
-import geometries.Geometries;
-import geometries.Geometry;
-import geometries.Polygon;
-import primitives.Color;
-import primitives.Material;
-import primitives.Point;
-import primitives.Vector;
+import geometries.*;
+import primitives.*;
 
+/**
+ * a class that generates the instruments of the tic-tac-toe game
+ */
 public class TicTacToe {
     private int width;
     private int length;
     private int totalHeight;
-    private final int height;
-    private final Vector vUp = new Vector(0,0,1);
+    private int height;
+    private Vector vUp = new Vector(0,0,1);
 
     public TicTacToe(int width, int length, int height) {
         this.width = width;
@@ -24,19 +22,19 @@ public class TicTacToe {
 
     //region X
     /**
-     *
+     *  create an X in space
      * @param A first reference point - edge of the X
      * @param v1 dir vector for the short side of the X
      * @param v2 dir vector for the long side of the X
      * @param color the color of the X
      * @param mat the material of the X
-     * @return
+     * @return Geometry that has the sides and bases of a 3D X
      */
     public Geometries generateX(Point A, Vector v1, Vector v2, Color color, Material mat){
         v1 = v1.normalize();
         v2 = v2.normalize();
 
-        //region    set points
+        //region set points
         // long rectangle base
         Point B = A.add(v1.scale(width));
         Point C = B.add(v2.scale(totalHeight));
@@ -121,7 +119,7 @@ public class TicTacToe {
     }
 
     /**
-     *
+     * for 2 given points, generate a rectangle in a specified height
      * @param p1 point on the base of the X
      * @param p2 point on the base of the X
      * @param height of the X
@@ -131,6 +129,5 @@ public class TicTacToe {
         return new Polygon(p1, p1.add(vUp.scale(height)),
                 p2.add(vUp.scale(height)),p2);
     }
-
     //endregion
 }

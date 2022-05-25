@@ -42,15 +42,8 @@ public class Camera {
 
     //region constructor
     /**
-     * construct a camera
-     * @param p0 the reference point of the camera
-     * @param vTo the onward direction of the camera
-     * @param vUp the upward direction of the camera
-     * @throws IllegalArgumentException throws an exception if: <ul>
-     *     <li>
+     * @throws IllegalArgumentException throws an exception if
      *         the reference vectors (vUp, vTo) are not orthogonal
-     *     </li>
-     * </ul>
      */
     public Camera(Point p0, Vector vTo, Vector vUp) throws IllegalArgumentException{
         if (!isZero(vTo.dotProduct(vUp))){
@@ -168,9 +161,9 @@ public class Camera {
 
     //region renderImage
     /**
-     * render the image and fill the pixels with the desired colors
-     * using the ray tracer to find the colors
-     * and the image writer to color the pixels
+     * render the image and fill the pixels with the desired colors.
+     * using the ray tracer to find the colors.
+     * and the image writer to color the pixels.
      * @throws MissingResourceException if one of the following fields are uninitialized (unable to render the image):<ul>
      *     <li> imageWriter </li>
      *     <li> reyTracer </li>

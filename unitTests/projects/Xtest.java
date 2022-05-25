@@ -14,9 +14,6 @@ public class Xtest {
     private Camera camera = new Camera(new Point(0,0, 1000),
                                         new Vector(0,0,-1),
                                         new Vector(0,1,0))
-    //private Camera camera = new Camera(new Point(500,500, 200),
-    //                                    new Vector(-1,-1, 0),
-    //                                    new Vector(0, 0, 1))
                             .setVPSize(150, 150)
                             .setVPDistance(50);
 
@@ -31,9 +28,13 @@ public class Xtest {
                                     new Vector(0,0,-1));
     private PointLight pointLight = new PointLight(new Color(218,113,235),
                                             new Point(-1000,-1000, 500));
-
+    private PointLight pointLight1 = new PointLight(new Color(220, 186, 220).scale(10),
+            new Point(0,0,100));
     private Color emition = new Color(27,17,59); // light brown
     private Material material = new Material().setKd(0.2).setKs(0.2).setShininess(5).setkT(0.3).setkR(0.3);
+
+    private Geometry sphere = new Sphere(new Point(0,0,100), 100).setEmission(new Color(104,244,111)).setMaterial(material);
+
 
     @Test
     void createX(){
@@ -41,10 +42,11 @@ public class Xtest {
         scene.addGeometry(ticTacToe.generateX(new Point(-100, 400, 0),
                 new Vector(1,0,0),
                 new Vector(0,-1,0), emition, material));
+        scene.addGeometry(sphere);
 
 
         scene.addGeometry(plane);
-        scene.lights.add(spotLight.setKl(0.001).setKq(0.0002));
+        scene.lights.add(pointLight1);
         scene.lights.add(pointLight);
 
         ImageWriter imageWriter = new ImageWriter("construct x", 500, 500);

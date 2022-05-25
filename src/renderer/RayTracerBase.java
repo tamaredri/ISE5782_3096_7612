@@ -12,9 +12,6 @@ import scene.*;
 public abstract class RayTracerBase {
     protected Scene scene;
 
-    /**
-     * constructor accepting the scene to trace the rays trough
-     */
     public RayTracerBase(Scene scene) {
         this.scene = scene;
     }
