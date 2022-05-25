@@ -14,6 +14,9 @@ public class Xtest {
     private Camera camera = new Camera(new Point(0,0, 1000),
                                         new Vector(0,0,-1),
                                         new Vector(0,1,0))
+    //private Camera camera = new Camera(new Point(500,500, 200),
+    //                                    new Vector(-1,-1, 0),
+    //                                    new Vector(0, 0, 1))
                             .setVPSize(150, 150)
                             .setVPDistance(50);
 
