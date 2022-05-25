@@ -24,7 +24,7 @@ public class Plane extends Geometry{
     }
     //endregion
 
-    //region constructor by point and normal
+    //region constructor by a point and a normal
     public Plane(Point p, Vector normal) {
         this.q0 = p;
         this.normal = normal;

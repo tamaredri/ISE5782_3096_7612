@@ -6,6 +6,7 @@ import primitives.*;
  * representation if a directional light that has a direction, intensity and no attenuation
  */
 public class DirectionalLight extends Light implements LightSource{
+
     private final Vector direction;
 
     //region constructor
