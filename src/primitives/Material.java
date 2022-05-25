@@ -57,8 +57,4 @@ public class Material {
         return this;
     }
     //endregion
-
-    public boolean isTransparent(){
-        return !kT.equals(Double3.ZERO);
-    }
 }

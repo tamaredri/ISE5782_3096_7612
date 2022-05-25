@@ -37,6 +37,11 @@ public class Ray {
         return dir;
     }
 
+    /**
+     * returns the point on the ray that is in a given distance from the head of the ray
+     * @param t the distance from the head of the ray to point
+     * @return the point that is in the given distance from the head of the ray
+     */
     public Point getPoint(double t){
         try {
             return p0.add(dir.scale(t));
@@ -49,9 +54,9 @@ public class Ray {
 
     //region findClosestPoint
     /**
-     *  find the point that is the closet one to the head of the ray
-     * @param points
-     * @return the closest point to the head of the ray
+     *  find the point that is closest to the head of the ray
+     * @param points list of points
+     * @return the closest point to the head of the ray out of the points list
      */
     public Point findClosestPoint(List<Point> points) {
         return points == null || points.isEmpty() ? null
@@ -61,7 +66,7 @@ public class Ray {
 
     //region findClosestGeoPoint
     /**
-     * find the closest GeoPoint to the reference point of the ray
+     * find the closest GeoPoint to the head of the ray
      * @param points a list of GeoPoints
      * @return the closest GeoPoint
      */

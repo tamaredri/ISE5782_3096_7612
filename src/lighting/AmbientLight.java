@@ -6,7 +6,8 @@ import primitives.*;
  *  this is a class that represents the environmental lightning in a scene
  */
 public class AmbientLight extends Light{
-    //region AmbientLight
+
+    //region constructor
     /**
      * construct the ambient light using a color, and it's attenuation factor
      * @param Ia the base intensity of the light
@@ -16,8 +17,6 @@ public class AmbientLight extends Light{
         super(Ia.scale(Ka));
     }
     //endregion
-
-
 
     //region default constructor
     public AmbientLight() {

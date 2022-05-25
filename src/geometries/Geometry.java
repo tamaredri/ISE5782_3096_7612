@@ -4,8 +4,8 @@ import primitives.*;
 
 public abstract class Geometry extends Intersectable {
 
-    protected Color emission = Color.BLACK;
-    private Material material = new Material();
+    protected Color emission = Color.BLACK; // The color f the geometry
+    private Material material = new Material(); // The material of the geometry
 
     //region getters
     /**
@@ -26,7 +26,7 @@ public abstract class Geometry extends Intersectable {
     //region setters
     /**
      *  setter for the material. builder pattern
-     * @param material the material for the geometry
+     * @param material to set to the geometry
      * @return the geometry itself
      */
     public Geometry setMaterial(Material material) {
@@ -36,7 +36,7 @@ public abstract class Geometry extends Intersectable {
 
     /**
      * setter for the emission color. builder pattern
-     * @param emission the geometry's color.
+     * @param emission to set to the geometry.
      * @return the geometry itself
      */
     public Geometry setEmission(Color emission) {
@@ -45,17 +45,13 @@ public abstract class Geometry extends Intersectable {
     }
     //endregion
 
+    //region getNormal
     /**
      * calculating the normal vector for a point on the geometry
      * using the linear calculation methods for a normal to a geometry
-     *
      * @param point a point on the geometry
      * @return new normal to the point
      */
     public abstract Vector getNormal(Point point);
-
-
-    public boolean isTransparent(){
-        return material.isTransparent();
-    }
+    //endregion
 }

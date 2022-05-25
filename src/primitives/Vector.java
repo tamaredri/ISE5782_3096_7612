@@ -31,11 +31,10 @@ public class Vector extends Point{
     }
     //endregion
 
-    //region add function
+    //region add
     /**
      * add a Vector to another Vector.
      * generating a new Vector using the linear calculation method of how to add two Vectors
-     *
      * @param other the other Vector to add
      * @return new Vector in the combined direction
      */
@@ -45,13 +44,12 @@ public class Vector extends Point{
     }
     //endregion
 
-    //region scale function
+    //region scale
     /**
-     * scaling a Vector
-     *
+     * scales a Vector
      * @param scalar double number to scale the vector
      * @throws IllegalArgumentException when trying to scale with zero
-     * @return the scaled Vector
+     * @return the Vector scaled
      */
     public Vector scale(double scalar) throws IllegalArgumentException {
         return new Vector(xyz.scale(scalar));
@@ -62,7 +60,6 @@ public class Vector extends Point{
     /**
      * the dot-product between two Vectors in space
      * according the math equation of how to calculate dot-product
-     *
      * @param other the other Vector to calculate  the dot-product
      * @return the dot-product result (a double)
      */
@@ -76,7 +73,6 @@ public class Vector extends Point{
     /**
      * the cross-product between two Vectors in space
      * according the math equation of how to calculate cross-product
-     *
      * @param other the other Point to calculate the cross-product
      * @throws IllegalArgumentException when the vectors are parallel. trying to construct the zero vector
      * @return the result of the cross-product (a Vector)
@@ -92,7 +88,6 @@ public class Vector extends Point{
     /**
      * the length-squared of a Vector in space
      * according the math equation of how to calculate length-squared of a Vector
-     *
      * @return a double that represents the length-squared of the vector
      */
     public double lengthSquared() {
@@ -104,7 +99,6 @@ public class Vector extends Point{
     /**
      * the length of a Vector in space
      * according the math equation of how to calculate length
-     *
      * @return a double that represents the length
      */
     public double length() {
@@ -117,7 +111,6 @@ public class Vector extends Point{
      * normalizing a vector.
      * changing the length of the vector to be only 1
      * according the math equation of how to normalize a Vector
-     *
      * @return the scaled Vector
      */
     public Vector normalize(){

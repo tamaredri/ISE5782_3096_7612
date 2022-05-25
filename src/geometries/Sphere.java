@@ -46,14 +46,14 @@ public class Sphere extends Geometry{
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         List<GeoPoint> intersections = new ArrayList<>();
 
-        if(this.center.equals(ray.getP0())){
+        if(this.center.equals(ray.getP0())){           //ray starts at the center of the sphere
             intersections.add(new GeoPoint(this, ray.getPoint(radius)));
             return intersections;
         }
 
-        Vector u = this.center.subtract(ray.getP0());       // vector from ray to the sphere's center
+        Vector u = this.center.subtract(ray.getP0());  // vector from ray to the sphere's center
 
-        double tm = u.dotProduct(ray.getDir());             // projection of u on ray
+        double tm = u.dotProduct(ray.getDir());        // projection of u on ray
         double dSquared =u.lengthSquared() - tm * tm;  // Pythagoras - distance from sphere's center to the ray
 
         if (alignZero(dSquared - this.radius * this.radius) >= 0)         // ray crosses outside the sphere
@@ -64,7 +64,7 @@ public class Sphere extends Geometry{
         double t1 = tm + th;
         double t2 = tm - th;
 
-        if (alignZero(t1) <= 0 && alignZero(t2) <= 0)       // intersects on the opposite direction of ray
+        if (alignZero(t1) <= 0 && alignZero(t2) <= 0)   // intersects on the opposite direction of ray
             return null;
 
         if(alignZero(t1) > 0 && alignZero(t1 - maxDistance) <= 0)

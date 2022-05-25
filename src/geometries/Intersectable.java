@@ -10,8 +10,8 @@ public abstract class Intersectable {
 
     //region GeoPoint
     /**
-     * an internal class to represent a geometry and the intersection point on this geometry.
-     * in purpose of finding the color on the specific point of intersection.
+     * an internal class to represent a geometry and an intersection point on the geometry.
+     * need this in order to find the color on the specific point on the geometry.
      */
     public static class GeoPoint{
         public final Geometry geometry;
@@ -40,10 +40,11 @@ public abstract class Intersectable {
     }
     //endregion
 
+    //region findIntersections
     /**
-     * calculating the intersections points between a ray and an entity that implements this interface
+     * calculating the intersection points between a ray and an entity that implements this interface
      * using the linear calculation methods for an intersection to an intersectable geometry
-     *
+     * used only in tests
      * @param ray to calculate the intersections to
      * @return list of intersection points
      */
@@ -53,27 +54,37 @@ public abstract class Intersectable {
                 null
                 : geoList.stream().map(gp -> gp.point).toList();
     }
+    //endregion
 
+    //region findGeoIntersections
     /**
-     * for now - find intersections between a ray and a geometry
+     * find intersections between a ray and all geometries
+     * default use for infinite distance from the head of the ray
      * @param ray the ray to intersect with
-     * @return a list of GeoPoints that represent the intersections of the geometry with the ray
+     * @return a list of GeoPoints- every intersection point with the geometry it's on
      */
     public final List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersections(ray, Double.POSITIVE_INFINITY);
     }
 
+    /**
+     * find intersections between a ray and all geometries
+     * @param ray the ray to intersect with
+     * @param maxDistance the maximum distance needed between the head of the ray and the intersection points
+     * @return a list of GeoPoints- every intersection point with the geometry it's on
+     */
     public final List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
         return findGeoIntersectionsHelper(ray, maxDistance);
     }
+    //endregion
 
-
+    //region findIntersectionsHelper
     /**
      * find intersections between a ray and a geometry
      * @param ray the ray to intersect with
      * @return a list with GeoPoints that represent the intersections between the ray and the geometry
      */
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
-
+    //endregion
 
 }
