@@ -122,6 +122,9 @@ public class RayTracerBasic extends RayTracerBase{
 
         Double3 kkr = k.product(material.kR);
         if (!kkr.lowerThan(MIN_CALC_COLOR_K)) // the color is effected by the reflection
+            /*
+            list<ray> = constructReflectedRays()..;
+            */
             color = calcGlobalEffects(constructReflectedRay(gp.point, ray, n), level, material.kR, kkr);
 
         Double3 kkt = k.product(material.kT);
@@ -229,6 +232,8 @@ public class RayTracerBasic extends RayTracerBase{
         return new Ray(point, ray.getDir(), n);
     }
 
+    // filter the rays and choose the rays that are above the geometry
+
     /**
      * construct the reflection ray according to the physics law of reflection
      * @param point reference point of the new ray
@@ -237,7 +242,7 @@ public class RayTracerBasic extends RayTracerBase{
      * @return the reflected ray
      */
     private Ray constructReflectedRay(Point point, Ray ray, Vector n) {
-        return new Ray(point, reflectionVector(ray.getDir(), n), n);
+        return new Ray(point, reflectionVector(ray.getDir(), n), n); //calls rayBeam to construct the ray Beam
     }
     //endregion
 
