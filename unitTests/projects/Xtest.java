@@ -24,7 +24,7 @@ public class Xtest {
     private Geometry plane = new Plane(new Point(0,0,0),
                                         new Vector(0,0,1))
                                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60))
-                                .setEmission(new Color(167,136,105)); // dark blue
+                                .setEmission(new Color(167,136,105)); // light browne
 
     private PointLight spotLight = new SpotLight(new Color(218,113,235),
                                     new Point(5, 5, 1000),
@@ -33,18 +33,21 @@ public class Xtest {
                                             new Point(-1000,-1000, 500));
     private PointLight pointLight1 = new PointLight(new Color(220, 186, 220).scale(10),
             new Point(0,0,100));
-    private Color emition = new Color(27,17,59); // light brown
+    private Color xEmission = new Color(27,17,59); // violet
+    private Color oEmission = new Color(194,198,196); // gray - white
     private Material material = new Material().setKd(0.2).setKs(0.2).setShininess(5).setkT(0.3).setkR(0.3);
 
     private Geometry sphere = new Sphere(new Point(0,0,100), 100).setEmission(new Color(104,244,111)).setMaterial(material);
-
+    private Ray ray = new Ray(new Point(500,500,0), new Vector(0,0,1));
 
     @Test
     void createX(){
         TicTacToe ticTacToe = new TicTacToe(200, 300, 350);
         scene.addGeometry(ticTacToe.generateX(new Point(-100, 400, 0),
                 new Vector(1,0,0),
-                new Vector(0,-1,0), emition, material));
+                new Vector(0,-1,0), xEmission, material));
+
+        scene.addGeometry(ticTacToe.generateO(ray, 300, 350, oEmission, material));
         scene.addGeometry(sphere);
 
 

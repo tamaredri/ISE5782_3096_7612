@@ -52,7 +52,12 @@ public class Vector extends Point{
      * @return the Vector scaled
      */
     public Vector scale(double scalar) throws IllegalArgumentException {
-        return new Vector(xyz.scale(scalar));
+        try {
+            return new Vector(xyz.scale(scalar));
+        }
+        catch (Exception e){
+            return this;
+        }
     }
     //endregion
 

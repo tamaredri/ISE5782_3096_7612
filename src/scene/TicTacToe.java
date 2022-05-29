@@ -130,4 +130,13 @@ public class TicTacToe {
                 p2.add(vUp.scale(height)),p2);
     }
     //endregion
+
+    //region O
+    public Geometries generateO(Ray axisRay, double radius, double height, Color color, Material mat) {
+        Geometries OShape =new Geometries(new Cylinder(axisRay, radius, height).setMaterial(mat).setEmission(color),
+                new Circle(axisRay.getP0(), radius, axisRay.getDir()).setMaterial(mat).setEmission(color.scale(0.5)),
+                new Circle(axisRay.getPoint(height), radius, axisRay.getDir()).setMaterial(mat).setEmission(color.scale(0.5)));
+        return OShape;
+    }
+    //endregion
 }
