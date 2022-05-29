@@ -2,6 +2,9 @@ package geometries;
 
 import org.junit.jupiter.api.*;
 import primitives.*;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -48,5 +51,30 @@ class CylinderTest {
 
     @Test
     void testFindIntsersections() {
+        Cylinder cylinder = new Cylinder(new Ray(new Point(-600,0,0), new Vector(1,0,0)), 200, 1400);
+
+        // ============ Equivalence Partitions Tests ==============
+
+        // =============== Boundary Values Tests ==================
+
+        // TC01: ray is parallel to axisRay and is inside the cylinder
+        Ray ray = new Ray(new Point(-600,100,0), new Vector(1,0,0));
+        assertNull(cylinder.findIntersections(ray), "ray is parallel to axisRay and is inside the cylinder- found an intersection");
+
+        // TC02: ray is parallel to axisRay and is on the cylinder
+        ray = new Ray(new Point(-200,-200,0), new Vector(1,0,0));
+        assertNull(cylinder.findIntersections(ray), "ray is parallel to axisRay and is on the cylinder- found an intersection");
+
+        // TC03: ray is parallel to axisRay and is outside the cylinder
+        ray = new Ray(new Point(600,0,5), new Vector(1,0,0));
+        assertNull(cylinder.findIntersections(ray), "ray is parallel to axisRay and is outside the cylinder- found an intersection");
+
+        // TC04: ray is orthogonal to axisRay and intersects the cylinder
+        ray = new Ray(new Point(0,600,0), new Vector(0,-1,0));
+        assertEquals(2, cylinder.findIntersections(ray).size(), "ray is orthogonal to axisRay and intersects the cylinder- found wrong number of intersection");
+
+        // TC05: ray is orthogonal to axisRay and does not intersects the cylinder
+        ray = new Ray(new Point(-800,0,0), new Vector(0,-1,0));
+        assertNull(cylinder.findIntersections(ray), "ray is orthogonal to axisRay and intersects the cylinder- found wrong number of intersection");
     }
 }
