@@ -11,18 +11,81 @@ public class TicTacToe {
     private int length;
     private int totalHeight;
     private int height;
-    private Vector vUp = new Vector(0,0,1);
+    //private Vector vUp = new Vector(0,0,1);
 
-    public TicTacToe(int width, int length, int height) {
-        this.width = width;
-        this.length = length;
-        this.height = height;
-        this.totalHeight = 2 * length + width;
+    private int size;
+    private Vector vUp = new Vector(0,0,1);
+    private Vector vRight = new Vector(1,0,0);
+    private Vector vTo = new Vector(0,1,0);
+    private int linesHeight;
+    private int boardHeight;
+    private Color color;
+    private Material mat;
+
+    public TicTacToe(int boardSize, Color color, Material mat) {
+        this.size = boardSize;
+        this.linesHeight = boardSize/40;
+        this.boardHeight = boardSize/7;
+        this.color = color;
+        this.mat = mat;
+    }
+
+    public Geometries generateLine(Vector vTo, Vector vRight, Point p){
+
+        Point firstHead = p;
+        Point A = p.add(vRight.scale(linesHeight).add(vUp.scale(-linesHeight)));
+        Point B = A.add(vTo.scale(size));
+        Point secondHead = p.add(vTo.scale(size));
+        Point C = secondHead.add(vRight.scale(-linesHeight).add(vUp.scale(-linesHeight)));
+        Point D = C.add(vTo.scale(-size));
+
+        Geometry firstPart = new Polygon(firstHead,A,B,secondHead).setEmission(color).setMaterial(mat);
+        Geometry secondPart = new Polygon(firstHead,secondHead,C,D).setEmission(color).setMaterial(mat);
+
+        Geometries line = new Geometries(firstPart, secondPart);
+        return line;
+    }
+
+    public Geometries generateLines(){
+        Geometries lines = generateLine(vTo, vRight, new Point(-size/6, -size/2, linesHeight));
+        lines.add(generateLine(vTo, vRight, new Point(size/6, -size/2, linesHeight)));
+        lines.add(generateLine(vRight, vTo.scale(-1), new Point(-size/2, size/6, linesHeight)));
+        lines.add(generateLine(vRight, vTo.scale(-1), new Point(-size/2, -size/6, linesHeight)));
+        return lines;
+    }
+
+    public Geometries generateBoard(){
+
+        // 4 points for top base
+        Point A = new Point (-size/2, size/2,0);
+        Point B = new Point (size/2, size/2,0);
+        Point C = new Point (size/2, -size/2,0);
+        Point D = new Point (-size/2, -size/2,0);
+
+        // 4 points for bottom base
+        Point E = A.add(vUp.scale(-boardHeight));
+        Point F = B.add(vUp.scale(-boardHeight));
+        Point G = C.add(vUp.scale(-boardHeight));
+        Point H = D.add(vUp.scale(-boardHeight));
+
+        // two bases
+        Geometry topBase = new Polygon(A,B,C,D).setEmission(color).setMaterial(mat);
+        Geometry bottomBase = new Polygon(E,F,G,H).setEmission(color).setMaterial(mat);
+
+        //4 sides
+        Geometry side1 = generateSide(E,F,boardHeight).setEmission(color).setMaterial(mat);
+        Geometry side2 = generateSide(F,G,boardHeight).setEmission(color).setMaterial(mat);
+        Geometry side3 = generateSide(G,H,boardHeight).setEmission(color).setMaterial(mat);
+        Geometry side4 = generateSide(H,E,boardHeight).setEmission(color).setMaterial(mat);
+
+        Geometries lines = generateLines();
+        lines.add(topBase, bottomBase, side1,side2,side3,side4);
+        return lines;
     }
 
     //region X
     /**
-     *  create an X in space
+     * create an X in space
      * @param A first reference point - edge of the X
      * @param v1 dir vector for the short side of the X
      * @param v2 dir vector for the long side of the X

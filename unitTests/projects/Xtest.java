@@ -35,14 +35,14 @@ public class Xtest {
             new Point(0,0,100));
     private Color xEmission = new Color(27,17,59); // violet
     private Color oEmission = new Color(194,198,196); // gray - white
-    private Material material = new Material().setKd(0.2).setKs(0.2).setShininess(5).setkT(0.3).setkR(0.3).setGlossiness(1);
+    private Material material = new Material().setKd(0.2).setKs(0.2).setShininess(5).setkT(0.3).setkR(1).setGlossiness(1);
 
     private Geometry sphere = new Sphere(new Point(0,0,100), 100).setEmission(new Color(104,244,111)).setMaterial(material);
     private Ray ray = new Ray(new Point(500,500,0), new Vector(0,0,1));
 
     @Test
     void createX(){
-        TicTacToe ticTacToe = new TicTacToe(200, 300, 350);
+        /**TicTacToe ticTacToe = new TicTacToe(200, 300, 350);
         scene.addGeometry(ticTacToe.generateX(new Point(-100, 400, 0),
                 new Vector(1,0,0),
                 new Vector(0,-1,0), xEmission, material));
@@ -67,5 +67,24 @@ public class Xtest {
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //
+         */
+        TicTacToe ticTacToe = new TicTacToe(900, xEmission, material);
+        Geometries lines = ticTacToe.generateBoard();
+        scene.addGeometry(lines);
+        //scene.lights.add(pointLight1);
+        scene.lights.add(pointLight);
+        ImageWriter imageWriter = new ImageWriter("construct x", 500, 500);
+        camera.rotateAroundVTo(45).setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage() //
+                .writeToImage(); //
+
+        camera = camera.moveReferencePoint(-800,300,0).rotateAroundVRight(-30);
+        imageWriter = new ImageWriter("construct x rotation", 500, 500);
+        camera.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage() //
+                .writeToImage(); //
+
     }
 }
