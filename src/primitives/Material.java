@@ -16,6 +16,8 @@ public class Material {
      */
     public Double3 kR = new Double3(0);
 
+    public double glossiness = 0;
+    public double diffuseness = 0;
     //region setters
     /**
      * set the diffusion factor
@@ -24,6 +26,16 @@ public class Material {
      */
     public Material setKd(double kD) {
         this.kD = new Double3(kD);
+        return this;
+    }
+
+    public Material setGlossiness(double glossiness) {
+        this.glossiness = glossiness;
+        return this;
+    }
+
+    public Material setDiffuseness(double diffuseness) {
+        this.diffuseness = diffuseness;
         return this;
     }
 

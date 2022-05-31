@@ -24,7 +24,7 @@ public class ReflectionRefractionTests {
 	private Scene scene = new Scene("Test scene");
 
 	/**
-	 * Produce a picture of a sphere lighted by a spot light
+	 * Produce a picture of a sphere lighted by a spotlight
 	 */
 	@Test
 	public void twoSpheres() {
@@ -33,9 +33,9 @@ public class ReflectionRefractionTests {
 
 		scene.geometries.add( //
 				new Sphere(new Point(0, 0, -50), 50d).setEmission(new Color(BLUE)) //
-						.setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setkT(0.3)),
+						.setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setkT(0.3).setDiffuseness(1)),
 				new Sphere(new Point(0, 0, -50), 25d).setEmission(new Color(RED)) //
-						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100)));
+						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setDiffuseness(1)));
 		scene.lights.add( //
 				new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2)) //
 						.setKl(0.0004).setKq(0.0000006));

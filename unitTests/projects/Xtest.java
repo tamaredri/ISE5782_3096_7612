@@ -35,7 +35,7 @@ public class Xtest {
             new Point(0,0,100));
     private Color xEmission = new Color(27,17,59); // violet
     private Color oEmission = new Color(194,198,196); // gray - white
-    private Material material = new Material().setKd(0.2).setKs(0.2).setShininess(5).setkT(0.3).setkR(0.3);
+    private Material material = new Material().setKd(0.2).setKs(0.2).setShininess(5).setkT(0.3).setkR(0.3).setGlossiness(1);
 
     private Geometry sphere = new Sphere(new Point(0,0,100), 100).setEmission(new Color(104,244,111)).setMaterial(material);
     private Ray ray = new Ray(new Point(500,500,0), new Vector(0,0,1));
@@ -47,7 +47,7 @@ public class Xtest {
                 new Vector(1,0,0),
                 new Vector(0,-1,0), xEmission, material));
 
-        scene.addGeometry(ticTacToe.generateO(ray, 300, 350, oEmission, material));
+        scene.addGeometry(ticTacToe.generateO(ray, 300, 350, xEmission, material));
         scene.addGeometry(sphere);
 
 

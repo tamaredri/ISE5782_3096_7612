@@ -67,12 +67,12 @@ public class Cylinder extends Tube{
         Circle base = new Circle(axisRay.getP0(), radius, axisRay.getDir());
         helpIntersections = base.findGeoIntersectionsHelper(ray, maxDistance);
         if(helpIntersections != null)
-            pointList.addAll(helpIntersections);
+            pointList.add(new GeoPoint(this, helpIntersections.get(0).point));
 
         base = new Circle(axisRay.getPoint(height), radius, axisRay.getDir());
         helpIntersections = base.findGeoIntersectionsHelper(ray, maxDistance);
         if(helpIntersections != null)
-            pointList.addAll(helpIntersections);
+            pointList.add(new GeoPoint(this, helpIntersections.get(0).point));
 
         if (pointList.size() == 0)
             return null;

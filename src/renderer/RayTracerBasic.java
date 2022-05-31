@@ -8,6 +8,7 @@ import geometries.Intersectable.GeoPoint;
 import java.util.List;
 
 import static primitives.Util.*;
+import static primitives.Util.isZero;
 
 /**
  *  implementation of the abstract class RayTracerBase
@@ -121,10 +122,68 @@ public class RayTracerBasic extends RayTracerBase{
         Material material = gp.geometry.getMaterial();
 
         Double3 kkr = k.product(material.kR);
+        if (!kkr.lowerThan(MIN_CALC_COLOR_K)) { // the color is effected by the reflection
+            ray = constructReflectedRay(gp.point, ray, n);
+            double glossiness = material.glossiness;
+
+            if (!isGlossy(gp)) // glossiness = glossy reflection
+                color = calcGlobalEffects(ray, level, material.kR, kkr);
+            else {
+                RayBeam rayBeam = new RayBeam(ray, glossiness, glossiness);
+                List<Ray> rayList = rayBeam.constructRayBeam();
+                int beamSize = rayList.size();
+
+                for (Ray r : rayList) {
+                    //if(!(n.dotProduct(r.getDir()) < 0)) // the ray has to be in the normal direction to be reflected correctly
+                        color = color.add(calcGlobalEffects(r, level, material.kR, kkr));
+                    //else
+                    //    beamSize--;
+                }
+                color = color.reduce(beamSize);
+            }
+        }
+
+
+        Double3 kkt = k.product(material.kT);
+        if (!kkt.lowerThan(MIN_CALC_COLOR_K)) {// the color is effected due to the transparency
+            ray = constructRefractedRay(gp.point, ray, n);
+            double diffuseness = material.diffuseness;
+
+            if (!isDiffusive(gp)) // diffuseness = diffusive refraction
+                color = calcGlobalEffects(ray, level, material.kT, kkt);
+            else {
+                RayBeam rayBeam = new RayBeam(ray, diffuseness, diffuseness);
+                List<Ray> rayList = rayBeam.constructRayBeam();
+                int beamSize = rayList.size();
+                for (Ray r : rayList) {
+                    //if(n.dotProduct(r.getDir()) < 0) // the ray has to be in the opposite direction of the normal refracted correctly
+                        color = color.add(calcGlobalEffects(r, level, material.kT, kkt));
+                    //else
+                    //    beamSize--;
+                }
+                color = color.reduce(beamSize); // average the color
+            }
+        }
+
+        return color;
+    }
+
+    private boolean isDiffusive(GeoPoint gp) {
+        return !isZero(gp.geometry.getMaterial().diffuseness);
+    }
+
+    private boolean isGlossy(GeoPoint gp) {
+        return !isZero(gp.geometry.getMaterial().glossiness);
+    }
+
+/*
+    private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
+        Color color = Color.BLACK;
+        Vector n = gp.geometry.getNormal(gp.point);
+        Material material = gp.geometry.getMaterial();
+
+        Double3 kkr = k.product(material.kR);
         if (!kkr.lowerThan(MIN_CALC_COLOR_K)) // the color is effected by the reflection
-            /*
-            list<ray> = constructReflectedRays()..;
-            */
             color = calcGlobalEffects(constructReflectedRay(gp.point, ray, n), level, material.kR, kkr);
 
         Double3 kkt = k.product(material.kT);
@@ -133,6 +192,8 @@ public class RayTracerBasic extends RayTracerBase{
 
         return color;
     }
+
+ */
     //endregion
 
     //region calcLocalEffects
@@ -232,8 +293,6 @@ public class RayTracerBasic extends RayTracerBase{
         return new Ray(point, ray.getDir(), n);
     }
 
-    // filter the rays and choose the rays that are above the geometry
-
     /**
      * construct the reflection ray according to the physics law of reflection
      * @param point reference point of the new ray
@@ -242,7 +301,7 @@ public class RayTracerBasic extends RayTracerBase{
      * @return the reflected ray
      */
     private Ray constructReflectedRay(Point point, Ray ray, Vector n) {
-        return new Ray(point, reflectionVector(ray.getDir(), n), n); //calls rayBeam to construct the ray Beam
+        return new Ray(point, reflectionVector(ray.getDir(), n), n);
     }
     //endregion
 
