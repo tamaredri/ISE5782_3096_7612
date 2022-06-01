@@ -113,7 +113,7 @@ public class TicTacToetest{
                 .writeToImage(); //
 
         camera = camera.moveReferencePoint(-800,300,0).rotateAroundVRight(-30);
-        imageWriter = new ImageWriter("construct BoarRotation rotation", 500, 500);
+        imageWriter = new ImageWriter("construct ticTacToe rotation", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //

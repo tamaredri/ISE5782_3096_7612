@@ -177,6 +177,25 @@ public class Camera {
             throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
         }
 
+        int nY = imageWriter.getNy();
+        int nX = imageWriter.getNx();
+        int threadsCount = 4;
+
+        Pixel.initialize(nY, nX, 1);
+        while (threadsCount-- > 0) {
+            new Thread(() -> {
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
+                    imageWriter.writePixel(pixel.col, pixel.row,                                                // for each pixel (j,i)
+                            rayTracer.traceRay(                                              // find the color of the pixel using
+                                    constructRay(nX, nY, pixel.col, pixel.row)));  // construction of a ray through the pixel
+                // and intersecting with the geometries
+
+                //castRay(nX, nY, pixel.col, pixel.row);
+            }).start();
+        }
+        Pixel.waitToFinish();
+
+/*
         for (int i = 0; i < imageWriter.getNx(); i++){
             for (int j = 0; j<imageWriter.getNy(); j++){
                 imageWriter.writePixel(j, i,                                                // for each pixel (j,i)
@@ -185,8 +204,13 @@ public class Camera {
                                                                                             // and intersecting with the geometries
             }
         }
+
+ */
+
         return this;
     }
+
+
     //endregion
 
     //region printGrid

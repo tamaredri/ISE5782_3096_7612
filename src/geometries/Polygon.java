@@ -116,12 +116,13 @@ public class Polygon extends Geometry {
 				edgeVector = this.vertices.get(i + 1).subtract(this.vertices.get(i)).normalize();
 				vecToPoint = intersectionPoint.subtract(this.vertices.get(i)).normalize();
 
+				// the point is on the edge
 				if( edgeVector.equals(vecToPoint) || edgeVector.equals(edgeVector.scale(-1)))
 					return null;
 
 				Vector crossVector = edgeVector.crossProduct(vecToPoint).normalize();
 
-				if (!normalVector.equals(crossVector))	// at least 1 vec is not the same, then the point is outside the polygon
+				if ( normalVector.dotProduct(crossVector) < 0 /*!normalVector.equals(crossVector)*/)	// at least 1 vec is not the same, then the point is outside the polygon
 					return null;
 			}
 			intersections.clear(); // the point is inside the polygon
