@@ -52,12 +52,7 @@ public class Vector extends Point{
      * @return the Vector scaled
      */
     public Vector scale(double scalar) throws IllegalArgumentException {
-        try {
             return new Vector(xyz.scale(scalar));
-        }
-        catch (Exception e){
-            return this;
-        }
     }
     //endregion
 
@@ -123,6 +118,17 @@ public class Vector extends Point{
     }
     //endregion
 
+    //region getOrthogonal
+    public Vector getOrthogonal(){
+        Vector orthogonal;
+        if(!isZero(this.getX()) || !isZero(this.getY()))
+            orthogonal = new Vector(this.getY(),-this.getX(), 0);
+        else
+            orthogonal = new Vector(0,-this.getZ(), this.getY());
+        return orthogonal;
+    }
+    //endregion
+
     //region moveClockwiseAround - rotate a vector
     /**
      * rotating a vector around a requested vector, in an angle requested
@@ -130,7 +136,7 @@ public class Vector extends Point{
      * the calling vector is the vector that will be moved due to the rotation
      * @param rotationVector the vector the space will rotate around, orthogonal to the calling vector
      * @param angle the size of the rotation - angle in degrees
-     * @return vectorToMove rotated to the left with the requested angle
+     * @return vectorToMove normalized and rotated to the left with the requested angle
      */
     public Vector moveClockwiseAround(Vector rotationVector, double angle) {
         if (!isZero(this.dotProduct(rotationVector)))

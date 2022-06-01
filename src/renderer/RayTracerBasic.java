@@ -15,7 +15,7 @@ import static primitives.Util.isZero;
  *  adding the local and global effects of the objects presented in the scene
  */
 public class RayTracerBasic extends RayTracerBase{
-    private static final int MAX_CALC_COLOR_LEVEL = 10;
+    private static final int MAX_CALC_COLOR_LEVEL = 3;
     private static final double MIN_CALC_COLOR_K = 0.001;
     private static final Double3 INITIAL_K = new Double3(1.0);
 
@@ -27,7 +27,7 @@ public class RayTracerBasic extends RayTracerBase{
     //region traceRay
     @Override
     public Color traceRay(Ray ray) {
-        GeoPoint gp = findClosestIntersection(ray); // intersect the ray with the geometries
+        GeoPoint gp = scene.geometries.findClosestIntersection(ray); // intersect the ray with the geometries
         if (gp == null)     // no intersection was found
             return this.scene.background;   // the background color
         return calcColor(gp, ray);                                   // return the calculated color of this point
@@ -102,7 +102,7 @@ public class RayTracerBasic extends RayTracerBase{
      * @return the new calculated color
      */
     private Color calcGlobalEffects(Ray ray, int level, Double3 kx, Double3 kkx) {
-        GeoPoint gp = findClosestIntersection(ray);
+        GeoPoint gp = scene.geometries.findClosestIntersection(ray);
         return (gp == null ? scene.background : calcColor(gp, ray, level - 1, kkx)).scale(kx);
     }
     //endregion
@@ -123,18 +123,18 @@ public class RayTracerBasic extends RayTracerBase{
 
         Double3 kkr = k.product(material.kR);
         if (!kkr.lowerThan(MIN_CALC_COLOR_K)) { // the color is effected by the reflection
-            ray = constructReflectedRay(gp.point, ray, n);
+            Ray ray1 = constructReflectedRay(gp.point, ray, n);
             double glossiness = material.glossiness;
 
             if (!isGlossy(gp)) // glossiness = glossy reflection
-                color = calcGlobalEffects(ray, level, material.kR, kkr);
+                color = calcGlobalEffects(ray1, level, material.kR, kkr);
             else {
-                RayBeam rayBeam = new RayBeam(ray, glossiness, glossiness);
+                RayBeam rayBeam = new RayBeam(ray1, glossiness, glossiness);
                 List<Ray> rayList = rayBeam.constructRayBeam();
                 int beamSize = rayList.size();
 
                 for (Ray r : rayList) {
-                    //if(!(n.dotProduct(r.getDir()) < 0)) // the ray has to be in the normal direction to be reflected correctly
+                    //if((alignZero(n.dotProduct(r.getDir())) > 0)) // the ray has to be in the normal direction to be reflected correctly
                         color = color.add(calcGlobalEffects(r, level, material.kR, kkr));
                     //else
                     //    beamSize--;
@@ -146,17 +146,17 @@ public class RayTracerBasic extends RayTracerBase{
 
         Double3 kkt = k.product(material.kT);
         if (!kkt.lowerThan(MIN_CALC_COLOR_K)) {// the color is effected due to the transparency
-            ray = constructRefractedRay(gp.point, ray, n);
+            Ray ray1 = constructRefractedRay(gp.point, ray, n);
             double diffuseness = material.diffuseness;
 
             if (!isDiffusive(gp)) // diffuseness = diffusive refraction
-                color = calcGlobalEffects(ray, level, material.kT, kkt);
+                color = calcGlobalEffects(ray1, level, material.kT, kkt);
             else {
-                RayBeam rayBeam = new RayBeam(ray, diffuseness, diffuseness);
+                RayBeam rayBeam = new RayBeam(ray1, diffuseness, diffuseness);
                 List<Ray> rayList = rayBeam.constructRayBeam();
                 int beamSize = rayList.size();
                 for (Ray r : rayList) {
-                    //if(n.dotProduct(r.getDir()) < 0) // the ray has to be in the opposite direction of the normal refracted correctly
+                    //if(alignZero(n.dotProduct(r.getDir())) < 0) // the ray has to be in the opposite direction of the normal refracted correctly
                         color = color.add(calcGlobalEffects(r, level, material.kT, kkt));
                     //else
                     //    beamSize--;
@@ -175,25 +175,6 @@ public class RayTracerBasic extends RayTracerBase{
     private boolean isGlossy(GeoPoint gp) {
         return !isZero(gp.geometry.getMaterial().glossiness);
     }
-
-/*
-    private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
-        Color color = Color.BLACK;
-        Vector n = gp.geometry.getNormal(gp.point);
-        Material material = gp.geometry.getMaterial();
-
-        Double3 kkr = k.product(material.kR);
-        if (!kkr.lowerThan(MIN_CALC_COLOR_K)) // the color is effected by the reflection
-            color = calcGlobalEffects(constructReflectedRay(gp.point, ray, n), level, material.kR, kkr);
-
-        Double3 kkt = k.product(material.kT);
-        if (!kkt.lowerThan(MIN_CALC_COLOR_K)) // the color is effected due to the transparency
-            color = color.add(calcGlobalEffects(constructRefractedRay(gp.point, ray, n), level, material.kT, kkt));
-
-        return color;
-    }
-
- */
     //endregion
 
     //region calcLocalEffects
@@ -265,18 +246,6 @@ public class RayTracerBasic extends RayTracerBase{
     private Color calcDiffusive(Material mat, Vector l, Vector n, Color lightIntensity) {
         // the phong model formula for the diffusive effect: 𝒌𝑫 ∙| 𝒍 ∙ 𝒏 |∙ 𝑰
         return lightIntensity.scale(mat.kD.scale(Math.abs(n.dotProduct(l))));
-    }
-    //endregion
-
-    //region findClosestIntersection
-    /**
-     * intersects the ray with the scene and finds the closest point the ray intersects
-     * @param ray to intersect the scene with
-     * @return the closest point
-     */
-    private GeoPoint findClosestIntersection(Ray ray) {
-        List<GeoPoint> intersectionPoints = scene.geometries.findGeoIntersections(ray);
-        return ray.findClosestGeoPoint(intersectionPoints);
     }
     //endregion
 

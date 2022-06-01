@@ -16,7 +16,7 @@ public class RayBeam {
     private final Vector vRight;
     private final double height;
     private final double width;
-    private final double DISTANCE = 200;
+    private final double DISTANCE = 50;
     private int AMOUNT = 10; //TODO calculate by height * width
 
     //region getters

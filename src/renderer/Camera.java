@@ -148,12 +148,12 @@ public class Camera {
         double Ry = alignZero(height/nY);                      // Ratio - pixel height
         double Rx = alignZero(width/nX);                       // Ratio - pixel width
 
-        double yJ = alignZero(-(i - (nY - 1) / 2d) * Ry);       // move pc Yi pixels
+        double yI = alignZero(-(i - (nY - 1) / 2d) * Ry);       // move pc Yi pixels
         double xJ = alignZero((j - (nX - 1) / 2d) * Rx);        // move pc Xj pixels
 
         Point PIJ = pc;
         if(!isZero(xJ))  PIJ = PIJ.add(vRight.scale(xJ));       // move the point in vRight direction
-        if(!isZero(yJ))  PIJ = PIJ.add(vUp.scale(yJ));          // move the point in vUp direction
+        if(!isZero(yI))  PIJ = PIJ.add(vUp.scale(yI));          // move the point in vUp direction
 
         return new Ray(p0, PIJ.subtract(p0));       // the ray through the wanted pixel
     }
