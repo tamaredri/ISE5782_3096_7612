@@ -13,11 +13,17 @@ import static primitives.Util.isZero;
 public class RayBeam {
     private final Ray centerRay;
     private final Vector vUp;
+
     private final Vector vRight;
     private final double height;
     private final double width;
     private final double DISTANCE = 50;
-    private int AMOUNT = 10; //TODO calculate by height * width
+    private int amount = 81;
+
+    public RayBeam setAmount(int amount) {
+        this.amount = amount;
+        return this;
+    }
 
     //region getters
     public Vector getvUp() {
@@ -46,10 +52,14 @@ public class RayBeam {
         this.width = width;
         // make orthogonal vectors
         Vector dir = centerRay.getDir();
+        /*
         if(!isZero(dir.getX()) || !isZero(dir.getY()))
             this.vUp = new Vector(dir.getY(),-dir.getX(), 0);
         else
             this.vUp = new Vector(0,-dir.getZ(), dir.getY());
+
+         */
+        this.vUp = dir.getOrthogonal();
 
         this.vUp.normalize();
         this.vRight = this.vUp.crossProduct(dir).normalize();
@@ -65,7 +75,7 @@ public class RayBeam {
 
         BlackBoard blackBoard = new BlackBoard(this.width, this.height);
 
-        for (BlackBoard.Point2D point: blackBoard.generatePoints(AMOUNT)) {
+        for (BlackBoard.Point2D point: blackBoard.generatePoints(amount)) {
             Point endPoint = center;
             if(!isZero(point.getX()))  endPoint = endPoint.add(vRight.scale(point.getX()));       // move the point in vRight direction
             if(!isZero(point.getY()))  endPoint = endPoint.add(vUp.scale(point.getY()));          // move the point in vUp direction

@@ -39,6 +39,7 @@ public class Camera {
 
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
+    private Boolean multiThreading = false;
 
     //region constructor
     /**
@@ -134,6 +135,13 @@ public class Camera {
     }
     //endregion
 
+    //region setMultiThreading
+    public Camera setMultiThreading(Boolean multiThreading) {
+        this.multiThreading = multiThreading;
+        return this;
+    }
+    //endregion
+
     //region constructRay
     /**
      * constructs a ray from the camera through pixel i,j.
@@ -179,34 +187,30 @@ public class Camera {
 
         int nY = imageWriter.getNy();
         int nX = imageWriter.getNx();
-        int threadsCount = 4;
 
-        Pixel.initialize(nY, nX, 1);
-        while (threadsCount-- > 0) {
-            new Thread(() -> {
-                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
-                    imageWriter.writePixel(pixel.col, pixel.row,                                                // for each pixel (j,i)
-                            rayTracer.traceRay(                                              // find the color of the pixel using
-                                    constructRay(nX, nY, pixel.col, pixel.row)));  // construction of a ray through the pixel
-                // and intersecting with the geometries
+        if(multiThreading) {
+            int threadsCount = 4;
 
-                //castRay(nX, nY, pixel.col, pixel.row);
-            }).start();
+            Pixel.initialize(nY, nX, 1);
+            while (threadsCount-- > 0) {
+                new Thread(() -> {
+                    for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
+                        imageWriter.writePixel(pixel.col, pixel.row,
+                                rayTracer.traceRay(
+                                        constructRay(nX, nY, pixel.col, pixel.row)));
+                }).start();
+            }
+            Pixel.waitToFinish();
         }
-        Pixel.waitToFinish();
-
-/*
-        for (int i = 0; i < imageWriter.getNx(); i++){
-            for (int j = 0; j<imageWriter.getNy(); j++){
-                imageWriter.writePixel(j, i,                                                // for each pixel (j,i)
-                           rayTracer.traceRay(                                              // find the color of the pixel using
-                           constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));  // construction of a ray through the pixel
-                                                                                            // and intersecting with the geometries
+        else{
+            for (int i = 0; i < imageWriter.getNx(); i++){
+                for (int j = 0; j<imageWriter.getNy(); j++){
+                    imageWriter.writePixel(j, i,
+                            rayTracer.traceRay(
+                                    constructRay(nX, nY, j, i)));
+                }
             }
         }
-
- */
-
         return this;
     }
 
