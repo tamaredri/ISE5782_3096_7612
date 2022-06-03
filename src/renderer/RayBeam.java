@@ -52,13 +52,6 @@ public class RayBeam {
         this.width = width;
         // make orthogonal vectors
         Vector dir = centerRay.getDir();
-        /*
-        if(!isZero(dir.getX()) || !isZero(dir.getY()))
-            this.vUp = new Vector(dir.getY(),-dir.getX(), 0);
-        else
-            this.vUp = new Vector(0,-dir.getZ(), dir.getY());
-
-         */
         this.vUp = dir.getOrthogonal();
 
         this.vUp.normalize();
@@ -71,11 +64,10 @@ public class RayBeam {
         Point center = centerRay.getPoint(DISTANCE);
 
         List<Ray> list = new LinkedList<>();
-        list.add(centerRay);
 
         BlackBoard blackBoard = new BlackBoard(this.width, this.height);
 
-        for (BlackBoard.Point2D point: blackBoard.generatePoints(amount)) {
+        for (BlackBoard.Point2D point: blackBoard.generatePoints(amount - 1)) {
             Point endPoint = center;
             if(!isZero(point.getX()))  endPoint = endPoint.add(vRight.scale(point.getX()));       // move the point in vRight direction
             if(!isZero(point.getY()))  endPoint = endPoint.add(vUp.scale(point.getY()));          // move the point in vUp direction
