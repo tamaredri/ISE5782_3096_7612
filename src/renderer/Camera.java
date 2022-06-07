@@ -1,6 +1,8 @@
 package renderer;
 
 import primitives.*;
+
+import java.util.List;
 import java.util.MissingResourceException;
 import static primitives.Util.*;
 
@@ -39,7 +41,7 @@ public class Camera {
 
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
-    private Boolean multiThreading = false;
+    private int multiThreading = 1;
 
     //region constructor
     /**
@@ -136,7 +138,7 @@ public class Camera {
     //endregion
 
     //region setMultiThreading
-    public Camera setMultiThreading(Boolean multiThreading) {
+    public Camera setMultiThreading(int multiThreading) {
         this.multiThreading = multiThreading;
         return this;
     }
@@ -188,33 +190,50 @@ public class Camera {
         int nY = imageWriter.getNy();
         int nX = imageWriter.getNx();
 
-        if(multiThreading) {
-            int threadsCount = 4;
-
-            Pixel.initialize(nY, nX, 1);
-            while (threadsCount-- > 0) {
-                new Thread(() -> {
-                    for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
-                        imageWriter.writePixel(pixel.col, pixel.row,
-                                rayTracer.traceRay(
-                                        constructRay(nX, nY, pixel.col, pixel.row)));
-                }).start();
-            }
-            Pixel.waitToFinish();
-        }
-        else{
-            for (int i = 0; i < imageWriter.getNx(); i++){
-                for (int j = 0; j<imageWriter.getNy(); j++){
-                    imageWriter.writePixel(j, i,
+        int threadsCount = this.multiThreading;
+        Pixel.initialize(nY, nX, 1);
+        while (threadsCount-- > 0) {
+            new Thread(() -> {
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
+                    imageWriter.writePixel(pixel.col, pixel.row,
                             rayTracer.traceRay(
-                                    constructRay(nX, nY, j, i)));
-                }
-            }
+                                    constructRay(nX, nY, pixel.col, pixel.row)));
+            }).start();
         }
+        Pixel.waitToFinish();
         return this;
     }
 
+    public Camera renderImage(int rayNum) {
+        if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) {
+            throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
+        }
+        int nY = imageWriter.getNy();
+        int nX = imageWriter.getNx();
 
+        int threadsCount = this.multiThreading;
+        Pixel.initialize(nY, nX, 1);
+        while (threadsCount-- > 0) {
+            new Thread(() -> {
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone()) {
+                    Color color = Color.BLACK;
+                    RayBeam rayBeam = new RayBeam(constructRay(nX, nY, pixel.col, pixel.row),
+                                                  this.vUp, this.vRight,
+                                                  this.width / nY, this.height / nX);
+                    rayBeam.setAmount(rayNum);
+                    List<Ray> rayList = rayBeam.constructRayBeam();
+
+                    for (Ray r : rayList) {
+                        color = color.add(rayTracer.traceRay(r));
+                    }
+                    color = color.reduce(rayNum);
+                    imageWriter.writePixel(pixel.col, pixel.row, color);
+                }
+            }).start();
+        }
+        Pixel.waitToFinish();
+        return this;
+    }
     //endregion
 
     //region printGrid

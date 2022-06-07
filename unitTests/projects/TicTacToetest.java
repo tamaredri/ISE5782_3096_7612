@@ -46,8 +46,8 @@ public class TicTacToetest{
     Color xEmission = new Color(14,14,150);
     Color oEmission = new Color(255,255,255).scale(0.1);
     Color boardEmission = new Color(177,177,184);
-    Material pondMaterial = new Material().setKd(0.2).setKs(0.9).setShininess(30).setkT(0.5).setDiffuseness(5);
-    Material boardMaterial = new Material().setKd(0.2).setKs(0.5).setShininess(30).setkR(0.5).setGlossiness(5);
+    Material pondMaterial = new Material().setKd(0.2).setKs(0.9).setShininess(30).setkT(0.5);
+    Material boardMaterial = new Material().setKd(0.2).setKs(0.5).setShininess(30).setkR(0.5);
 
     @Test
     void createXO(){
@@ -62,7 +62,7 @@ public class TicTacToetest{
         ImageWriter imageWriter = new ImageWriter("construct x", 500, 500);
        camera2.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
-                .renderImage() //
+                .renderImage(81) //
                 .writeToImage(); //
 
         camera2 = camera2.moveReferencePoint(-800,300,0).rotateAroundVRight(-30);
@@ -106,9 +106,9 @@ public class TicTacToetest{
         scene1.lights.add(spotLight);
 
         ImageWriter imageWriter = new ImageWriter("construct ticTacToe", 500, 500);
-        camera/*.rotateAroundVTo(45)*/.setImageWriter(imageWriter) //
+        camera.setMultiThreading(3).setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
-                .renderImage() //
+                .renderImage(81) //
                 .writeToImage(); //
 
         //scene1.addGeometry(generateTable());
@@ -117,8 +117,10 @@ public class TicTacToetest{
         imageWriter = new ImageWriter("construct ticTacToe rotation", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
-                .renderImage() //
+                .renderImage(81) //
                 .writeToImage(); //
+
+
     }
 
     //region generate table
