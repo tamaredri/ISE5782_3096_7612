@@ -9,6 +9,9 @@ import java.util.List;
 
 import static primitives.Util.alignZero;
 
+/**
+ * represent a Circle in 3D
+ */
 public class Circle extends Geometry{
     Plane plane;
     Point center;

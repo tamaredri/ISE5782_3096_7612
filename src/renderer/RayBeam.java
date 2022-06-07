@@ -8,7 +8,7 @@ import java.util.List;
 import static primitives.Util.isZero;
 
 /**
- * create a beam of points in a relative radius from a Ray in space
+ * create a beam of points in a relative radius or perimeter from a Ray in space
  */
 public class RayBeam {
     private final Ray centerRay;
@@ -32,9 +32,7 @@ public class RayBeam {
     }
 
     /**
-     * set the size of the blackboard
-     * @param height of the blackboard
-     * @param width of the blackboard
+     * set the size of the blackboard according to a height and width parameters
      * @return this - builder pattern
      */
     RayBeam setSize(double height, double width){
@@ -43,6 +41,10 @@ public class RayBeam {
         return this;
     }
 
+    /**
+     * optional to change the amount of rays in the ray beam
+     * @return this - builder pattern
+     */
     public RayBeam setAmount(int amount) {
         this.amount = amount;
         return this;
@@ -70,7 +72,8 @@ public class RayBeam {
 
     public RayBeam(Ray centerRay) {
         this.centerRay = centerRay;
-        // make orthogonal vectors
+
+        // generate orthogonal vectors
         Vector dir = centerRay.getDir();
         this.vUp = dir.getOrthogonal();
 
@@ -80,6 +83,10 @@ public class RayBeam {
     //endregion
 
     //region constructRayBeam
+    /**
+     * generate a list with all the ray going through a given perimeter relative to the center ray
+     * of the ray beam
+     */
     List<Ray> constructRayBeam(){
         Point center = centerRay.getPoint(DISTANCE);
         List<Ray> list = new LinkedList<>();

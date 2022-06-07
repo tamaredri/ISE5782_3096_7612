@@ -1,7 +1,6 @@
 package renderer;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * generate a random 2D points in a square around (0,0)
@@ -11,6 +10,9 @@ public class BlackBoard {
     double yAxis;
 
     //region 2D points
+    /**
+     * inner class fpr representing 2D point
+     */
     public static class Point2D {
         public double getX() {
             return x;

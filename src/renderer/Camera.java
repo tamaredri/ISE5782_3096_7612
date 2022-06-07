@@ -138,6 +138,11 @@ public class Camera {
     //endregion
 
     //region setMultiThreading
+    /**
+     * if multithreading is needed then it is possible to change the amount of threads rendering the image
+     * @param multiThreading the amount of threads
+     * @return this - builder pattern
+     */
     public Camera setMultiThreading(int multiThreading) {
         this.multiThreading = multiThreading;
         return this;
@@ -171,7 +176,7 @@ public class Camera {
 
     //region renderImage
     /**
-     * render the image and fill the pixels with the desired colors.
+     * render the image and fill the pixels with the desired color.
      * using the ray tracer to find the colors.
      * and the image writer to color the pixels.
      * @throws MissingResourceException if one of the following fields are uninitialized (unable to render the image):<ul>
@@ -181,6 +186,7 @@ public class Camera {
      *     <li> height </li>
      *     <li> distance </li>
      * </ul>
+     * optional - use threading
      */
     public Camera renderImage() throws MissingResourceException{
         if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) {
@@ -193,7 +199,7 @@ public class Camera {
         int threadsCount = this.multiThreading;
         Pixel.initialize(nY, nX, 1);
         while (threadsCount-- > 0) {
-            new Thread(() -> {
+            new Thread(() -> {          // start the treads
                 for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
                     imageWriter.writePixel(pixel.col, pixel.row,
                             rayTracer.traceRay(
@@ -205,7 +211,7 @@ public class Camera {
     }
 
     /**
-     * render the image and fill the pixels with the desired colors.
+     * render the image and fill the pixels with the desired color.
      * using the ray tracer to find the colors.
      * and the image writer to color the pixels.
      * @throws MissingResourceException if one of the following fields are uninitialized (unable to render the image):<ul>
@@ -216,6 +222,7 @@ public class Camera {
      *     <li> distance </li>
      * </ul>
      * @param rayNum the size of the ray beam
+     * optional - use threading
      */
     public Camera renderImage(int rayNum) {
         if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) {
@@ -227,19 +234,19 @@ public class Camera {
         int threadsCount = this.multiThreading;
         Pixel.initialize(nY, nX, 1);
         while (threadsCount-- > 0) {
-            new Thread(() -> {
+            new Thread(() -> {                  // start the threads
                 for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone()) {
                     Color color = Color.BLACK;
+
                     RayBeam rayBeam = new RayBeam(constructRay(nX, nY, pixel.col, pixel.row),
                                                   this.vUp, this.vRight)
-                                        .setSize(this.width / nY, this.height / nX);
-                    rayBeam.setAmount(rayNum);
-                    List<Ray> rayList = rayBeam.constructRayBeam();
+                                        .setSize(this.width / nY, this.height / nX)
+                                        .setAmount(rayNum);
 
-                    for (Ray r : rayList) {
+                    for (Ray r : rayBeam.constructRayBeam()) {
                         color = color.add(rayTracer.traceRay(r));
                     }
-                    color = color.reduce(rayNum);
+                    color = color.reduce(rayNum);   // average the color
                     imageWriter.writePixel(pixel.col, pixel.row, color);
                 }
             }).start();
