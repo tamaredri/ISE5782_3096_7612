@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import primitives.*;
 import renderer.*;
 import scene.*;
-import static java.awt.Color.*;
 
 public class TicTacToetest{
 
@@ -19,9 +18,18 @@ public class TicTacToetest{
 
 
 
-    private Camera camera = new Camera(new Point(0,0, 700),
+    private Camera camera = new Camera(new Point(319.28533001223155,
+                                                 -26.60444431189778,
+                                                 665.270364466614),
+                                       new Vector(-0.16317591116653482,
+                                               -0.05939117461388472,
+                                               -0.984807753012208),
+                                       new Vector(-0.9254165783983234,
+                                               -0.3368240888334653,
+                                               0.17364817766693036)
+                                        /*new Point(0,0, 700),
                                        new Vector(0,0,-1) ,
-                                       new Vector(0,-1,0))
+                                       new Vector(0,-1,0)*/)
                             .setVPSize(150, 150)
                             .setVPDistance(50);
 
@@ -56,10 +64,9 @@ public class TicTacToetest{
     Color boardEmission = new Color(200,200,200);
     Color baseEmission = new Color(51,51,51).scale(2);
 
-    Material pondMaterial = new Material().setKd(0.2).setKs(0.9).setShininess(30).setkT(0.4).setDiffuseness(5);
+    Material pondMaterial = new Material().setKd(0.2).setKs(0.9).setShininess(30).setkT(0.3).setDiffuseness(5);
     Material boardMaterial = new Material().setKs(0.5).setShininess(30).setkR(0.8).setGlossiness(2);
-    Material tableMaterial = new Material().setKd(0.7).setKs(0.5).setShininess(0).setkR(0.1).setGlossiness(3);
-    Material baseMaterial = new Material().setKd(0.7).setKs(0.1).setShininess(30).setkR(0.2);
+    Material baseMaterial = new Material().setKd(0.7).setKs(0.1).setShininess(30);
 
     private final Geometry base = new Plane(new Point(0,0,0), new Vector(0,0,1))
             .setMaterial(baseMaterial).setEmission(baseEmission);
@@ -89,24 +96,13 @@ public class TicTacToetest{
         scene1.addGeometry(ticTacToe.generateO(new Point(200,200,0)));
         scene1.lights.add(spotLight);
         scene1.lights.add(pointLightXO);
+        scene1.lights.add(directionalLight);
 
         ImageWriter imageWriter = new ImageWriter("construct x", 500, 500);
         cameraXO.moveReferencePoint(100,400,100).setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
                 .renderImage(81) //
                 .writeToImage(); //
-
-        //cameraXO = cameraXO.rotateAroundVTo(50);
-        cameraXO = cameraXO.moveReferencePoint(-100,0,100)
-                .rotateAroundVRight(-30)
-                .rotateAroundVUp(-20);
-
-        imageWriter = new ImageWriter("construct x rotation", 500, 500);
-        cameraXO.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerBasic(scene1)) //
-                .renderImage(81) //
-                .writeToImage(); //
-
     }
 
     @Test
@@ -133,6 +129,8 @@ public class TicTacToetest{
 
     @Test
     void createTicTacToeTest(){
+        xEmission = new Color(102,137,162);
+        oEmission = new Color(30, 5, 33);
         TicTacToe ticTacToe = new TicTacToe(1000)
                 .setX(xEmission, pondMaterial)
                 .setO(oEmission, pondMaterial)
@@ -148,23 +146,29 @@ public class TicTacToetest{
         scene1.lights.add(pointLightGame);
         scene1.lights.add(directionalLight);
 
-        camera = camera.moveReferencePoint(100,0,0);
-        ImageWriter imageWriter = new ImageWriter("construct ticTacToe", 500, 500);
-        camera.setMultiThreading(3).setImageWriter(imageWriter) //
+
+
+        //camera = camera.moveReferencePoint(100,0,0);
+
+        ImageWriter imageWriter = new ImageWriter("ticTacToe - camera", 500, 500);
+  /*
+        camera.setMultiThreading(true).setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
-                .renderImage(81) //
+                .renderImage() //
                 .writeToImage(); //
+
+
 
         camera = camera.moveReferencePoint(-100, 0,-100)
                 .rotateAroundVTo(-70).rotateAroundVRight(-10)
-                .moveReferencePoint(-200,50,-100);
-
+                .moveReferencePoint(-200,0,-100);
+*/
         imageWriter = new ImageWriter("ticTacToe - camera - rotation", 500, 500);
         camera.setMultiThreading(3).setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
                 .renderImage(81) //
                 .writeToImage(); //
-
+/*
         camera4.moveReferencePoint(200,350,-50).rotateAroundVRight(30);
         imageWriter = new ImageWriter("ticTacToe - camera4", 500, 500);
         camera4.setMultiThreading(3).setImageWriter(imageWriter) //
@@ -172,79 +176,7 @@ public class TicTacToetest{
                         .renderImage() //
                         .writeToImage(); //
 
-    }
-
-
-    //region generate table
-    /**
-     * create a table under the xy surface
-     */
-    Geometries generateTable(){
-        double z0 = 0;
-
-        // legs
-        double x1 = 1300;
-        double y1 = 800;
-        double height = 1500;
-        double radius = 90;
-        Vector legDir = new Vector(0, 0, -1);
-
-        // base
-        double x2 = 1500;
-        double y2 = 1000;
-        double z2 = -500;
-
-        //region 4 points for top base
-        Point A = new Point (-x2, y2,z0);
-        Point B = new Point (x2, y2,z0);
-        Point C = new Point (x2, -y2,z0);
-        Point D = new Point (-x2, -y2,z0);
-        //endregion
-
-        //region 4 points for bottom base
-        Point E = new Point (-x2, y2,z2);
-        Point F = new Point (x2, y2,z2);
-        Point G = new Point (x2, -y2,z2);
-        Point H = new Point (-x2, -y2,z2);
-        //endregion
-
-        // two bases
-        Geometry topBase = new Polygon(A,B,C,D);
-        Geometry bottomBase = new Polygon(E,F,G,H);
-
-        //4 sides
-        Geometry side1 = new Polygon(A,B,F,E);
-        Geometry side2 = new Polygon(B,C,G,F);
-        Geometry side3 = new Polygon(C,D,H,G);
-        Geometry side4 = new Polygon(D,A,E,H);
-
-
-        return new Geometries(new Cylinder(new Ray(new Point(x1,y1,z0), legDir), radius, height) // all 4 legs
-                                        .setEmission(tableEmission)
-                                        .setMaterial(tableMaterial),
-                              new Cylinder(new Ray(new Point(-x1,y1,z0), legDir), radius, height)
-                                      .setEmission(tableEmission)
-                                      .setMaterial(tableMaterial),
-                              new Cylinder(new Ray(new Point(-x1,-y1,z0), legDir), radius, height)
-                                      .setEmission(tableEmission)
-                                      .setMaterial(tableMaterial),
-                              new Cylinder(new Ray(new Point(x1,-y1,z0), legDir), radius, height)
-                                      .setEmission(tableEmission)
-                                      .setMaterial(tableMaterial),
-
-                             topBase .setEmission(tableEmission)
-                                     .setMaterial(tableMaterial),
-                            bottomBase.setEmission(tableEmission)
-                                      .setMaterial(tableMaterial),
-                            side1.setEmission(tableEmission)
-                                    .setMaterial(tableMaterial),
-                            side2.setEmission(tableEmission)
-                                    .setMaterial(tableMaterial),
-                            side3.setEmission(tableEmission)
-                                    .setMaterial(tableMaterial),
-                            side4 .setEmission(tableEmission)
-                                    .setMaterial(tableMaterial)
-                                     ); // base pf the table
+ */
 
     }
     //endregion

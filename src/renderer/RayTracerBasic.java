@@ -15,7 +15,7 @@ import static primitives.Util.isZero;
  *  adding the local and global effects of the objects presented in the scene
  */
 public class RayTracerBasic extends RayTracerBase{
-    private static final int MAX_CALC_COLOR_LEVEL = 3;
+    private static final int MAX_CALC_COLOR_LEVEL = 4;
     private static final double MIN_CALC_COLOR_K = 0.001;
     private static final Double3 INITIAL_K = new Double3(1.0);
 
@@ -122,19 +122,18 @@ public class RayTracerBasic extends RayTracerBase{
 
         Double3 kkr = k.product(material.kR);
         if (!kkr.lowerThan(MIN_CALC_COLOR_K)) { // the color is effected by the reflection
-            Ray ray1 = constructReflectedRay(gp.point, ray, n);
+            Ray centerReflectedRay = constructReflectedRay(gp.point, ray, n);
             double glossiness = material.glossiness;
-            color = calcGlobalEffects(ray1, level, material.kR, kkr);
-
 
             if (isGlossy(gp)){ // glossiness = glossy reflection
-                RayBeam rayBeam = new RayBeam(ray1, glossiness, glossiness);
+                //color = calcRayBeamEffect(ray1, color, n, glossiness, level, material.kR, kkr);
+                RayBeam rayBeam = new RayBeam(centerReflectedRay).setSize(glossiness);
                 List<Ray> rayList = rayBeam.constructRayBeam();
                 int beamSize = rayList.size();
 
                 for (Ray r : rayList) {
                     double nr = n.dotProduct(r.getDir());
-                    double nc = n.dotProduct(ray1.getDir());
+                    double nc = n.dotProduct(centerReflectedRay.getDir());
                     if(nr * nc > 0) // the ray has to be in the normal direction to be reflected correctly
                         color = color.add(calcGlobalEffects(r, level, material.kR, kkr));
                     else
@@ -142,23 +141,23 @@ public class RayTracerBasic extends RayTracerBase{
                 }
                 color = color.reduce(beamSize);
             }
+            else
+                color = calcGlobalEffects(centerReflectedRay, level, material.kR, kkr);
         }
-
 
         Double3 kkt = k.product(material.kT);
         if (!kkt.lowerThan(MIN_CALC_COLOR_K)) {// the color is effected due to the transparency
-            Ray ray1 = constructRefractedRay(gp.point, ray, n);
+            Ray centerRefractedRay = constructRefractedRay(gp.point, ray, n);
             double diffuseness = material.diffuseness;
 
-            if (!isDiffusive(gp)) // diffuseness = diffusive refraction
-                color = calcGlobalEffects(ray1, level, material.kT, kkt);
-            else {
-                RayBeam rayBeam = new RayBeam(ray1, diffuseness, diffuseness);
+            if (isDiffusive(gp)){ // diffuseness = diffusive refraction
+                //color = calcRayBeamEffect(ray1, color, n, diffuseness,level, material.kT, kkt);
+                RayBeam rayBeam = new RayBeam(centerRefractedRay).setSize(diffuseness);
                 List<Ray> rayList = rayBeam.constructRayBeam();
                 int beamSize = rayList.size();
                 for (Ray r : rayList) {
                     double nr = n.dotProduct(r.getDir());
-                    double nc = n.dotProduct(ray1.getDir());
+                    double nc = n.dotProduct(centerRefractedRay.getDir());
                     if(nr * nc > 0)// the ray has to be in the opposite direction of the normal refracted correctly
                         color = color.add(calcGlobalEffects(r, level, material.kT, kkt));
                     else
@@ -166,6 +165,8 @@ public class RayTracerBasic extends RayTracerBase{
                 }
                 color = color.reduce(beamSize); // average the color
             }
+            else
+                color = color.add(calcGlobalEffects(centerRefractedRay, level, material.kT, kkt));
         }
 
         return color;

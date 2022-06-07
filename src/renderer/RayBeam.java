@@ -13,17 +13,41 @@ import static primitives.Util.isZero;
 public class RayBeam {
     private final Ray centerRay;
     private final Vector vUp;
-
     private final Vector vRight;
-    private final double height;
-    private final double width;
+    private double height = 1;
+    private double width = 1;
     private final double DISTANCE = 50;
     private int amount = 81;
+
+    //region setters
+    /**
+     * set the size of the blackboard in a radius from the center ray of the beam according to an angle
+     * @param a of the beam's span
+     * @return this - builder pattern
+     */
+    RayBeam setSize(double a){
+        double radius = DISTANCE * Math.tan(Math.toRadians(a));
+        this.height = this.width = radius * 2 ;
+        return this;
+    }
+
+    /**
+     * set the size of the blackboard
+     * @param height of the blackboard
+     * @param width of the blackboard
+     * @return this - builder pattern
+     */
+    RayBeam setSize(double height, double width){
+        this.height = height;
+        this.width = width ;
+        return this;
+    }
 
     public RayBeam setAmount(int amount) {
         this.amount = amount;
         return this;
     }
+    //endregion
 
     //region getters
     public Vector getvUp() {
@@ -36,20 +60,16 @@ public class RayBeam {
     //endregion
 
     //region constructors
-    public RayBeam(Ray centerRay, Vector vUp, Vector vRight, double height, double width) {
+    public RayBeam(Ray centerRay, Vector vUp, Vector vRight) {
         if(!isZero(vUp.dotProduct(vRight)))
             throw new IllegalArgumentException("vectors are not orthogonal");
         this.vUp = vUp.normalize();
         this.vRight = vRight.normalize();
         this.centerRay = centerRay;
-        this.height = height;
-        this.width = width;
     }
 
-    public RayBeam(Ray centerRay, double height, double width) {
+    public RayBeam(Ray centerRay) {
         this.centerRay = centerRay;
-        this.height = height;
-        this.width = width;
         // make orthogonal vectors
         Vector dir = centerRay.getDir();
         this.vUp = dir.getOrthogonal();
@@ -62,8 +82,8 @@ public class RayBeam {
     //region constructRayBeam
     List<Ray> constructRayBeam(){
         Point center = centerRay.getPoint(DISTANCE);
-
         List<Ray> list = new LinkedList<>();
+        list.add(centerRay);
 
         BlackBoard blackBoard = new BlackBoard(this.width, this.height);
 

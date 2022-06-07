@@ -50,7 +50,7 @@ public class TicTacToe {
     public TicTacToe setBoardParameters(){
         squareSize = this.size / 3d;
         radius = squareSize * 0.35;
-        shapesHeight = radius * 0.5;
+        shapesHeight = radius * 0.9;
         boardHeight = this.size * 0.05;
         linesHeight = this.size / 50d;
         return this;
@@ -202,11 +202,11 @@ public class TicTacToe {
 
         //region x bottom base
         Geometry base1 = new Polygon(A,B,C,D)
-                .setMaterial(xMat).setEmission(xColor.scale(0.5));
+                .setMaterial(xMat).setEmission(xColor.reduce(2));
         Geometry base2 = new Polygon(E,H,I,J)
-                .setMaterial(xMat).setEmission(xColor.scale(0.5));
+                .setMaterial(xMat).setEmission(xColor.reduce(2));
         Geometry base3 = new Polygon(F,G,L,K)
-                .setMaterial(xMat).setEmission(xColor.scale(0.5));
+                .setMaterial(xMat).setEmission(xColor.reduce(2));
         Geometries XShape = new Geometries(base1, base2, base3); // bottom base
         //endregion
 
@@ -214,13 +214,13 @@ public class TicTacToe {
         // move up in vUp's direction
         base1 = new Polygon(A.add(this.vUp.scale(height)),B.add(this.vUp.scale(height)),
                 C.add(this.vUp.scale(height)),D.add(this.vUp.scale(height)))
-                .setMaterial(xMat).setEmission(xColor.scale(0.5));
+                .setMaterial(xMat).setEmission(xColor.reduce(2));
         base2 = new Polygon(E.add(this.vUp.scale(height)),H.add(this.vUp.scale(height)),
                 I.add(this.vUp.scale(height)),J.add(this.vUp.scale(height)))
-                .setMaterial(xMat).setEmission(xColor.scale(0.5));
+                .setMaterial(xMat).setEmission(xColor.reduce(2));
         base3 = new Polygon(F.add(this.vUp.scale(height)),G.add(this.vUp.scale(height)),
                 L.add(this.vUp.scale(height)),K.add(this.vUp.scale(height)))
-                .setMaterial(xMat).setEmission(xColor.scale(0.5));
+                .setMaterial(xMat).setEmission(xColor.reduce(2));
 
         XShape.add(base1, base2, base3); // upper base
         //endregion
@@ -298,7 +298,10 @@ public class TicTacToe {
     public Geometries generateO(Point center, double radius, double height) {
         return new Geometries(new Cylinder(new Ray(center, vUp), radius, height)
                 .setMaterial(oMat)
-                .setEmission(oColor));
+                .setEmission(oColor),
+                              new Circle(center, radius, vUp)
+                                      .setEmission(oColor.reduce(2))
+                                      .setMaterial(oMat));
     }
     //endregion
 
@@ -307,20 +310,20 @@ public class TicTacToe {
         Geometries TTT = new Geometries(generateBoard());
 
         // 3 o
-        Point centerSquare = middleOfSquare(0, 0); //
+        Point centerSquare = middleOfSquare(2,2); //
         TTT.add(generateO(centerSquare, radius, shapesHeight));
         centerSquare = middleOfSquare(2,0); //
         TTT.add(generateO(centerSquare, radius, shapesHeight));
-        centerSquare = middleOfSquare(2, 1); //
+        centerSquare = middleOfSquare(1,2); //
         TTT.add(generateO(centerSquare, radius, shapesHeight));
 
 
         // 3 x
         centerSquare = middleOfSquare(1, 1); //
         TTT.add(generateX(centerSquare));
-        centerSquare = middleOfSquare(0, 1); //
+        centerSquare = middleOfSquare(1, 0); //
         TTT.add(generateX(centerSquare));
-        centerSquare = middleOfSquare(2, 2); //
+        centerSquare = middleOfSquare(0, 2); //
         TTT.add(generateX(centerSquare));
 
         return TTT; //

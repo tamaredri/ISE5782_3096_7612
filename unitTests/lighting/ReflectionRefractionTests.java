@@ -33,9 +33,9 @@ public class ReflectionRefractionTests {
 
 		scene.geometries.add( //
 				new Sphere(new Point(0, 0, -50), 50d).setEmission(new Color(BLUE)) //
-						.setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setkT(0.3).setDiffuseness(1)),
+						.setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setkT(0.3).setDiffuseness(5)),
 				new Sphere(new Point(0, 0, -50), 25d).setEmission(new Color(RED)) //
-						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setDiffuseness(1)));
+						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setDiffuseness(5)));
 		scene.lights.add( //
 				new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2)) //
 						.setKl(0.0004).setKq(0.0000006));
@@ -63,11 +63,11 @@ public class ReflectionRefractionTests {
 						.setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)),
 				new Triangle(new Point(1500, -1500, -1500), new Point(-1500, 1500, -1500), new Point(670, 670, 3000)) //
 						.setEmission(new Color(20, 20, 20)) //
-						.setMaterial(new Material().setkR(1).setGlossiness(1)),
+						.setMaterial(new Material().setkR(1).setGlossiness(5)),
 				new Triangle(new Point(1500, -1500, -1500), new Point(-1500, 1500, -1500),
 						new Point(-1500, -1500, -2000)) //
 						.setEmission(new Color(20, 20, 20)) //
-						.setMaterial(new Material().setkR(0.5).setGlossiness(1)));
+						.setMaterial(new Material().setkR(0.5).setGlossiness(5 	)));
 
 		scene.lights.add(new SpotLight(new Color(1020, 400, 400), new Point(-750, -750, -150), new Vector(-1, -1, -4)) //
 				.setKl(0.00001).setKq(0.000005));

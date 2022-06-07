@@ -218,8 +218,8 @@ public class Camera {
                 for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone()) {
                     Color color = Color.BLACK;
                     RayBeam rayBeam = new RayBeam(constructRay(nX, nY, pixel.col, pixel.row),
-                                                  this.vUp, this.vRight,
-                                                  this.width / nY, this.height / nX);
+                                                  this.vUp, this.vRight)
+                                        .setSize(this.width / nY, this.height / nX);
                     rayBeam.setAmount(rayNum);
                     List<Ray> rayList = rayBeam.constructRayBeam();
 
