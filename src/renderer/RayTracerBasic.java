@@ -126,7 +126,6 @@ public class RayTracerBasic extends RayTracerBase{
             double glossiness = material.glossiness;
 
             if (isGlossy(gp)){ // glossiness = glossy reflection
-                //color = calcRayBeamEffect(ray1, color, n, glossiness, level, material.kR, kkr);
                 RayBeam rayBeam = new RayBeam(centerReflectedRay).setSize(glossiness);
                 List<Ray> rayList = rayBeam.constructRayBeam();
                 int beamSize = rayList.size();
@@ -151,7 +150,6 @@ public class RayTracerBasic extends RayTracerBase{
             double diffuseness = material.diffuseness;
 
             if (isDiffusive(gp)){ // diffuseness = diffusive refraction
-                //color = calcRayBeamEffect(ray1, color, n, diffuseness,level, material.kT, kkt);
                 RayBeam rayBeam = new RayBeam(centerRefractedRay).setSize(diffuseness);
                 List<Ray> rayList = rayBeam.constructRayBeam();
                 int beamSize = rayList.size();

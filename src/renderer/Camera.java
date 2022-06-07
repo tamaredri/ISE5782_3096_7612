@@ -204,6 +204,19 @@ public class Camera {
         return this;
     }
 
+    /**
+     * render the image and fill the pixels with the desired colors.
+     * using the ray tracer to find the colors.
+     * and the image writer to color the pixels.
+     * @throws MissingResourceException if one of the following fields are uninitialized (unable to render the image):<ul>
+     *     <li> imageWriter </li>
+     *     <li> reyTracer </li>
+     *     <li> width </li>
+     *     <li> height </li>
+     *     <li> distance </li>
+     * </ul>
+     * @param rayNum the size of the ray beam
+     */
     public Camera renderImage(int rayNum) {
         if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) {
             throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
