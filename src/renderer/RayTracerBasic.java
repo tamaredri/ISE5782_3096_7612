@@ -23,7 +23,6 @@ public class RayTracerBasic extends RayTracerBase{
         super(scene);
     }
 
-
     //region traceRay
     @Override
     public Color traceRay(Ray ray) {
@@ -125,19 +124,21 @@ public class RayTracerBasic extends RayTracerBase{
         if (!kkr.lowerThan(MIN_CALC_COLOR_K)) { // the color is effected by the reflection
             Ray ray1 = constructReflectedRay(gp.point, ray, n);
             double glossiness = material.glossiness;
+            color = calcGlobalEffects(ray1, level, material.kR, kkr);
 
-            if (!isGlossy(gp)) // glossiness = glossy reflection
-                color = calcGlobalEffects(ray1, level, material.kR, kkr);
-            else {
+
+            if (isGlossy(gp)){ // glossiness = glossy reflection
                 RayBeam rayBeam = new RayBeam(ray1, glossiness, glossiness);
                 List<Ray> rayList = rayBeam.constructRayBeam();
                 int beamSize = rayList.size();
 
                 for (Ray r : rayList) {
-                    //if((alignZero(n.dotProduct(r.getDir())) > 0)) // the ray has to be in the normal direction to be reflected correctly
+                    double nr = n.dotProduct(r.getDir());
+                    double nc = n.dotProduct(ray1.getDir());
+                    if(nr * nc > 0) // the ray has to be in the normal direction to be reflected correctly
                         color = color.add(calcGlobalEffects(r, level, material.kR, kkr));
-                    //else
-                    //    beamSize--;
+                    else
+                        beamSize--;
                 }
                 color = color.reduce(beamSize);
             }
@@ -156,10 +157,12 @@ public class RayTracerBasic extends RayTracerBase{
                 List<Ray> rayList = rayBeam.constructRayBeam();
                 int beamSize = rayList.size();
                 for (Ray r : rayList) {
-                    //if(alignZero(n.dotProduct(r.getDir())) < 0) // the ray has to be in the opposite direction of the normal refracted correctly
+                    double nr = n.dotProduct(r.getDir());
+                    double nc = n.dotProduct(ray1.getDir());
+                    if(nr * nc > 0)// the ray has to be in the opposite direction of the normal refracted correctly
                         color = color.add(calcGlobalEffects(r, level, material.kT, kkt));
-                    //else
-                    //    beamSize--;
+                    else
+                        beamSize--;
                 }
                 color = color.reduce(beamSize); // average the color
             }
