@@ -125,7 +125,7 @@ public class RayTracerBasic extends RayTracerBase{
             Ray centerReflectedRay = constructReflectedRay(gp.point, ray, n);
             double glossiness = material.glossiness;
 
-            if (isGlossy(gp)){ // glossiness = glossy reflection
+            if (material.isGlossy()){ // glossiness = glossy reflection
                 RayBeam rayBeam = new RayBeam(centerReflectedRay).setSize(glossiness);
                 List<Ray> rayList = rayBeam.constructRayBeam();
                 int beamSize = rayList.size();
@@ -149,7 +149,7 @@ public class RayTracerBasic extends RayTracerBase{
             Ray centerRefractedRay = constructRefractedRay(gp.point, ray, n);
             double diffuseness = material.diffuseness;
 
-            if (isDiffusive(gp)){ // diffuseness = diffusive refraction
+            if (material.isDiffusive()){ // diffuseness = diffusive refraction
                 RayBeam rayBeam = new RayBeam(centerRefractedRay).setSize(diffuseness);
                 List<Ray> rayList = rayBeam.constructRayBeam();
                 int beamSize = rayList.size();
@@ -168,14 +168,6 @@ public class RayTracerBasic extends RayTracerBase{
         }
 
         return color;
-    }
-
-    private boolean isDiffusive(GeoPoint gp) {
-        return !isZero(gp.geometry.getMaterial().diffuseness);
-    }
-
-    private boolean isGlossy(GeoPoint gp) {
-        return !isZero(gp.geometry.getMaterial().glossiness);
     }
     //endregion
 

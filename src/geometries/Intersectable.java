@@ -3,6 +3,8 @@ package geometries;
 import primitives.*;
 import java.util.List;
 
+import static primitives.Util.isZero;
+
 /**
  * represents an objects that can be intersected with a ray in space
  */

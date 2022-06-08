@@ -1,5 +1,9 @@
 package primitives;
 
+import geometries.Intersectable;
+
+import static primitives.Util.isZero;
+
 /**
  * representation of a material that a geometry can be made of
  */
@@ -69,4 +73,14 @@ public class Material {
         return this;
     }
     //endregion
+
+    public boolean isDiffusive() {
+        return !isZero(diffuseness);
+    }
+
+    public boolean isGlossy() {
+        return !isZero(glossiness);
+    }
+
+
 }
