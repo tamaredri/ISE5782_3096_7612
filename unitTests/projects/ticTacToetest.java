@@ -46,8 +46,8 @@ public class ticTacToetest {
 
     Material pondMaterial = new Material().setKd(0.2).setKs(0.9).setShininess(30).setkT(0.3);
     Material boardMaterial = new Material().setKs(0.5).setShininess(30).setkR(0.8);
-    Material pondMaterialGlossy = new Material().setKd(0.2).setKs(0.9).setShininess(30).setkT(0.3).setDiffuseness(5);
-    Material boardMaterialDiffuse = new Material().setKs(0.5).setShininess(30).setkR(0.8).setGlossiness(2);
+    Material pondMaterialDiffuse = new Material().setKd(0.2).setKs(0.9).setShininess(30).setkT(0.3).setDiffuseness(5);
+    Material boardMaterialGlossy = new Material().setKs(0.5).setShininess(30).setkR(0.8).setGlossiness(2);
     Material baseMaterial = new Material().setKd(0.7).setKs(0.1).setShininess(30);
     //endregion
 
@@ -119,8 +119,8 @@ public class ticTacToetest {
 
         if(gloss)
             ticTacToe
-                .setX(xEmission, pondMaterialGlossy)
-                .setO(oEmission, pondMaterialGlossy);
+                .setX(xEmission, pondMaterialDiffuse)
+                .setO(oEmission, pondMaterialDiffuse);
         else
             ticTacToe
                     .setX(xEmission, pondMaterial)
@@ -175,6 +175,26 @@ public class ticTacToetest {
                 .renderImage(81) //
                 .writeToImage(); //
     }
+
+    @Test
+    void createBoardAntiAliasingAndGlossyTest(){
+        TicTacToe ticTacToe = new TicTacToe(1000)
+                .setBoard(boardEmission, boardMaterialGlossy);
+        sceneBoard.addGeometry(ticTacToe.generateBoard());
+
+        ImageWriter imageWriter = new ImageWriter("construct board", 500, 500);
+        cameraXOComponents.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(sceneBoard)) //
+                .renderImage(81) //
+                .writeToImage(); //
+
+        cameraXOComponents = cameraXOComponents.moveReferencePoint(-800,300,0).rotateAroundVRight(-30);
+        imageWriter = new ImageWriter("construct board rotation", 500, 500);
+        cameraXOComponents.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(sceneBoard)) //
+                .renderImage(81) //
+                .writeToImage(); //
+    }
     //endregion
 
     //region tic-tac-toe tests
@@ -210,6 +230,16 @@ public class ticTacToetest {
                 .writeToImage(); //
     }
 
+    @Test
+    void createTicTacToeAntiAliasingAndGlossyTest(){
+        addTTTtoScene(true);
+        ImageWriter imageWriter = new ImageWriter("ticTacToe - camera - rotation", 500, 500);
+        camera.setMultiThreading(4).setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(sceneTicTacToe)) //
+                .renderImage(81) //
+                .writeToImage(); //
+    }
+
     /**
      * add the elements to tic-tac-toe scene
      * @param gloss activate the glossy effect or not
@@ -221,9 +251,9 @@ public class ticTacToetest {
                 .setBoard(boardEmission, boardMaterial);
 
         if(gloss)
-            ticTacToe.setX(xEmission, pondMaterialGlossy)
-                .setO(oEmission, pondMaterialGlossy)
-                    .setBoard(boardEmission, boardMaterialDiffuse);
+            ticTacToe.setX(xEmission, pondMaterialDiffuse)
+                .setO(oEmission, pondMaterialDiffuse)
+                    .setBoard(boardEmission, boardMaterialGlossy);
         else
                 ticTacToe.setX(xEmission, pondMaterial)
                         .setO(oEmission, pondMaterial)
